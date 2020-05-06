@@ -12,6 +12,7 @@ public class AttackAdditionPanelControl : MonoBehaviour {
 	public Text typeName;
 	private List<string> additionTypeNames;
 	private int currentAdditionTypeIndex = 0;
+	
 
 	void Awake()
 	{
@@ -46,9 +47,53 @@ public class AttackAdditionPanelControl : MonoBehaviour {
 	/// </summary>
 	public void Button_2()
 	{
-		// TODO
-		BattleSystem._instance.OnAttack();
-		
+		AttackAddition attackAddition = new AttackAddition();
+		switch (currentAdditionTypeIndex)
+		{
+			case 0:
+				attackAddition.additionType = AdditionType.Common;
+				break;
+			case 1:
+				attackAddition.additionType = AdditionType.Venus;
+				attackAddition.STROffsetRatio = 0.1f;
+				break;
+			case 2:
+				attackAddition.additionType = AdditionType.Jupiter;
+				attackAddition.ADFOffsetRatio = 0.1f;
+				//attackAddition.range = 1;
+				break;
+			case 3:
+				attackAddition.additionType = AdditionType.Mercury;
+				// 回血10%
+				attackAddition.HPOffsetRatio = 0.1f;
+				//attackAddition.range = 1;
+				break;
+			case 4:
+				attackAddition.additionType = AdditionType.Mars;
+				// 每回合造成总HP的10%伤害
+				attackAddition.turnCount = 3;
+				attackAddition.dotDamageRatio = 0.1f;
+				break;
+			case 5:
+				attackAddition.additionType = AdditionType.Saturn;
+				attackAddition.DEFOffsetRatio = 0.1f;
+				//attackAddition.range = 1;
+				break;
+			case 6:
+				attackAddition.additionType = AdditionType.Uranus;
+				attackAddition.SPDOffsetRatio = 0.1f;
+				//attackAddition.range = 1;
+				break;
+			case 7:
+				attackAddition.additionType = AdditionType.Neptune;
+				attackAddition.SPDOffsetRatio = 0.1f;
+				break;
+			case 8:
+				attackAddition.additionType = AdditionType.Pluto;
+				attackAddition.HITOffsetRatio = 0.1f;
+				break;
+		}
+		BattleSystem._instance.OnAttack(attackAddition);
 	}
 
 	/// <summary>

@@ -179,7 +179,7 @@ public class BattleSystem : MonoBehaviour {
 		{
 			currentActUnit.GetComponentInChildren<Animator>().SetTrigger("Idle");
 			float distanceToTarget = Vector3.Distance(currentActUnitTargetPosition, currentActUnit.transform.position);           //到目标的距离，需要实时计算
-            //避免靠近目标时抖动
+																																	//避免靠近目标时抖动
 			if (distanceToTarget > 1)
 			{
 				if (currentActUnit.tag == "Player")
@@ -204,7 +204,6 @@ public class BattleSystem : MonoBehaviour {
 				//开始攻击
 				LaunchAttack();
 			}
-
 		}
 
 		if (isUnitRunningBack)
@@ -468,21 +467,33 @@ public class BattleSystem : MonoBehaviour {
 	IEnumerator WaitForAttack()
 	{
 		// 获取行动角色的攻击值
-		int attackVal = currentActUnitStatus.GetAttackValue();
-		ShowHint(currentActUnit, "发动攻击");
+		ShowHint(currentActUnit, currentActUnitStatus.GetAttackName());
 		yield return new WaitForSeconds(1);
-		int receiveVal = currentActTargetUnitStatus.GetDamageValue(attackVal);
-		currentActTargetUnit.GetComponent<RoleUnit>().HP -= receiveVal;
-		ShowHint(currentActTargetUnit, receiveVal.ToString());
-		yield return new WaitForSeconds(0.5f);
+		List<string> result = currentActTargetUnitStatus.GetRealDamage(currentActUnitStatus);
+		ShowHint(currentActTargetUnit, result[1]);
+		yield return new WaitForSeconds(1f);
+		if (result.Count > 2)
+		{
+			if (result[2] == "Player")
+			{
+				ShowHint(currentActUnit, result[3]);
+			}
+			else if (result[2] == "Enemy")
+			{
+				ShowHint(currentActTargetUnit, result[3]);
+			}
+			yield return new WaitForSeconds(0.5f);
+		}
 		// 使角色返回
 		isUnitRunningBack = true;
 
 	}
 
 	// 按钮事件触发
-	public void OnAttack()
+	public void OnAttack(AttackAddition attackAddition)
 	{
+		// 设置当前回合的附加属性
+		currentActUnitStatus.SetAttackAddition(attackAddition);
 		isWaitForPlayerToChooseSkill = false;
 		isWaitForPlayerToChooseTarget = true;
 	}
@@ -498,7 +509,7 @@ public class BattleSystem : MonoBehaviour {
 		//Vector3 guiPos;
 		//RectTransformUtility.ScreenPointToWorldPointInRectangle(canvas.GetComponent<RectTransform>(), unitPos, UICamera, out guiPos);
 		GameObject hintGO = Instantiate(hint);
-		hintGO.GetComponent<Text>().text = "-" + str;
+		hintGO.GetComponent<Text>().text = str;
 		hintGO.transform.SetParent(canvas.transform, false);
 		hintGO.transform.position = unitPos + new Vector3(0, 50f, 0);
 		// 销毁

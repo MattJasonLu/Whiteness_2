@@ -10,6 +10,7 @@ public class AttackAddition {
 
 	// 属性
 	public AdditionType additionType = 0;
+	public int range = 0;
 	// 增幅
 	public int HPOffset;
 	public int EPOffset;
@@ -23,20 +24,32 @@ public class AttackAddition {
 	public int CRTOffset;
 	public int HITOffset;
 	// 增幅比例
-	public int HPOffsetRatio;
-	public int EPOffsetRatio;
-	public int CPOffsetRatio;
-	public int STROffsetRatio;
-	public int DEFOffsetRatio;
-	public int ATSOffsetRatio;
-	public int ADFOffsetRatio;
-	public int SPDOffsetRatio;
-	public int DEXOffsetRatio;
-	public int CRTOffsetRatio;
-	public int HITOffsetRatio;
+	public float HPOffsetRatio;
+	public float EPOffsetRatio;
+	public float CPOffsetRatio;
+	public float STROffsetRatio;
+	public float DEFOffsetRatio;
+	public float ATSOffsetRatio;
+	public float ADFOffsetRatio;
+	public float SPDOffsetRatio;
+	public float DEXOffsetRatio;
+	public float CRTOffsetRatio;
+	public float HITOffsetRatio;
 	// dot回合数
 	public int dotDamage;
+	public float dotDamageRatio;
 	public int turnCount;
+
+	public static string GetDescriptionByEnum(System.Enum enumValue)
+	{
+		string value = enumValue.ToString();
+		System.Reflection.FieldInfo field = enumValue.GetType().GetField(value);
+		object[] objs = field.GetCustomAttributes(typeof(DescriptionAttribute), false);    //获取描述属性
+		if (objs.Length == 0)    //当描述属性没有时，直接返回名称
+			return value;
+		DescriptionAttribute descriptionAttribute = (DescriptionAttribute)objs[0];
+		return descriptionAttribute.Description;
+	}
 
 }
 

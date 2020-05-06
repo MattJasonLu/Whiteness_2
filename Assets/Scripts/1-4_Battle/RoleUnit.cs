@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,6 +53,7 @@ public class RoleUnit : MonoBehaviour {
 	private Slider hpSlider;
 	private Slider epSlider;
 	private Slider cpSlider;
+	private AttackAddition attackAddition;
 
 	void Start()
 	{
@@ -113,24 +113,117 @@ public class RoleUnit : MonoBehaviour {
 		cpSlider.value = cpSlider.maxValue;
 	}
 
+	public void SetAttackAddition(AttackAddition attackAddition)
+	{
+		this.attackAddition = attackAddition;
+	}
+
+	public AttackAddition GetAttackAddition()
+	{
+		return this.attackAddition;
+	}
 
 	/// <summary>
-	/// 获取攻击值
+	/// 计算受到的实际伤害
+	/// </summary>
+	/// <param name="attacker">攻击者</param>
+	/// <returns>受到的伤害值</returns>
+	public List<string> GetRealDamage(RoleUnit attacker)
+	{
+		int realDamage = 0;
+		List<string> realResult = new List<string>();
+		int total = 100;
+		int unHIT = 100 - attacker.HIT;
+		int CRT = attacker.CRT;
+		int roll = Random.Range(1, total + 1);
+		if (roll <= unHIT)
+		{
+			realDamage = 0;
+			realResult.Add("MISS");
+			realResult.Add("Miss");
+		}
+		else if (roll > unHIT && roll <= unHIT + CRT)
+		{
+			realDamage = 2 * attacker.STR - this.DEF;
+			this.HP = this.HP - realDamage;
+			realResult.Add("CRT");
+			realResult.Add("-暴击" + realDamage);
+		}
+		else
+		{
+			realDamage = attacker.STR - this.DEF;
+			this.HP = this.HP - realDamage;
+			realResult.Add("HIT");
+			realResult.Add("-" + realDamage);
+		}
+		// 计算增幅
+		if (attacker.attackAddition != null && realResult[0] != "MISS")
+		{
+			switch (attacker.attackAddition.additionType)
+			{
+				case AdditionType.Venus:
+					attacker.STR = (int)((float)attacker.STR * (1 + attacker.attackAddition.STROffsetRatio));
+					realResult.Add("Player");
+					realResult.Add("攻击UP");
+					break;
+				case AdditionType.Jupiter:
+					attacker.ADF = (int)((float)attacker.ADF * (1 + attacker.attackAddition.ADFOffsetRatio));
+					realResult.Add("Player");
+					realResult.Add("特防UP");
+					break;
+				case AdditionType.Mercury:
+					attacker.HP += (int)((float)attacker.initHP * attacker.attackAddition.HPOffsetRatio);
+					realResult.Add("Player");
+					realResult.Add("血量UP");
+					break;
+				case AdditionType.Mars:
+					realResult.Add("Enemy");
+					realResult.Add("DOT伤害");
+					break;
+				case AdditionType.Saturn:
+					attacker.DEF = (int)((float)attacker.DEF * (1 + attacker.attackAddition.DEFOffsetRatio));
+					realResult.Add("Player");
+					realResult.Add("防御UP");
+					break;
+				case AdditionType.Uranus:
+					attacker.SPD = (int)((float)attacker.SPD * (1 + attacker.attackAddition.SPDOffsetRatio));
+					realResult.Add("Player");
+					realResult.Add("速度UP");
+					break;
+				case AdditionType.Neptune:
+					this.SPD = (int)((float)this.SPD * (1 - attacker.attackAddition.SPDOffsetRatio));
+					realResult.Add("Enemy");
+					realResult.Add("速度DOWN");
+					break;
+				case AdditionType.Pluto:
+					this.HIT = (int)((float)this.HIT * (1 - attacker.attackAddition.HITOffsetRatio));
+					realResult.Add("Enemy");
+					realResult.Add("命中DOWN");
+					break;
+			}
+		}
+		return realResult;
+	}
+
+	/// <summary>
+	/// 获取攻击的名称
 	/// </summary>
 	/// <returns></returns>
-	public int GetAttackValue()
+	public string GetAttackName()
 	{
-		return STR;
+		string name = "";
+		if (this.attackAddition == null || this.attackAddition.additionType == AdditionType.Common)
+		{
+			name = "普通攻击";
+		}
+		else
+		{
+			string prop = AttackAddition.GetDescriptionByEnum(this.attackAddition.additionType);
+			name = prop + "属性攻击";
+		}
+		return name;
 	}
 
-	/// <summary>
-	/// 使角色受到伤害
-	/// </summary>
-	/// <param name="damage"></param>
-	/// <returns>实际受到的伤害</returns>
-	public int GetDamageValue(int damage)
-	{
-		return damage -= DEF;
-	}
+	
 
 }
