@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MenuPanelControl : MonoBehaviour
 {
+    public GameObject rolePanel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -12,7 +14,7 @@ public class MenuPanelControl : MonoBehaviour
 
     public void Button_1()
     {
-
+        rolePanel.SetActive(true);
     }
 
     public void Button_2()
