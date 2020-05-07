@@ -469,7 +469,7 @@ public class BattleSystem : MonoBehaviour {
 		// 获取行动角色的攻击值
 		ShowHint(currentActUnit, currentActUnitStatus.GetAttackName());
 		yield return new WaitForSeconds(1);
-		List<string> result = currentActTargetUnitStatus.GetRealDamage(currentActUnitStatus);
+		List<string> result = currentActTargetUnit.GetComponent<RoleUnit>().GetRealDamage(currentActUnitStatus);
 		ShowHint(currentActTargetUnit, result[1]);
 		yield return new WaitForSeconds(1f);
 		if (result.Count > 2)
