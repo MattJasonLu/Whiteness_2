@@ -39,6 +39,10 @@ public class EnemyGenerator : MonoBehaviour {
 				player.GetComponentInChildren<Animator>().SetInteger("Vertical", 0);
 				player.GetComponentInChildren<Animator>().SetInteger("Horizontal", 0);
 				string playerListStr = "P001,P001,P001";
+				string playerPos = player.transform.position.x + "," + player.transform.position.y + "," + player.transform.position.z;
+				string cameraPos = Camera.main.transform.position.x + "," + Camera.main.transform.position.y + "," + Camera.main.transform.position.z;
+				PlayerPrefs.SetString("PlayerPos", playerPos);
+				PlayerPrefs.SetString("CameraPos", cameraPos);
 				PlayerPrefs.SetString("PlayerList", playerListStr);
 				LevelLoader._instance.LoadNextLevel();
 			}
@@ -51,8 +55,5 @@ public class EnemyGenerator : MonoBehaviour {
 		i += Time.deltaTime;
 	}
 
-	public void ReloadScene()
-	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-	}
+	
 }

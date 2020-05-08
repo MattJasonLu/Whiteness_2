@@ -19,6 +19,7 @@ public class MenuPanelControl : MonoBehaviour
     {
         if (!rolePanel.activeSelf)
         {
+            GameManager._instance.OnPause();
             rolePanel.SetActive(true);
             equipPanel.SetActive(false);
             bagPanel.SetActive(false);
@@ -26,6 +27,7 @@ public class MenuPanelControl : MonoBehaviour
         }
         else
         {
+            GameManager._instance.OnResume();
             rolePanel.SetActive(false);
         }
     }
@@ -34,6 +36,7 @@ public class MenuPanelControl : MonoBehaviour
     {
         if (!equipPanel.activeSelf)
         {
+            GameManager._instance.OnPause();
             equipPanel.SetActive(true);
             rolePanel.SetActive(false);
             bagPanel.SetActive(false);
@@ -41,6 +44,7 @@ public class MenuPanelControl : MonoBehaviour
         }
         else
         {
+            GameManager._instance.OnResume();
             equipPanel.SetActive(false);
         }
     }
@@ -49,6 +53,7 @@ public class MenuPanelControl : MonoBehaviour
     {
         if (!bagPanel.activeSelf)
         {
+            GameManager._instance.OnPause();
             bagPanel.SetActive(true);
             equipPanel.SetActive(false);
             rolePanel.SetActive(false);
@@ -56,6 +61,7 @@ public class MenuPanelControl : MonoBehaviour
         }
         else
         {
+            GameManager._instance.OnResume();
             bagPanel.SetActive(false);
         }
     }
@@ -64,6 +70,7 @@ public class MenuPanelControl : MonoBehaviour
     {
         if (!mapPanel.activeSelf)
         {
+            GameManager._instance.OnPause();
             mapPanel.SetActive(true);
             rolePanel.SetActive(false);
             equipPanel.SetActive(false);
@@ -71,6 +78,7 @@ public class MenuPanelControl : MonoBehaviour
         }
         else
         {
+            GameManager._instance.OnResume();
             mapPanel.SetActive(false);
         }
     }

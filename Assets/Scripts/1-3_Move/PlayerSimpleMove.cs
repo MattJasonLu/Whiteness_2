@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class PlayerSimpleMove : MonoBehaviour {
 	void Start () {
 		mappingObj = transform.parent.gameObject;
 		animator = GetComponent<Animator>();
+		SetPlayerPos();
 	}
 	
 	// Update is called once per frame
@@ -23,5 +25,23 @@ public class PlayerSimpleMove : MonoBehaviour {
 		mappingObj.transform.position = Vector3.Lerp(mappingObj.transform.position, mappingObjTargetPos, speed * Time.deltaTime);
 		animator.SetInteger("Vertical", (int) v);
 		animator.SetInteger("Horizontal", (int) h);
+	}
+
+	void SetPlayerPos()
+	{
+		// 设置玩家的位置
+		string playerPos = PlayerPrefs.GetString("PlayerPos");
+		if (playerPos != null && playerPos != "")
+		{
+			string[] pos = playerPos.Split(',');
+			mappingObj.transform.position = new Vector3(float.Parse(pos[0]), float.Parse(pos[1]), float.Parse(pos[2]));
+		}
+		// 设置摄像机的位置
+		string cameraPos = PlayerPrefs.GetString("CameraPos");
+		if (cameraPos != null && cameraPos != "")
+		{
+			string[] pos = cameraPos.Split(',');
+			Camera.main.transform.position = new Vector3(float.Parse(pos[0]), float.Parse(pos[1]), float.Parse(pos[2]));
+		}
 	}
 }
