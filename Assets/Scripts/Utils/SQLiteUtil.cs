@@ -20,6 +20,7 @@ public class SQLiteUtil : MonoBehaviour
         //创建名为sqlite4unity的数据库
         
         sql = new SQLiteHelper("data source=" + Application.streamingAssetsPath + "/sqlite4unity.db");
+        Test();
     }
 
     void Start()
@@ -81,6 +82,17 @@ public class SQLiteUtil : MonoBehaviour
 
         //关闭数据库连接
         //sql.CloseConnection();
+    }
+
+    private void Test()
+    {
+        for (int i = 1; i <= 100; i++)
+        {
+            int f = Mathf.RoundToInt(Mathf.Pow((i - 1), 2) + 60);
+            int g = Mathf.RoundToInt(Mathf.Pow((i - 1), 3) + 60);
+            //int h = Mathf.RoundToInt((float)(f * g) / 5);
+            sql.UpdateValues("LEVELEXP_PLAYER", new string[] { "EXP" }, new string[] { g + "" }, "ID", "=", i + "");
+        }
     }
 
     public Dictionary<int, int> GetPlayerLevelExpDict()
