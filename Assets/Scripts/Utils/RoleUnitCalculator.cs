@@ -57,11 +57,25 @@ public class RoleUnitCalculator : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// 通过ID和经验值获取角色
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="exp"></param>
+	/// <returns></returns>
+	public RoleUnit GetRoleUnitByIdAndExp(string id, int exp)
+	{
+		int level = GetPlayerLevelByExp(exp);
+		RoleUnit role = GetRoleUnitByIdAndLevel(id, level);
+		role.EXP = exp;
+		return role;
+	}
+
+	/// <summary>
 	/// 通过经验值获取玩家当前等级
 	/// </summary>
 	/// <param name="exp"></param>
 	/// <returns></returns>
-	public int GetPlayerLevelFromExp(int exp)
+	public int GetPlayerLevelByExp(int exp)
 	{
 		int[] array = playerLevelExpDict.Values.ToArray<int>();
 		int left = 0;
@@ -75,5 +89,16 @@ public class RoleUnitCalculator : MonoBehaviour {
 				left = middle + 1;
 		}
 		return array[right + 1] > exp ? right + 1 : -1;
+	}
+
+	public int GetNextLevelExp(int exp)
+	{
+		int nextLevelExp = 0;
+		int level = GetPlayerLevelByExp(exp);
+		if (level < playerLevelExpDict.Count)
+		{
+			nextLevelExp = playerLevelExpDict[level + 1] - exp;
+		}
+		return nextLevelExp;
 	}
 }

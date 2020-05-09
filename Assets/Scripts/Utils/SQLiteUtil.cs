@@ -20,7 +20,7 @@ public class SQLiteUtil : MonoBehaviour
         //创建名为sqlite4unity的数据库
         
         sql = new SQLiteHelper("data source=" + Application.streamingAssetsPath + "/sqlite4unity.db");
-        Test();
+        //Test();
     }
 
     void Start()
@@ -86,12 +86,14 @@ public class SQLiteUtil : MonoBehaviour
 
     private void Test()
     {
+        int sum = 0;
         for (int i = 1; i <= 100; i++)
         {
             int f = Mathf.RoundToInt(Mathf.Pow((i - 1), 2) + 60);
             int g = Mathf.RoundToInt(Mathf.Pow((i - 1), 3) + 60);
+            sum += g;
             //int h = Mathf.RoundToInt((float)(f * g) / 5);
-            sql.UpdateValues("LEVELEXP_PLAYER", new string[] { "EXP" }, new string[] { g + "" }, "ID", "=", i + "");
+            sql.UpdateValues("LEVELEXP_PLAYER", new string[] { "EXP" }, new string[] { sum + "" }, "ID", "=", i + "");
         }
     }
 
