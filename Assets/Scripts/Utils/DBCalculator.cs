@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RoleUnitCalculator : MonoBehaviour {
+public class DBCalculator : MonoBehaviour {
 
 	SQLiteUtil sqliteUtil;
 	Dictionary<int, int> playerLevelExpDict;
@@ -100,5 +100,14 @@ public class RoleUnitCalculator : MonoBehaviour {
 			nextLevelExp = playerLevelExpDict[level + 1] - exp;
 		}
 		return nextLevelExp;
+	}
+
+	/// <summary>
+	/// 获取背包内容
+	/// </summary>
+	/// <returns></returns>
+	public List<ItemUnit> GetBagContent()
+	{
+		return sqliteUtil.GetItemUnits();
 	}
 }

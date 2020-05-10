@@ -124,6 +124,42 @@ public class SQLiteUtil : MonoBehaviour
     }
 
     /// <summary>
+    /// 获取背包条目
+    /// </summary>
+    /// <returns></returns>
+    public List<ItemUnit> GetItemUnits()
+    {
+        List<ItemUnit> itemUnits = new List<ItemUnit>();
+        // 自定义SQL
+        SqliteDataReader reader = sql.ExecuteQuery("select propsdef.*, playerbag.COUNT from playerbag left join propsdef on playerbag.propsid == propsdef.ID;");
+        while (reader.Read())
+        {
+            ItemUnit item = new ItemUnit();
+            item.itemId = reader.GetString(reader.GetOrdinal("ID"));
+            item.itemName = reader.GetString(reader.GetOrdinal("NAME"));
+            item.mainType = reader.GetInt32(reader.GetOrdinal("MAINTYPE"));
+            item.subType = reader.GetInt32(reader.GetOrdinal("SUBTYPE"));
+            item.hp = reader.GetInt32(reader.GetOrdinal("HP"));
+            item.ep = reader.GetInt32(reader.GetOrdinal("EP"));
+            item.cp = reader.GetInt32(reader.GetOrdinal("CP"));
+            item.str = reader.GetInt32(reader.GetOrdinal("STR"));
+            item.def = reader.GetInt32(reader.GetOrdinal("DEF"));
+            item.ats = reader.GetInt32(reader.GetOrdinal("ATS"));
+            item.adf = reader.GetInt32(reader.GetOrdinal("ADF"));
+            item.spd = reader.GetInt32(reader.GetOrdinal("SPD"));
+            item.dex = reader.GetInt32(reader.GetOrdinal("DEX"));
+            item.crt = reader.GetInt32(reader.GetOrdinal("CRT"));
+            item.hit = reader.GetInt32(reader.GetOrdinal("HIT"));
+            item.lky = reader.GetInt32(reader.GetOrdinal("LKY"));
+            item.rng = reader.GetInt32(reader.GetOrdinal("RNG"));
+            item.price = reader.GetInt32(reader.GetOrdinal("PRICE"));
+            item.count = reader.GetInt32(reader.GetOrdinal("COUNT"));
+            itemUnits.Add(item);
+        }
+        return itemUnits;
+    }
+
+    /// <summary>
     /// 通过角色ID获取角色基本能力值
     /// </summary>
     /// <param name="id"></param>

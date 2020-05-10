@@ -46,7 +46,7 @@ public class BattleSystem : MonoBehaviour {
 	// 提示文字
 	public GameObject notice;
 	// 角色计算器
-	public RoleUnitCalculator roleUnitCalculator;
+	public DBCalculator roleUnitCalculator;
 
 	// 所有参战单元
 	private List<GameObject> battleUnits;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class RolePanelControl : MonoBehaviour { 
 
     public GameObject canvas;
-    public RoleUnitCalculator roleUnitCalculator;
+    public DBCalculator roleUnitCalculator;
 
     private GameObject panel_1;
     private GameObject panel_2;
