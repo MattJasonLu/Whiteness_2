@@ -86,6 +86,7 @@ public class SQLiteUtil : MonoBehaviour
 
     private void Test()
     {
+        /*
         int sum = 0;
         for (int i = 1; i <= 100; i++)
         {
@@ -95,6 +96,9 @@ public class SQLiteUtil : MonoBehaviour
             //int h = Mathf.RoundToInt((float)(f * g) / 5);
             sql.UpdateValues("LEVELEXP_PLAYER", new string[] { "EXP" }, new string[] { sum + "" }, "ID", "=", i + "");
         }
+        */
+        List<EquipUnit> list = GetEquipment();
+        list.ForEach(p => Debug.Log(p.itemUnit.itemName));
     }
 
     public Dictionary<int, int> GetPlayerLevelExpDict()
@@ -160,18 +164,53 @@ public class SQLiteUtil : MonoBehaviour
     }
 
     /// <summary>
+    /// 获取背包条目
+    /// </summary>
+    /// <returns></returns>
+    public ItemUnit GetItemUnitById(string unitId)
+    {
+        // 自定义SQL
+        SqliteDataReader reader = sql.ExecuteQuery("select * from propsdef where id = '" + unitId + "';");
+        while (reader.Read())
+        {
+            ItemUnit item = new ItemUnit();
+            item.itemId = reader.GetString(reader.GetOrdinal("ID"));
+            item.itemName = reader.GetString(reader.GetOrdinal("NAME"));
+            item.mainType = reader.GetInt32(reader.GetOrdinal("MAINTYPE"));
+            item.subType = reader.GetInt32(reader.GetOrdinal("SUBTYPE"));
+            item.hp = reader.GetInt32(reader.GetOrdinal("HP"));
+            item.ep = reader.GetInt32(reader.GetOrdinal("EP"));
+            item.cp = reader.GetInt32(reader.GetOrdinal("CP"));
+            item.str = reader.GetInt32(reader.GetOrdinal("STR"));
+            item.def = reader.GetInt32(reader.GetOrdinal("DEF"));
+            item.ats = reader.GetInt32(reader.GetOrdinal("ATS"));
+            item.adf = reader.GetInt32(reader.GetOrdinal("ADF"));
+            item.spd = reader.GetInt32(reader.GetOrdinal("SPD"));
+            item.dex = reader.GetInt32(reader.GetOrdinal("DEX"));
+            item.crt = reader.GetInt32(reader.GetOrdinal("CRT"));
+            item.hit = reader.GetInt32(reader.GetOrdinal("HIT"));
+            item.lky = reader.GetInt32(reader.GetOrdinal("LKY"));
+            item.rng = reader.GetInt32(reader.GetOrdinal("RNG"));
+            item.price = reader.GetInt32(reader.GetOrdinal("PRICE"));
+            return item;
+        }
+        return null;
+    }
+
+    /// <summary>
     /// 通过角色ID获取角色基本能力值
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     public RoleUnit GetRoleUnitById(string id)
     {
-        RoleUnit roleUnit = new RoleUnit();
         SqliteDataReader reader = sql.ReadTable("ROLEDEF", new string[] { "NAME", "HP", "EP", "CP", "STR", 
             "DEF", "ATS", "ADF", "SPD", "DEX", "RNG", "CRT", "HIT", "ROLETYPE" }, new string[] { "ID" }, 
             new string[] { "=" }, new string[] { "'" + id + "'" });
         while (reader.Read())
         {
+            RoleUnit roleUnit = new RoleUnit();
+            roleUnit.unitId = id;
             roleUnit.unitName = reader.GetString(reader.GetOrdinal("NAME"));
             roleUnit.initHP = reader.GetInt32(reader.GetOrdinal("HP"));
             roleUnit.initEP = reader.GetInt32(reader.GetOrdinal("EP"));
@@ -186,9 +225,35 @@ public class SQLiteUtil : MonoBehaviour
             roleUnit.CRT = reader.GetInt32(reader.GetOrdinal("CRT"));
             roleUnit.HIT = reader.GetInt32(reader.GetOrdinal("HIT"));
             roleUnit.roleType = reader.GetInt32(reader.GetOrdinal("ROLETYPE"));
-            break;
+            return roleUnit;
         }
-        return roleUnit;
+        return null;
+    }
+
+    /// <summary>
+    /// 通过角色编号获取装备内容
+    /// </summary>
+    /// <param name="roleId"></param>
+    /// <returns></returns>
+    public List<EquipUnit> GetEquipment()
+    {
+        List<EquipUnit> equipUnits = new List<EquipUnit>();
+        // 自定义SQL
+        SqliteDataReader reader = sql.ExecuteQuery("select * from equipdef;");
+        while (reader.Read())
+        {
+            EquipUnit equipUnit = new EquipUnit();
+            equipUnit.equipId = reader.GetInt32(reader.GetOrdinal("ID"));
+            equipUnit.equipType = reader.GetInt32(reader.GetOrdinal("EQUIPTYPE"));
+            string roleId = reader.GetString(reader.GetOrdinal("ROLEID"));
+            RoleUnit roleUnit = GetRoleUnitById(roleId);
+            equipUnit.roleUnit = roleUnit;
+            string itemId = reader.GetString(reader.GetOrdinal("PROPSID"));
+            ItemUnit itemUnit = GetItemUnitById(itemId);
+            equipUnit.itemUnit = itemUnit;
+            equipUnits.Add(equipUnit);
+        }
+        return equipUnits;
     }
 
     public void Close()

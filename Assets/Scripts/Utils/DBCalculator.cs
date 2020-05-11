@@ -110,4 +110,13 @@ public class DBCalculator : MonoBehaviour {
 	{
 		return sqliteUtil.GetItemUnits();
 	}
+
+	/// <summary>
+	/// 获取装备内容
+	/// </summary>
+	/// <returns></returns>
+	public List<EquipUnit> GetEquipContent()
+	{
+		return sqliteUtil.GetEquipment();
+	}
 }
