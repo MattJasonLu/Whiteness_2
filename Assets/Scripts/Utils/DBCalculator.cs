@@ -71,6 +71,17 @@ public class DBCalculator : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// 获取角色基本属性
+	/// </summary>
+	/// <param name="id"></param>
+	/// <returns></returns>
+	public RoleUnit GetRoleUnitById(string id)
+	{
+		RoleUnit role = sqliteUtil.GetRoleUnitById(id);
+		return role;
+	}
+
+	/// <summary>
 	/// 通过经验值获取玩家当前等级
 	/// </summary>
 	/// <param name="exp"></param>
@@ -109,6 +120,11 @@ public class DBCalculator : MonoBehaviour {
 	public List<ItemUnit> GetBagContent()
 	{
 		return sqliteUtil.GetItemUnits();
+	}
+
+	public List<ItemUnit> GetBagContentByType(int equipType, int wearType)
+	{
+		return sqliteUtil.GetItemUnitByType(equipType, wearType);
 	}
 
 	/// <summary>

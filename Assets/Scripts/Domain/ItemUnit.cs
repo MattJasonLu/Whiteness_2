@@ -23,4 +23,6 @@ public class ItemUnit : MonoBehaviour
     public int rng;
     public int price;
     public int count;
+    // 是否被装备
+    public bool isEquiped;
 }

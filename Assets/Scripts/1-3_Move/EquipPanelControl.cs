@@ -8,6 +8,7 @@ public class EquipPanelControl : MonoBehaviour
 {
     public GameObject canvas;
     public DBCalculator dBCalculator;
+    public GameObject equipItemPrefab;
     private GameObject panel_1;
     private GameObject panel_2;
     private GameObject panel_3;
@@ -35,9 +36,13 @@ public class EquipPanelControl : MonoBehaviour
     private GameObject equip_3_5;
     private GameObject equip_3_6;
     private GameObject equip_3_7;
+    private GameObject changePanel;
+    private GameObject changePanelContent;
     List<GameObject> equipGoList_1 = new List<GameObject>();
     List<GameObject> equipGoList_2 = new List<GameObject>();
     List<GameObject> equipGoList_3 = new List<GameObject>();
+    // 当前面板所对应的角色编号
+    private string currentRoleUnitId;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +75,8 @@ public class EquipPanelControl : MonoBehaviour
         equip_3_5 = canvas.transform.Find("EquipPanel/Panel_3/Content/Equip_5").gameObject;
         equip_3_6 = canvas.transform.Find("EquipPanel/Panel_3/Content/Equip_6").gameObject;
         equip_3_7 = canvas.transform.Find("EquipPanel/Panel_3/Content/Equip_7").gameObject;
+        changePanel = canvas.transform.Find("EquipPanel/ChangePanel").gameObject;
+        changePanelContent = canvas.transform.Find("EquipPanel/ChangePanel/EquipTab/Viewport/Content").gameObject;
         equipGoList_1.Add(equip_1_1);
         equipGoList_1.Add(equip_1_2);
         equipGoList_1.Add(equip_1_3);
@@ -100,6 +107,8 @@ public class EquipPanelControl : MonoBehaviour
         panel_1.SetActive(true);
         panel_2.SetActive(false);
         panel_3.SetActive(false);
+        changePanel.SetActive(false);
+        currentRoleUnitId = "P001";
     }
 
     public void Toggle_2()
@@ -107,6 +116,7 @@ public class EquipPanelControl : MonoBehaviour
         panel_1.SetActive(false);
         panel_2.SetActive(true);
         panel_3.SetActive(false);
+        currentRoleUnitId = "P002";
     }
 
     public void Toggle_3()
@@ -114,6 +124,7 @@ public class EquipPanelControl : MonoBehaviour
         panel_1.SetActive(false);
         panel_2.SetActive(false);
         panel_3.SetActive(true);
+        currentRoleUnitId = "P003";
     }
 
     public void OnClose()
@@ -158,5 +169,34 @@ public class EquipPanelControl : MonoBehaviour
             }
         }
 
+    }
+
+    /// <summary>
+    /// 设置更换面板的装备列表
+    /// </summary>
+    public void SetChangeEquipList(int type)
+    {
+        // 删除content下所有子物体
+        int childCount = changePanelContent.transform.childCount;
+        for (int i = 0; i < childCount; i++)
+        {
+            Destroy(changePanelContent.transform.GetChild(0).gameObject);
+        }
+        RoleUnit role = dBCalculator.GetRoleUnitById(currentRoleUnitId);
+        int wearType = role.wearType;
+        // 获取匹配的装备
+        List<ItemUnit> itemUnits = dBCalculator.GetBagContentByType(type, wearType);
+        itemUnits.ForEach(p =>
+        {
+            GameObject equipItemGo = Instantiate(equipItemPrefab, changePanelContent.transform, false);
+            equipItemGo.transform.Find("Name").GetComponent<Text>().text = p.itemName;
+            equipItemGo.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + p.itemId, typeof(Sprite)) as Sprite;
+        });
+        changePanel.SetActive(true);
+    }
+
+    public void OnChangePanelClose()
+    {
+        changePanel.SetActive(false);
     }
 }

@@ -43,6 +43,8 @@ public class RoleUnit : MonoBehaviour {
 	public int roleType = 0;
 	// 当前经验值
 	public int EXP = 100;
+	// 穿戴类型
+	public int wearType = 0;
 	// 是否死亡
 	public bool dead = false;
 	// 角色显示面板预制体

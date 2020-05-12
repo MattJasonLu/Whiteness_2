@@ -4,6 +4,7 @@ using System.IO;
 using Mono.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class SQLiteUtil : MonoBehaviour
 {
@@ -205,7 +206,7 @@ public class SQLiteUtil : MonoBehaviour
     public RoleUnit GetRoleUnitById(string id)
     {
         SqliteDataReader reader = sql.ReadTable("ROLEDEF", new string[] { "NAME", "HP", "EP", "CP", "STR", 
-            "DEF", "ATS", "ADF", "SPD", "DEX", "RNG", "CRT", "HIT", "ROLETYPE" }, new string[] { "ID" }, 
+            "DEF", "ATS", "ADF", "SPD", "DEX", "RNG", "CRT", "HIT", "ROLETYPE", "WEARTYPE" }, new string[] { "ID" }, 
             new string[] { "=" }, new string[] { "'" + id + "'" });
         while (reader.Read())
         {
@@ -225,6 +226,7 @@ public class SQLiteUtil : MonoBehaviour
             roleUnit.CRT = reader.GetInt32(reader.GetOrdinal("CRT"));
             roleUnit.HIT = reader.GetInt32(reader.GetOrdinal("HIT"));
             roleUnit.roleType = reader.GetInt32(reader.GetOrdinal("ROLETYPE"));
+            roleUnit.wearType = reader.GetInt32(reader.GetOrdinal("WEARTYPE"));
             return roleUnit;
         }
         return null;
@@ -254,6 +256,44 @@ public class SQLiteUtil : MonoBehaviour
             equipUnits.Add(equipUnit);
         }
         return equipUnits;
+    }
+
+    /// <summary>
+    /// 通过类型编号获取对应的背包中装备
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public List<ItemUnit> GetItemUnitByType(int equipType, int wearType)
+    {
+        // 获取所有背包内容
+        List<ItemUnit> itemUnits = GetItemUnits();
+        List<ItemUnit> provideUnits = new List<ItemUnit>();
+        switch (equipType)
+        {
+            case 0:
+                provideUnits = itemUnits.Where(p => p.mainType == 1 && p.subType == wearType).ToList();
+                break;
+            case 1:
+                provideUnits = itemUnits.Where(p => p.mainType == 1 && p.subType == 6).ToList();
+                break;
+            case 2:
+                provideUnits = itemUnits.Where(p => p.mainType == 1 && p.subType == 6).ToList();
+                break;
+            case 3:
+                provideUnits = itemUnits.Where(p => p.mainType == 0 && p.subType == 0).ToList();
+                break;
+            case 4:
+                provideUnits = itemUnits.Where(p => p.mainType == 0 && p.subType == 1).ToList();
+                break;
+            case 5:
+                provideUnits = itemUnits.Where(p => p.mainType == 0 && p.subType == 2).ToList();
+                break;
+            case 6:
+                provideUnits = itemUnits.Where(p => p.mainType == 0 && p.subType == 3).ToList();
+                break;
+
+        }
+        return provideUnits;
     }
 
     public void Close()
