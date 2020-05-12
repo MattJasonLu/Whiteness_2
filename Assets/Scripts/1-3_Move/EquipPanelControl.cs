@@ -43,6 +43,8 @@ public class EquipPanelControl : MonoBehaviour
     List<GameObject> equipGoList_3 = new List<GameObject>();
     // 当前面板所对应的角色编号
     private string currentRoleUnitId;
+    // 当前面板所对应的装备类型
+    private int currentChangeType;
 
     // Start is called before the first frame update
     void Start()
@@ -138,9 +140,9 @@ public class EquipPanelControl : MonoBehaviour
     public void SetEquipContent()
     {
         List<EquipUnit> equipUnits = dBCalculator.GetEquipContent();
-        List<EquipUnit> equipUnits1 = equipUnits.Where(p => p.roleUnit.unitId == "P001").ToList();
-        List<EquipUnit> equipUnits2 = equipUnits.Where(p => p.roleUnit.unitId == "P002").ToList();
-        List<EquipUnit> equipUnits3 = equipUnits.Where(p => p.roleUnit.unitId == "P003").ToList();
+        List<EquipUnit> equipUnits1 = equipUnits.Where(p => p.roleUnit != null && p.roleUnit.unitId == "P001").ToList();
+        List<EquipUnit> equipUnits2 = equipUnits.Where(p => p.roleUnit != null && p.roleUnit.unitId == "P002").ToList();
+        List<EquipUnit> equipUnits3 = equipUnits.Where(p => p.roleUnit != null && p.roleUnit.unitId == "P003").ToList();
         for (int i = 0; i < equipGoList_1.Count; i++)
         {
             EquipUnit equipUnit = equipUnits1.Where(p => p.equipType == i).FirstOrDefault();
@@ -148,6 +150,11 @@ public class EquipPanelControl : MonoBehaviour
             {
                 equipGoList_1[i].transform.Find("Name").GetComponent<Text>().text = equipUnit.itemUnit.itemName;
                 equipGoList_1[i].transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + equipUnit.itemUnit.itemId, typeof(Sprite)) as Sprite;
+            }
+            else
+            {
+                equipGoList_1[i].transform.Find("Name").GetComponent<Text>().text = "无";
+                equipGoList_1[i].transform.Find("Image").GetComponent<Image>().sprite = null;
             }
         }
         for (int i = 0; i < equipGoList_2.Count; i++)
@@ -158,6 +165,11 @@ public class EquipPanelControl : MonoBehaviour
                 equipGoList_2[i].transform.Find("Name").GetComponent<Text>().text = equipUnit.itemUnit.itemName;
                 equipGoList_2[i].transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + equipUnit.itemUnit.itemId, typeof(Sprite)) as Sprite;
             }
+            else
+            {
+                equipGoList_2[i].transform.Find("Name").GetComponent<Text>().text = "无";
+                equipGoList_2[i].transform.Find("Image").GetComponent<Image>().sprite = null;
+            }
         }
         for (int i = 0; i < equipGoList_3.Count; i++)
         {
@@ -166,6 +178,11 @@ public class EquipPanelControl : MonoBehaviour
             {
                 equipGoList_3[i].transform.Find("Name").GetComponent<Text>().text = equipUnit.itemUnit.itemName;
                 equipGoList_3[i].transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + equipUnit.itemUnit.itemId, typeof(Sprite)) as Sprite;
+            }
+            else
+            {
+                equipGoList_3[i].transform.Find("Name").GetComponent<Text>().text = "无";
+                equipGoList_3[i].transform.Find("Image").GetComponent<Image>().sprite = null;
             }
         }
 
@@ -176,13 +193,14 @@ public class EquipPanelControl : MonoBehaviour
     /// </summary>
     public void SetChangeEquipList(int type)
     {
+        currentChangeType = type;
         // 删除content下所有子物体
         int childCount = changePanelContent.transform.childCount;
         for (int i = 0; i < childCount; i++)
         {
             Destroy(changePanelContent.transform.GetChild(0).gameObject);
         }
-        RoleUnit role = dBCalculator.GetRoleUnitById(currentRoleUnitId);
+        RoleUnitDAO role = dBCalculator.GetRoleUnitById(currentRoleUnitId);
         int wearType = role.wearType;
         // 获取匹配的装备
         List<ItemUnit> itemUnits = dBCalculator.GetBagContentByType(type, wearType);
@@ -191,6 +209,10 @@ public class EquipPanelControl : MonoBehaviour
             GameObject equipItemGo = Instantiate(equipItemPrefab, changePanelContent.transform, false);
             equipItemGo.transform.Find("Name").GetComponent<Text>().text = p.itemName;
             equipItemGo.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + p.itemId, typeof(Sprite)) as Sprite;
+            equipItemGo.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate ()
+            {
+                ChangeEquip(p.itemId);
+            });
         });
         changePanel.SetActive(true);
     }
@@ -198,5 +220,12 @@ public class EquipPanelControl : MonoBehaviour
     public void OnChangePanelClose()
     {
         changePanel.SetActive(false);
+    }
+
+    public void ChangeEquip(string itemId)
+    {
+        changePanel.SetActive(false);
+        dBCalculator.UpdateEquipContent(itemId, currentRoleUnitId, currentChangeType);
+        SetEquipContent();
     }
 }

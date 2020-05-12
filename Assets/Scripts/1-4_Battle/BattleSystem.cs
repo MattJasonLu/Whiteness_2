@@ -300,7 +300,7 @@ public class BattleSystem : MonoBehaviour {
 			GameObject role = Instantiate(prefab, pos, Quaternion.identity);
 			role.tag = "Player";
 			int level = 5; // 需设置为保存值 TODO
-			RoleUnit roleData = roleUnitCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, level);
+			RoleUnitDAO roleData = roleUnitCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, level);
 			role.GetComponent<RoleUnit>().SetInitData(roleData);
 			panel.SetActive(true);
 			role.GetComponent<RoleUnit>().SetPanel(panel);
@@ -338,7 +338,7 @@ public class BattleSystem : MonoBehaviour {
 			GameObject role = Instantiate(prefab, pos, Quaternion.identity);
 			role.tag = "Enemy";
 			int level = Random.Range(minEnemyLevel, maxEnemyLevel + 1);
-			RoleUnit roleData = roleUnitCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, level);
+			RoleUnitDAO roleData = roleUnitCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, level);
 			role.GetComponent<RoleUnit>().SetInitData(roleData);
 		}
 	}

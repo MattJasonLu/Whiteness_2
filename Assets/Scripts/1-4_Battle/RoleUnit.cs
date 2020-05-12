@@ -57,10 +57,6 @@ public class RoleUnit : MonoBehaviour {
 	private Slider cpSlider;
 	private AttackAddition attackAddition;
 
-	void Start()
-	{
-
-	}
 
 	void Update()
 	{
@@ -75,7 +71,7 @@ public class RoleUnit : MonoBehaviour {
 		}
 	}
 
-	public void SetInitData(RoleUnit roleUnit)
+	public void SetInitData(RoleUnitDAO roleUnit)
 	{
 		unitName = roleUnit.unitName;
 		level = roleUnit.level;

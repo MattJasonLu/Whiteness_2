@@ -162,7 +162,7 @@ public class RolePanelControl : MonoBehaviour {
         int playerExp_1 = PlayerPrefs.GetInt("PlayerExp_1");
         if (playerUnitId_1 != null && playerUnitId_1 != "")
         {
-            RoleUnit roleUnit_1 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_1, playerExp_1);
+            RoleUnitDAO roleUnit_1 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_1, playerExp_1);
             nextLevelExp_1.text = roleUnitCalculator.GetNextLevelExp(playerExp_1).ToString();
             level_1.text = roleUnit_1.level.ToString();
             name_1.text = roleUnit_1.unitName;
@@ -184,7 +184,7 @@ public class RolePanelControl : MonoBehaviour {
         int playerExp_2 = PlayerPrefs.GetInt("PlayerExp_2");
         if (playerUnitId_2 != null && playerUnitId_2 != "")
         {
-            RoleUnit roleUnit_2 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_2, playerExp_2);
+            RoleUnitDAO roleUnit_2 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_2, playerExp_2);
             nextLevelExp_2.text = roleUnitCalculator.GetNextLevelExp(playerExp_2).ToString();
             level_2.text = roleUnit_2.level.ToString();
             name_2.text = roleUnit_2.unitName;
@@ -206,7 +206,7 @@ public class RolePanelControl : MonoBehaviour {
         int playerExp_3 = PlayerPrefs.GetInt("PlayerExp_3");
         if (playerUnitId_3 != null && playerUnitId_3 != "")
         {
-            RoleUnit roleUnit_3 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_3, playerExp_3);
+            RoleUnitDAO roleUnit_3 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_3, playerExp_3);
             nextLevelExp_3.text = roleUnitCalculator.GetNextLevelExp(playerExp_3).ToString();
             level_3.text = roleUnit_3.level.ToString();
             name_3.text = roleUnit_3.unitName;

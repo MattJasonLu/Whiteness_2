@@ -3630,7 +3630,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6211\u662F\u5973\u4E3B"
+  m_Text: "\u89D2\u82723"
 --- !u!222 &232794138
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17321,7 +17321,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6211\u662F\u5973\u4E3B"
+  m_Text: "\u89D2\u82722"
 --- !u!222 &1425469523
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25775,7 +25775,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6211\u662F\u5973\u4E3B"
+  m_Text: "\u89D2\u82721"
 --- !u!1001 &7324335810334459762
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -203,14 +203,14 @@ public class SQLiteUtil : MonoBehaviour
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public RoleUnit GetRoleUnitById(string id)
+    public RoleUnitDAO GetRoleUnitById(string id)
     {
         SqliteDataReader reader = sql.ReadTable("ROLEDEF", new string[] { "NAME", "HP", "EP", "CP", "STR", 
             "DEF", "ATS", "ADF", "SPD", "DEX", "RNG", "CRT", "HIT", "ROLETYPE", "WEARTYPE" }, new string[] { "ID" }, 
             new string[] { "=" }, new string[] { "'" + id + "'" });
         while (reader.Read())
         {
-            RoleUnit roleUnit = new RoleUnit();
+            RoleUnitDAO roleUnit = new RoleUnitDAO();
             roleUnit.unitId = id;
             roleUnit.unitName = reader.GetString(reader.GetOrdinal("NAME"));
             roleUnit.initHP = reader.GetInt32(reader.GetOrdinal("HP"));
@@ -248,7 +248,7 @@ public class SQLiteUtil : MonoBehaviour
             equipUnit.equipId = reader.GetInt32(reader.GetOrdinal("ID"));
             equipUnit.equipType = reader.GetInt32(reader.GetOrdinal("EQUIPTYPE"));
             string roleId = reader.GetString(reader.GetOrdinal("ROLEID"));
-            RoleUnit roleUnit = GetRoleUnitById(roleId);
+            RoleUnitDAO roleUnit = GetRoleUnitById(roleId);
             equipUnit.roleUnit = roleUnit;
             string itemId = reader.GetString(reader.GetOrdinal("PROPSID"));
             ItemUnit itemUnit = GetItemUnitById(itemId);
@@ -256,6 +256,12 @@ public class SQLiteUtil : MonoBehaviour
             equipUnits.Add(equipUnit);
         }
         return equipUnits;
+    }
+
+    public void UpdateEquipment(string propsId, string roleId, int equipType)
+    {
+        SqliteDataReader reader = sql.ExecuteQuery("update equipdef set propsid = '" + propsId + 
+            "' where roleid = '" + roleId + "' and equiptype = " + equipType + ";");
     }
 
     /// <summary>

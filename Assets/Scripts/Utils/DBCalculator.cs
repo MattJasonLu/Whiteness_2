@@ -29,13 +29,13 @@ public class DBCalculator : MonoBehaviour {
 	/// <param name="id"></param>
 	/// <param name="level"></param>
 	/// <returns></returns>
-	public RoleUnit GetRoleUnitByIdAndLevel(string id, int level)
+	public RoleUnitDAO GetRoleUnitByIdAndLevel(string id, int level)
 	{
 		if (sqliteUtil == null)
 		{
 			sqliteUtil = SQLiteUtil._instance;
 		}
-		RoleUnit role = sqliteUtil.GetRoleUnitById(id);
+		RoleUnitDAO role = sqliteUtil.GetRoleUnitById(id);
 		if (role.roleType == 0)
 		{
 			role.EXP = playerLevelExpDict[level];
@@ -62,10 +62,10 @@ public class DBCalculator : MonoBehaviour {
 	/// <param name="id"></param>
 	/// <param name="exp"></param>
 	/// <returns></returns>
-	public RoleUnit GetRoleUnitByIdAndExp(string id, int exp)
+	public RoleUnitDAO GetRoleUnitByIdAndExp(string id, int exp)
 	{
 		int level = GetPlayerLevelByExp(exp);
-		RoleUnit role = GetRoleUnitByIdAndLevel(id, level);
+		RoleUnitDAO role = GetRoleUnitByIdAndLevel(id, level);
 		role.EXP = exp;
 		return role;
 	}
@@ -75,9 +75,9 @@ public class DBCalculator : MonoBehaviour {
 	/// </summary>
 	/// <param name="id"></param>
 	/// <returns></returns>
-	public RoleUnit GetRoleUnitById(string id)
+	public RoleUnitDAO GetRoleUnitById(string id)
 	{
-		RoleUnit role = sqliteUtil.GetRoleUnitById(id);
+		RoleUnitDAO role = sqliteUtil.GetRoleUnitById(id);
 		return role;
 	}
 
@@ -134,5 +134,16 @@ public class DBCalculator : MonoBehaviour {
 	public List<EquipUnit> GetEquipContent()
 	{
 		return sqliteUtil.GetEquipment();
+	}
+
+	/// <summary>
+	/// 更新装备
+	/// </summary>
+	/// <param name="propsId"></param>
+	/// <param name="roleId"></param>
+	/// <param name="equipType"></param>
+	public void UpdateEquipContent(string propsId, string roleId, int equipType)
+	{
+		sqliteUtil.UpdateEquipment(propsId, roleId, equipType);
 	}
 }

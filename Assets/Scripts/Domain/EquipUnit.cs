@@ -6,6 +6,6 @@ public class EquipUnit
 {
     public int equipId;
     public ItemUnit itemUnit;
-    public RoleUnit roleUnit;
+    public RoleUnitDAO roleUnit;
     public int equipType;
 }

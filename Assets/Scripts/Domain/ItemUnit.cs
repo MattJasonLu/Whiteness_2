@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemUnit : MonoBehaviour
+public class ItemUnit
 {
     public string itemId;
     public string itemName;
@@ -25,4 +25,5 @@ public class ItemUnit : MonoBehaviour
     public int count;
     // 是否被装备
     public bool isEquiped;
+
 }
