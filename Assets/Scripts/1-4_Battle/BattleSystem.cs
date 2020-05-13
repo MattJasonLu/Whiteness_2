@@ -274,12 +274,15 @@ public class BattleSystem : MonoBehaviour {
 	// 生成玩家列表
 	void GeneratePlayerList()
 	{
+		/*
 		string playerListStr = PlayerPrefs.GetString("PlayerList");
 		string[] playerArr = playerListStr.Split(',');
-		for (int i = 0; i < playerArr.Length; i++)
+		*/
+		List<RoleUnitDAO> roleUnits = GameManager._instance.roleUnits;
+		for (int i = 0; i < roleUnits.Count; i++)
 		{
 			// 加载每一个对象
-			GameObject prefab = Resources.Load("Role/Player/" + playerArr[i]) as GameObject;
+			GameObject prefab = Resources.Load("Role/Player/" + roleUnits[i].unitId) as GameObject;
 			Vector3 pos = playerUnitPos_1.position;
 			GameObject panel = rolePanel_1;
 			if (i == 0)
@@ -299,8 +302,7 @@ public class BattleSystem : MonoBehaviour {
 			}
 			GameObject role = Instantiate(prefab, pos, Quaternion.identity);
 			role.tag = "Player";
-			int level = 5; // 需设置为保存值 TODO
-			RoleUnitDAO roleData = roleUnitCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, level);
+			RoleUnitDAO roleData = roleUnitCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, roleUnits[i].level);
 			role.GetComponent<RoleUnit>().SetInitData(roleData);
 			panel.SetActive(true);
 			role.GetComponent<RoleUnit>().SetPanel(panel);

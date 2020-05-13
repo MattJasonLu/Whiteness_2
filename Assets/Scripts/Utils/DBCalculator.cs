@@ -11,8 +11,19 @@ public class DBCalculator : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
+		Init();
+	}
+
+	public void Init()
+	{
 		sqliteUtil = SQLiteUtil._instance;
+		SetDict();
+	}
+
+	public void SetDict()
+	{
 		if (playerLevelExpDict == null)
 		{
 			playerLevelExpDict = sqliteUtil.GetPlayerLevelExpDict();
@@ -33,16 +44,20 @@ public class DBCalculator : MonoBehaviour {
 	{
 		if (sqliteUtil == null)
 		{
-			sqliteUtil = SQLiteUtil._instance;
+			Init();
 		}
 		RoleUnitDAO role = sqliteUtil.GetRoleUnitById(id);
 		if (role.roleType == 0)
 		{
-			role.EXP = playerLevelExpDict[level];
+			int exp = 0;
+			playerLevelExpDict.TryGetValue(level, out exp);
+			role.EXP = exp;
 		}
 		else
 		{
-			role.EXP = enemyLevelExpDict[level];
+			int exp = 0;
+			enemyLevelExpDict.TryGetValue(level, out exp);
+			role.EXP = exp;
 		}
 		role.level = level;
 		role.initHP += level;

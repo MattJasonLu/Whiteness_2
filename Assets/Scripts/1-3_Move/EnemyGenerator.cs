@@ -27,32 +27,35 @@ public class EnemyGenerator : MonoBehaviour {
 	float i = 0;
 	void LateUpdate()
 	{
-		if (i >= 1)
+		if (player != null)
 		{
-			newPos = player.transform.position;
-			offset = (newPos - oldPos).magnitude;
-			count += (int)(offset);
-			if (count >= step)
+			if (i >= 1)
 			{
-				//Debug.Log("遭遇敌人！");
-				player.GetComponentInChildren<PlayerSimpleMove>().enabled = false;
-				player.GetComponentInChildren<Animator>().SetInteger("Vertical", 0);
-				player.GetComponentInChildren<Animator>().SetInteger("Horizontal", 0);
-				string playerListStr = "P001,P001,P001";
-				string playerPos = player.transform.position.x + "," + player.transform.position.y + "," + player.transform.position.z;
-				string cameraPos = Camera.main.transform.position.x + "," + Camera.main.transform.position.y + "," + Camera.main.transform.position.z;
-				PlayerPrefs.SetString("PlayerPos", playerPos);
-				PlayerPrefs.SetString("CameraPos", cameraPos);
-				PlayerPrefs.SetString("PlayerList", playerListStr);
-				LevelLoader._instance.LoadNextLevel();
+				newPos = player.transform.position;
+				offset = (newPos - oldPos).magnitude;
+				count += (int)(offset);
+				if (count >= step)
+				{
+					//Debug.Log("遭遇敌人！");
+					player.GetComponentInChildren<PlayerSimpleMove>().enabled = false;
+					player.GetComponentInChildren<Animator>().SetInteger("Vertical", 0);
+					player.GetComponentInChildren<Animator>().SetInteger("Horizontal", 0);
+					//string playerListStr = "P001,P001,P001";
+					string playerPos = player.transform.position.x + "," + player.transform.position.y + "," + player.transform.position.z;
+					string cameraPos = Camera.main.transform.position.x + "," + Camera.main.transform.position.y + "," + Camera.main.transform.position.z;
+					PlayerPrefs.SetString("PlayerPos", playerPos);
+					PlayerPrefs.SetString("CameraPos", cameraPos);
+					//PlayerPrefs.SetString("PlayerList", playerListStr);
+					LevelLoader._instance.LoadNextLevel();
+				}
+				else
+				{
+					oldPos = newPos;
+				}
+				i = 0;
 			}
-			else
-			{
-				oldPos = newPos;
-			}
-			i = 0;
+			i += Time.deltaTime;
 		}
-		i += Time.deltaTime;
 	}
 
 	

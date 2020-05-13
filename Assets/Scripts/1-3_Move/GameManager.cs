@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     void Init()
     {
-        //LoadGame();
+        LoadGame();
         if (roleUnits.Count == 0)
         {
             RoleUnitDAO role1 = new RoleUnitDAO();
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
             role1.EXP = 60;
             roleUnits.Add(role1);
         }
+        DontDestroyOnLoad(transform.gameObject);
     }
 
     public void OnPause()
