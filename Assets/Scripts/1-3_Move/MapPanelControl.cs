@@ -15,7 +15,8 @@ public class MapPanelControl : MonoBehaviour, IDragHandler, IPointerDownHandler
 
     public void OnClose()
     {
-        this.gameObject.SetActive(false);
+        GameManager._instance.OnResume();
+        gameObject.SetActive(false);
     }
 
     public void OnDrag(PointerEventData eventData)

@@ -7,6 +7,12 @@ public class RolePanelControl : MonoBehaviour {
 
     public GameObject canvas;
     public DBCalculator roleUnitCalculator;
+    [HideInInspector]
+    public RoleUnitDAO roleUnit_1;
+    [HideInInspector]
+    public RoleUnitDAO roleUnit_2;
+    [HideInInspector]
+    public RoleUnitDAO roleUnit_3;
 
     private GameObject panel_1;
     private GameObject panel_2;
@@ -63,9 +69,7 @@ public class RolePanelControl : MonoBehaviour {
     private Text HIT_3;
     private Text LKY_3;
 
-
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // 面板1信息
         panel_1 = canvas.transform.Find("RolePanel/Panel_1").gameObject;
@@ -122,6 +126,11 @@ public class RolePanelControl : MonoBehaviour {
         HIT_3 = canvas.transform.Find("RolePanel/Panel_3/HIT").GetComponent<Text>();
         LKY_3 = canvas.transform.Find("RolePanel/Panel_3/LKY").GetComponent<Text>();
         SetPlayerInfo();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
         Toggle_1();
     }
 
@@ -146,83 +155,96 @@ public class RolePanelControl : MonoBehaviour {
         panel_3.SetActive(true);
     }
 
-    public void OnClock()
+    public void OnClose()
     {
-        this.gameObject.SetActive(false);
+        GameManager._instance.OnResume();
+        gameObject.SetActive(false);
     }
 
     public void SetPlayerInfo()
     {
-        // TODO 获取方式需要调整
-        PlayerPrefs.SetInt("PlayerExp_1", 10000);
-        PlayerPrefs.SetString("PlayerUnitId_1", "P001");
-
         // Sprite图片后期需设置
-        string playerUnitId_1 = PlayerPrefs.GetString("PlayerUnitId_1");
-        int playerExp_1 = PlayerPrefs.GetInt("PlayerExp_1");
-        if (playerUnitId_1 != null && playerUnitId_1 != "")
+        List<RoleUnitDAO> roleUnits = GameManager._instance.roleUnits;
+        for (int i = 0; i < roleUnits.Count; i++)
         {
-            RoleUnitDAO roleUnit_1 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_1, playerExp_1);
-            nextLevelExp_1.text = roleUnitCalculator.GetNextLevelExp(playerExp_1).ToString();
-            level_1.text = roleUnit_1.level.ToString();
-            name_1.text = roleUnit_1.unitName;
-            initHP_1.text = roleUnit_1.initHP.ToString();
-            initEP_1.text = roleUnit_1.initEP.ToString();
-            initCP_1.text = roleUnit_1.initCP.ToString();
-            exp_1.text = roleUnit_1.EXP.ToString();
-            STR_1.text = roleUnit_1.STR.ToString();
-            DEF_1.text = roleUnit_1.DEF.ToString();
-            ATS_1.text = roleUnit_1.ATS.ToString();
-            ADF_1.text = roleUnit_1.ADF.ToString();
-            SPD_1.text = roleUnit_1.SPD.ToString();
-            CRT_1.text = roleUnit_1.CRT.ToString();
-            DEX_1.text = roleUnit_1.DEX.ToString();
-            HIT_1.text = roleUnit_1.HIT.ToString();
-            LKY_1.text = "0";
-        }
-        string playerUnitId_2 = PlayerPrefs.GetString("PlayerUnitId_2");
-        int playerExp_2 = PlayerPrefs.GetInt("PlayerExp_2");
-        if (playerUnitId_2 != null && playerUnitId_2 != "")
-        {
-            RoleUnitDAO roleUnit_2 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_2, playerExp_2);
-            nextLevelExp_2.text = roleUnitCalculator.GetNextLevelExp(playerExp_2).ToString();
-            level_2.text = roleUnit_2.level.ToString();
-            name_2.text = roleUnit_2.unitName;
-            initHP_2.text = roleUnit_2.initHP.ToString();
-            initEP_2.text = roleUnit_2.initEP.ToString();
-            initCP_2.text = roleUnit_2.initCP.ToString();
-            exp_2.text = roleUnit_2.EXP.ToString();
-            STR_2.text = roleUnit_2.STR.ToString();
-            DEF_2.text = roleUnit_2.DEF.ToString();
-            ATS_2.text = roleUnit_2.ATS.ToString();
-            ADF_2.text = roleUnit_2.ADF.ToString();
-            SPD_2.text = roleUnit_2.SPD.ToString();
-            CRT_2.text = roleUnit_2.CRT.ToString();
-            DEX_2.text = roleUnit_2.DEX.ToString();
-            HIT_2.text = roleUnit_2.HIT.ToString();
-            LKY_2.text = "0";
-        }
-        string playerUnitId_3 = PlayerPrefs.GetString("PlayerUnitId_3");
-        int playerExp_3 = PlayerPrefs.GetInt("PlayerExp_3");
-        if (playerUnitId_3 != null && playerUnitId_3 != "")
-        {
-            RoleUnitDAO roleUnit_3 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_3, playerExp_3);
-            nextLevelExp_3.text = roleUnitCalculator.GetNextLevelExp(playerExp_3).ToString();
-            level_3.text = roleUnit_3.level.ToString();
-            name_3.text = roleUnit_3.unitName;
-            initHP_3.text = roleUnit_3.initHP.ToString();
-            initEP_3.text = roleUnit_3.initEP.ToString();
-            initCP_3.text = roleUnit_3.initCP.ToString();
-            exp_3.text = roleUnit_3.EXP.ToString();
-            STR_3.text = roleUnit_3.STR.ToString();
-            DEF_3.text = roleUnit_3.DEF.ToString();
-            ATS_3.text = roleUnit_3.ATS.ToString();
-            ADF_3.text = roleUnit_3.ADF.ToString();
-            SPD_3.text = roleUnit_3.SPD.ToString();
-            CRT_3.text = roleUnit_3.CRT.ToString();
-            DEX_3.text = roleUnit_3.DEX.ToString();
-            HIT_3.text = roleUnit_3.HIT.ToString();
-            LKY_3.text = "0";
+            if (roleUnits[i] != null)
+            {
+                if (i == 0)
+                {
+                    string playerUnitId_1 = roleUnits[i].unitId;
+                    int playerExp_1 = roleUnits[i].EXP;
+                    if (playerUnitId_1 != null && playerUnitId_1 != "")
+                    {
+                        roleUnit_1 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_1, playerExp_1);
+                        nextLevelExp_1.text = roleUnitCalculator.GetNextLevelExp(playerExp_1).ToString();
+                        level_1.text = roleUnit_1.level.ToString();
+                        name_1.text = roleUnit_1.unitName;
+                        initHP_1.text = roleUnit_1.initHP.ToString();
+                        initEP_1.text = roleUnit_1.initEP.ToString();
+                        initCP_1.text = roleUnit_1.initCP.ToString();
+                        exp_1.text = roleUnit_1.EXP.ToString();
+                        STR_1.text = roleUnit_1.STR.ToString();
+                        DEF_1.text = roleUnit_1.DEF.ToString();
+                        ATS_1.text = roleUnit_1.ATS.ToString();
+                        ADF_1.text = roleUnit_1.ADF.ToString();
+                        SPD_1.text = roleUnit_1.SPD.ToString();
+                        CRT_1.text = roleUnit_1.CRT.ToString();
+                        DEX_1.text = roleUnit_1.DEX.ToString();
+                        HIT_1.text = roleUnit_1.HIT.ToString();
+                        LKY_1.text = "0";
+                    }
+                }
+                else if (i == 1)
+                {
+                    string playerUnitId_2 = roleUnits[i].unitId;
+                    int playerExp_2 = roleUnits[i].EXP;
+                    if (playerUnitId_2 != null && playerUnitId_2 != "")
+                    {
+                        roleUnit_2 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_2, playerExp_2);
+                        nextLevelExp_2.text = roleUnitCalculator.GetNextLevelExp(playerExp_2).ToString();
+                        level_2.text = roleUnit_2.level.ToString();
+                        name_2.text = roleUnit_2.unitName;
+                        initHP_2.text = roleUnit_2.initHP.ToString();
+                        initEP_2.text = roleUnit_2.initEP.ToString();
+                        initCP_2.text = roleUnit_2.initCP.ToString();
+                        exp_2.text = roleUnit_2.EXP.ToString();
+                        STR_2.text = roleUnit_2.STR.ToString();
+                        DEF_2.text = roleUnit_2.DEF.ToString();
+                        ATS_2.text = roleUnit_2.ATS.ToString();
+                        ADF_2.text = roleUnit_2.ADF.ToString();
+                        SPD_2.text = roleUnit_2.SPD.ToString();
+                        CRT_2.text = roleUnit_2.CRT.ToString();
+                        DEX_2.text = roleUnit_2.DEX.ToString();
+                        HIT_2.text = roleUnit_2.HIT.ToString();
+                        LKY_2.text = "0";
+                    }
+                }
+                else if (i == 2)
+                {
+                    string playerUnitId_3 = roleUnits[i].unitId;
+                    int playerExp_3 = roleUnits[i].EXP;
+                    if (playerUnitId_3 != null && playerUnitId_3 != "")
+                    {
+                        roleUnit_3 = roleUnitCalculator.GetRoleUnitByIdAndExp(playerUnitId_3, playerExp_3);
+                        nextLevelExp_3.text = roleUnitCalculator.GetNextLevelExp(playerExp_3).ToString();
+                        level_3.text = roleUnit_3.level.ToString();
+                        name_3.text = roleUnit_3.unitName;
+                        initHP_3.text = roleUnit_3.initHP.ToString();
+                        initEP_3.text = roleUnit_3.initEP.ToString();
+                        initCP_3.text = roleUnit_3.initCP.ToString();
+                        exp_3.text = roleUnit_3.EXP.ToString();
+                        STR_3.text = roleUnit_3.STR.ToString();
+                        DEF_3.text = roleUnit_3.DEF.ToString();
+                        ATS_3.text = roleUnit_3.ATS.ToString();
+                        ADF_3.text = roleUnit_3.ADF.ToString();
+                        SPD_3.text = roleUnit_3.SPD.ToString();
+                        CRT_3.text = roleUnit_3.CRT.ToString();
+                        DEX_3.text = roleUnit_3.DEX.ToString();
+                        HIT_3.text = roleUnit_3.HIT.ToString();
+                        LKY_3.text = "0";
+                    }
+                }
+            }
         }
     }
 }

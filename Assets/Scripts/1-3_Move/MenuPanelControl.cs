@@ -8,6 +8,7 @@ public class MenuPanelControl : MonoBehaviour
     public GameObject equipPanel;
     public GameObject bagPanel;
     public GameObject mapPanel;
+    public GameObject settingPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,7 @@ public class MenuPanelControl : MonoBehaviour
             equipPanel.SetActive(false);
             bagPanel.SetActive(false);
             mapPanel.SetActive(false);
+            settingPanel.SetActive(false);
         }
         else
         {
@@ -41,6 +43,7 @@ public class MenuPanelControl : MonoBehaviour
             rolePanel.SetActive(false);
             bagPanel.SetActive(false);
             mapPanel.SetActive(false);
+            settingPanel.SetActive(false);
         }
         else
         {
@@ -58,6 +61,7 @@ public class MenuPanelControl : MonoBehaviour
             equipPanel.SetActive(false);
             rolePanel.SetActive(false);
             mapPanel.SetActive(false);
+            settingPanel.SetActive(false);
         }
         else
         {
@@ -75,6 +79,7 @@ public class MenuPanelControl : MonoBehaviour
             rolePanel.SetActive(false);
             equipPanel.SetActive(false);
             bagPanel.SetActive(false);
+            settingPanel.SetActive(false);
         }
         else
         {
@@ -95,6 +100,19 @@ public class MenuPanelControl : MonoBehaviour
 
     public void Button_7()
     {
-
+        if (!settingPanel.activeSelf)
+        {
+            GameManager._instance.OnPause();
+            settingPanel.SetActive(true);
+            rolePanel.SetActive(false);
+            equipPanel.SetActive(false);
+            bagPanel.SetActive(false);
+            mapPanel.SetActive(false);
+        }
+        else
+        {
+            GameManager._instance.OnResume();
+            settingPanel.SetActive(false);
+        }
     }
 }
