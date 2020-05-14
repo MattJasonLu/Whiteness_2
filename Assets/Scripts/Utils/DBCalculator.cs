@@ -60,14 +60,14 @@ public class DBCalculator : MonoBehaviour {
 			role.EXP = exp;
 		}
 		role.level = level;
-		role.initHP += level;
-		role.initEP += level;
+		role.initHP += level * 5;
+		role.initEP += level * 3;
 		role.initCP += level;
-		role.STR += level;
-		role.DEF += level; 
-		role.ATS += level;
-		role.ADF += level;
-		role.SPD += level;
+		role.STR += level * 2;
+		role.DEF += level * 2; 
+		role.ATS += level * 2;
+		role.ADF += level * 2;
+		role.SPD += level * 2;
 		return role;
 	}
 

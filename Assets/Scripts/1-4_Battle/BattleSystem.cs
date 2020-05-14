@@ -46,7 +46,7 @@ public class BattleSystem : MonoBehaviour {
 	// 提示文字
 	public GameObject notice;
 	// 角色计算器
-	public DBCalculator roleUnitCalculator;
+	public DBCalculator dbCalculator;
 	// 结算面板
 	private GameObject resultPanel;
 	private GameObject roleNameText_1;
@@ -55,6 +55,9 @@ public class BattleSystem : MonoBehaviour {
 	private GameObject roleExpText_1;
 	private GameObject roleExpText_2;
 	private GameObject roleExpText_3;
+	private GameObject lv_1;
+	private GameObject lv_2;
+	private GameObject lv_3;
 	// 所有参战单元
 	private List<GameObject> battleUnits;
 	// 所有玩家单元
@@ -103,6 +106,9 @@ public class BattleSystem : MonoBehaviour {
 		roleExpText_1 = canvas.transform.Find("ResultPanel/Panel/Exp_1").gameObject;
 		roleExpText_2 = canvas.transform.Find("ResultPanel/Panel/Exp_2").gameObject;
 		roleExpText_3 = canvas.transform.Find("ResultPanel/Panel/Exp_3").gameObject;
+		lv_1 = canvas.transform.Find("ResultPanel/Panel/Lv_1").gameObject;
+		lv_2 = canvas.transform.Find("ResultPanel/Panel/Lv_2").gameObject;
+		lv_3 = canvas.transform.Find("ResultPanel/Panel/Lv_3").gameObject;
 		basicPanel.SetActive(false);
 		notice.SetActive(false);
 		resultPanel.SetActive(false);
@@ -294,10 +300,6 @@ public class BattleSystem : MonoBehaviour {
 	// 生成玩家列表
 	void GeneratePlayerList()
 	{
-		/*
-		string playerListStr = PlayerPrefs.GetString("PlayerList");
-		string[] playerArr = playerListStr.Split(',');
-		*/
 		List<RoleUnitDAO> roleUnits = GameManager._instance.roleUnits;
 		roleUnits.ForEach(p => Debug.Log("角色：" + p.unitName));
 		for (int i = 0; i < roleUnits.Count; i++)
@@ -323,7 +325,7 @@ public class BattleSystem : MonoBehaviour {
 			}
 			GameObject role = Instantiate(prefab, pos, Quaternion.identity);
 			role.tag = "Player";
-			RoleUnitDAO roleData = roleUnitCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, roleUnits[i].level);
+			RoleUnitDAO roleData = dbCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, roleUnits[i].level);
 			role.GetComponent<RoleUnit>().SetInitData(roleData);
 			panel.SetActive(true);
 			role.GetComponent<RoleUnit>().SetPanel(panel);
@@ -361,8 +363,10 @@ public class BattleSystem : MonoBehaviour {
 			GameObject role = Instantiate(prefab, pos, Quaternion.identity);
 			role.tag = "Enemy";
 			int level = Random.Range(minEnemyLevel, maxEnemyLevel + 1);
-			RoleUnitDAO roleData = roleUnitCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, level);
+			RoleUnitDAO roleData = dbCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, level);
 			role.GetComponent<RoleUnit>().SetInitData(roleData);
+			// TEST 需要删除
+			role.GetComponent<RoleUnit>().HP = 1;
 			totalExp += role.GetComponent<RoleUnit>().EXP;
 		}
 	}
@@ -435,8 +439,10 @@ public class BattleSystem : MonoBehaviour {
 		roleExpText_2.SetActive(false);
 		roleNameText_3.SetActive(false);
 		roleExpText_3.SetActive(false);
+		lv_1.SetActive(false);
+		lv_2.SetActive(false);
+		lv_3.SetActive(false);
 		List<RoleUnitDAO> roleList = GameManager._instance.roleUnits;
-		roleList.ForEach(p => Debug.Log(p.unitName));
 		for (int i = 0; i < roleList.Count; i++)
 		{
 			if (i == 0)
@@ -460,8 +466,31 @@ public class BattleSystem : MonoBehaviour {
 				roleNameText_3.SetActive(true);
 				roleExpText_3.SetActive(true);
 			}
+			// 获取经验值
+			int oldLevel = GameManager._instance.roleUnits[i].level;
+			GameManager._instance.roleUnits[i].EXP += averageExp;
+			GameManager._instance.roleUnits[i] = dbCalculator.GetRoleUnitByIdAndExp(GameManager._instance.roleUnits[i].unitId, GameManager._instance.roleUnits[i].EXP);
+			int newLevel = GameManager._instance.roleUnits[i].level;
+			if (newLevel > oldLevel)
+			{
+				Debug.Log(GameManager._instance.roleUnits[i].unitName + "升级了");
+				if (i == 0)
+				{
+					lv_1.SetActive(true);
+				}
+				else if (i == 1)
+				{
+					lv_2.SetActive(true);
+				}
+				else if (i == 2)
+				{
+					lv_3.SetActive(true);
+				}
+			}
 		}
 		resultPanel.SetActive(true);
+		Debug.Log("玩家经验值：" + GameManager._instance.roleUnits[0].unitId + "," + GameManager._instance.roleUnits[0].EXP);
+		GameManager._instance.SaveGame();
 	}
 
 	public void OnResultPanelClose()

@@ -74,6 +74,9 @@ public class RoleUnit : MonoBehaviour {
 		{
 			Debug.Log("角色死亡");
 			transform.gameObject.tag = "DeadUnit";
+			dead = true;
+			transform.gameObject.SetActive(false);
+			//Destroy(transform.gameObject, 0.3f);
 		}
 	}
 
