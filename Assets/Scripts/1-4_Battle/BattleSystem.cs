@@ -47,7 +47,14 @@ public class BattleSystem : MonoBehaviour {
 	public GameObject notice;
 	// 角色计算器
 	public DBCalculator roleUnitCalculator;
-
+	// 结算面板
+	private GameObject resultPanel;
+	private GameObject roleNameText_1;
+	private GameObject roleNameText_2;
+	private GameObject roleNameText_3;
+	private GameObject roleExpText_1;
+	private GameObject roleExpText_2;
+	private GameObject roleExpText_3;
 	// 所有参战单元
 	private List<GameObject> battleUnits;
 	// 所有玩家单元
@@ -81,11 +88,24 @@ public class BattleSystem : MonoBehaviour {
 	private Vector3 currentActUnitInitialPosition;
 	private Vector3 currentActUnitTargetPosition;
 	private Vector3 currentactUnitStopPosition;
+	// 可获取的经验值
+	private int totalExp;
+	// 平均经验值
+	private int averageExp;
 
 	void Awake()
 	{
+		// 面板1信息
+		resultPanel = canvas.transform.Find("ResultPanel").gameObject;
+		roleNameText_1 = canvas.transform.Find("ResultPanel/Panel/Role_1").gameObject;
+		roleNameText_2 = canvas.transform.Find("ResultPanel/Panel/Role_2").gameObject;
+		roleNameText_3 = canvas.transform.Find("ResultPanel/Panel/Role_3").gameObject;
+		roleExpText_1 = canvas.transform.Find("ResultPanel/Panel/Exp_1").gameObject;
+		roleExpText_2 = canvas.transform.Find("ResultPanel/Panel/Exp_2").gameObject;
+		roleExpText_3 = canvas.transform.Find("ResultPanel/Panel/Exp_3").gameObject;
 		basicPanel.SetActive(false);
 		notice.SetActive(false);
+		resultPanel.SetActive(false);
 	}
 
 	void Start()
@@ -279,6 +299,7 @@ public class BattleSystem : MonoBehaviour {
 		string[] playerArr = playerListStr.Split(',');
 		*/
 		List<RoleUnitDAO> roleUnits = GameManager._instance.roleUnits;
+		roleUnits.ForEach(p => Debug.Log("角色：" + p.unitName));
 		for (int i = 0; i < roleUnits.Count; i++)
 		{
 			// 加载每一个对象
@@ -317,7 +338,7 @@ public class BattleSystem : MonoBehaviour {
 
 		// 获取所有prefab
 		//List<string> prefabNameList = GetPrefabNameListFromPath(prefix + path);
-
+		totalExp = 0;
 		int enemyCount = Random.Range(1, 4);
 		for (int i = 0; i < enemyCount; i++)
 		{
@@ -342,6 +363,7 @@ public class BattleSystem : MonoBehaviour {
 			int level = Random.Range(minEnemyLevel, maxEnemyLevel + 1);
 			RoleUnitDAO roleData = roleUnitCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, level);
 			role.GetComponent<RoleUnit>().SetInitData(roleData);
+			totalExp += role.GetComponent<RoleUnit>().EXP;
 		}
 	}
 
@@ -369,17 +391,18 @@ public class BattleSystem : MonoBehaviour {
 	{
 		remainPlayerUnits = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
 		remainEnemyUnits = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
+		if (averageExp == 0) averageExp = totalExp / remainPlayerUnits.Count;
 		if (remainPlayerUnits.Count == 0)
 		{
 			// 失败
-			StartCoroutine(ShowNotice("我方全灭，战斗失败"));
-			LevelLoader._instance.LoadPreviousLevel();
+			StartCoroutine(ShowNotice("战斗失败"));
+			SetResultPanel();
 		}
 		else if (remainEnemyUnits.Count == 0)
 		{
 			// 成功
-			StartCoroutine(ShowNotice("敌人全灭，战斗胜利"));
-			LevelLoader._instance.LoadPreviousLevel();
+			StartCoroutine(ShowNotice("战斗胜利"));
+			SetResultPanel();
 		}
 		else
 		{
@@ -399,6 +422,51 @@ public class BattleSystem : MonoBehaviour {
 				ToBattle();
 			}
 		}
+	}
+
+	/// <summary>
+	/// 设置结算界面数据
+	/// </summary>
+	private void SetResultPanel()
+	{
+		roleNameText_1.SetActive(false);
+		roleExpText_1.SetActive(false);
+		roleNameText_2.SetActive(false);
+		roleExpText_2.SetActive(false);
+		roleNameText_3.SetActive(false);
+		roleExpText_3.SetActive(false);
+		List<RoleUnitDAO> roleList = GameManager._instance.roleUnits;
+		roleList.ForEach(p => Debug.Log(p.unitName));
+		for (int i = 0; i < roleList.Count; i++)
+		{
+			if (i == 0)
+			{
+				roleNameText_1.GetComponent<Text>().text = roleList[i].unitName + " :";
+				roleExpText_1.GetComponent<Text>().text = averageExp.ToString();
+				roleNameText_1.SetActive(true);
+				roleExpText_1.SetActive(true);
+			}
+			else if (i == 1)
+			{
+				roleNameText_2.GetComponent<Text>().text = roleList[i].unitName + " :";
+				roleExpText_2.GetComponent<Text>().text = averageExp.ToString();
+				roleNameText_2.SetActive(true);
+				roleExpText_2.SetActive(true);
+			}
+			else if (i == 2)
+			{
+				roleNameText_3.GetComponent<Text>().text = roleList[i].unitName + " :";
+				roleExpText_3.GetComponent<Text>().text = averageExp.ToString();
+				roleNameText_3.SetActive(true);
+				roleExpText_3.SetActive(true);
+			}
+		}
+		resultPanel.SetActive(true);
+	}
+
+	public void OnResultPanelClose()
+	{
+		LevelLoader._instance.LoadPreviousLevel();
 	}
 
 	void RunToBattlePos()

@@ -92,6 +92,10 @@ public class DBCalculator : MonoBehaviour {
 	/// <returns></returns>
 	public RoleUnitDAO GetRoleUnitById(string id)
 	{
+		if (sqliteUtil == null)
+		{
+			Init();
+		}
 		RoleUnitDAO role = sqliteUtil.GetRoleUnitById(id);
 		return role;
 	}
@@ -103,6 +107,10 @@ public class DBCalculator : MonoBehaviour {
 	/// <returns></returns>
 	public int GetPlayerLevelByExp(int exp)
 	{
+		if (sqliteUtil == null)
+		{
+			Init();
+		}
 		int[] array = playerLevelExpDict.Values.ToArray<int>();
 		int left = 0;
 		int right = array.Length - 1;

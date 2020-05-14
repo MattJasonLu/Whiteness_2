@@ -45,6 +45,8 @@ public class EnemyGenerator : MonoBehaviour {
 					string cameraPos = Camera.main.transform.position.x + "," + Camera.main.transform.position.y + "," + Camera.main.transform.position.z;
 					PlayerPrefs.SetString("PlayerPos", playerPos);
 					PlayerPrefs.SetString("CameraPos", cameraPos);
+					// 保存数据
+					GameManager._instance.SaveGame();
 					//PlayerPrefs.SetString("PlayerList", playerListStr);
 					LevelLoader._instance.LoadNextLevel();
 				}

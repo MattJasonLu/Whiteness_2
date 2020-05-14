@@ -69,6 +69,12 @@ public class RoleUnit : MonoBehaviour {
 			epSlider.value = EP;
 			cpSlider.value = CP;
 		}
+		// 如果血量为0，设置为死亡单元
+		if (HP <= 0)
+		{
+			Debug.Log("角色死亡");
+			transform.gameObject.tag = "DeadUnit";
+		}
 	}
 
 	public void SetInitData(RoleUnitDAO roleUnit)
@@ -150,7 +156,8 @@ public class RoleUnit : MonoBehaviour {
 		else
 		{
 			realDamage = attacker.STR - this.DEF;
-			this.HP = this.HP - realDamage;
+			int remainHp = this.HP - realDamage < 0 ? 0 : this.HP - realDamage;
+			this.HP = remainHp;
 			realResult.Add("HIT");
 			realResult.Add("-" + realDamage);
 		}

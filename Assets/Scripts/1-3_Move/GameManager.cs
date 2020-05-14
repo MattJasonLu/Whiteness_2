@@ -8,10 +8,12 @@ public class GameManager : MonoBehaviour
     public static GameManager _instance;
 
     public bool isPaused = false;
+    private DBCalculator dBCalculator;
     public List<RoleUnitDAO> roleUnits = new List<RoleUnitDAO>();
 
     private void Start()
     {
+        dBCalculator = this.GetComponent<DBCalculator>();
         _instance = this;
         Init();
     }
@@ -21,12 +23,10 @@ public class GameManager : MonoBehaviour
         LoadGame();
         if (roleUnits.Count == 0)
         {
-            RoleUnitDAO role1 = new RoleUnitDAO();
-            role1.unitId = "P001";
-            role1.EXP = 60;
+            Debug.Log("存储文件为空");
+            RoleUnitDAO role1 = dBCalculator.GetRoleUnitByIdAndExp("P001", 60);
             roleUnits.Add(role1);
         }
-        DontDestroyOnLoad(transform.gameObject);
     }
 
     public void OnPause()
