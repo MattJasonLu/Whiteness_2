@@ -169,4 +169,13 @@ public class DBCalculator : MonoBehaviour {
 	{
 		sqliteUtil.UpdateEquipment(propsId, roleId, equipType);
 	}
+
+	/// <summary>
+	/// 获取所有技能
+	/// </summary>
+	/// <returns></returns>
+	public List<SkillDAO> GetSkills()
+	{
+		return sqliteUtil.GetSkills();
+	}
 }

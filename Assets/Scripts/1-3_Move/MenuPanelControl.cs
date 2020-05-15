@@ -8,6 +8,7 @@ public class MenuPanelControl : MonoBehaviour
     public GameObject equipPanel;
     public GameObject bagPanel;
     public GameObject mapPanel;
+    public GameObject skillPanel;
     public GameObject settingPanel;
 
     // Start is called before the first frame update
@@ -25,6 +26,7 @@ public class MenuPanelControl : MonoBehaviour
             equipPanel.SetActive(false);
             bagPanel.SetActive(false);
             mapPanel.SetActive(false);
+            skillPanel.SetActive(false);
             settingPanel.SetActive(false);
         }
         else
@@ -43,6 +45,7 @@ public class MenuPanelControl : MonoBehaviour
             rolePanel.SetActive(false);
             bagPanel.SetActive(false);
             mapPanel.SetActive(false);
+            skillPanel.SetActive(false);
             settingPanel.SetActive(false);
         }
         else
@@ -61,6 +64,7 @@ public class MenuPanelControl : MonoBehaviour
             equipPanel.SetActive(false);
             rolePanel.SetActive(false);
             mapPanel.SetActive(false);
+            skillPanel.SetActive(false);
             settingPanel.SetActive(false);
         }
         else
@@ -79,6 +83,7 @@ public class MenuPanelControl : MonoBehaviour
             rolePanel.SetActive(false);
             equipPanel.SetActive(false);
             bagPanel.SetActive(false);
+            skillPanel.SetActive(false);
             settingPanel.SetActive(false);
         }
         else
@@ -90,7 +95,21 @@ public class MenuPanelControl : MonoBehaviour
 
     public void Button_5()
     {
-
+        if (!mapPanel.activeSelf)
+        {
+            GameManager._instance.OnPause();
+            skillPanel.SetActive(true);
+            mapPanel.SetActive(false);
+            rolePanel.SetActive(false);
+            equipPanel.SetActive(false);
+            bagPanel.SetActive(false);
+            settingPanel.SetActive(false);
+        }
+        else
+        {
+            GameManager._instance.OnResume();
+            skillPanel.SetActive(false);
+        }
     }
 
     public void Button_6()
@@ -108,6 +127,7 @@ public class MenuPanelControl : MonoBehaviour
             equipPanel.SetActive(false);
             bagPanel.SetActive(false);
             mapPanel.SetActive(false);
+            skillPanel.SetActive(false);
         }
         else
         {

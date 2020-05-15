@@ -366,7 +366,7 @@ public class BattleSystem : MonoBehaviour {
 			RoleUnitDAO roleData = dbCalculator.GetRoleUnitByIdAndLevel(role.GetComponent<RoleUnit>().unitId, level);
 			role.GetComponent<RoleUnit>().SetInitData(roleData);
 			// TEST 需要删除
-			role.GetComponent<RoleUnit>().HP = 1;
+			//role.GetComponent<RoleUnit>().HP = 1;
 			totalExp += role.GetComponent<RoleUnit>().EXP;
 		}
 	}
