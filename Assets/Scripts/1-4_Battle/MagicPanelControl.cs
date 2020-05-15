@@ -36,4 +36,9 @@ public class MagicPanelControl : MonoBehaviour {
 		gameObject.SetActive(false);
 		basicPanel.SetActive(true);
 	}
+
+	public void SetMagic()
+	{
+
+	}
 }
