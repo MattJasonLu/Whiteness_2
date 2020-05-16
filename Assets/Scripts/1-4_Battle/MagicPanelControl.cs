@@ -1,34 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MagicPanelControl : MonoBehaviour {
 
-	public GameObject basicPanel;
+	public GameObject canvas;
+	public DBCalculator dBCalculator;
+	public GameObject buttonPrefab;
+	private GameObject basicPanel;
+	private GameObject content;
 
-	public void Magic_1()
+	void Awake()
 	{
-
+		basicPanel = canvas.transform.Find("BasicPanel").gameObject;
+		content = canvas.transform.Find("MagicPanel/ItemTab/Viewport/Content").gameObject;
 	}
 
-	public void Magic_2()
+	void Start()
 	{
-
-	}
-
-	public void Magic_3()
-	{
-
-	}
-
-	public void Magic_4()
-	{
-
-	}
-
-	public void Magic_5()
-	{
-
+		SetMagic();
+		//basicPanel.SetActive(false);
+		//gameObject.SetActive(true);
+		Debug.Log("active:" + basicPanel.activeSelf);
 	}
 
 	public void Back()
@@ -37,8 +31,21 @@ public class MagicPanelControl : MonoBehaviour {
 		basicPanel.SetActive(true);
 	}
 
+	/// <summary>
+	/// 设置技能
+	/// </summary>
 	public void SetMagic()
 	{
-
+		string unitId = BattleSystem._instance.currentActUnitStatus.unitId;
+		List<SkillDAO> magics = dBCalculator.GetMagicsByRoleId(unitId);
+		magics.ForEach(p => {
+			GameObject skillItem = Instantiate(buttonPrefab, content.transform, false);
+			skillItem.transform.Find("Text").GetComponent<Text>().text = p.name;
+		});
+		GameObject backBtn = Instantiate(buttonPrefab, content.transform, false);
+		backBtn.transform.Find("Text").GetComponent<Text>().text = "返回";
+		backBtn.GetComponent<Button>().onClick.AddListener(delegate () {
+			this.Back();
+		});
 	}
 }

@@ -178,4 +178,25 @@ public class DBCalculator : MonoBehaviour {
 	{
 		return sqliteUtil.GetSkills();
 	}
+
+	/// <summary>
+	/// 获取对应角色的所有魔法
+	/// </summary>
+	/// <param name="roleId"></param>
+	/// <returns></returns>
+	public List<SkillDAO> GetMagicsByRoleId(string roleId)
+	{
+		return sqliteUtil.GetMagicsByRoleId(roleId);
+	}
+
+	/// <summary>
+	/// 获取对应角色的所有战技
+	/// </summary>
+	/// <param name="roleId"></param>
+	/// <returns></returns>
+	public List<SkillDAO> GetTacticsByRoleId(string roleId)
+	{
+		return sqliteUtil.GetTacticsByRoleId(roleId);
+	}
+
 }

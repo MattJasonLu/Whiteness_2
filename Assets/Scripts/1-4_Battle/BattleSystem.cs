@@ -34,7 +34,11 @@ public class BattleSystem : MonoBehaviour {
 	public GameObject rolePanel_2;
 	public GameObject rolePanel_3;
 	// 选项面板
-	public GameObject basicPanel;
+	private GameObject basicPanel;
+	private GameObject magicPanel;
+	private GameObject tacticsPanel;
+	private GameObject comboPanel;
+	private GameObject itemPanel;
 	public GameObject attackAdditionPanel;
 	// 伤害信息
 	public GameObject hint;
@@ -70,7 +74,8 @@ public class BattleSystem : MonoBehaviour {
 	private List<GameObject> remainEnemyUnits;
 	// 当前行动单元
 	private GameObject currentActUnit;
-	private RoleUnit currentActUnitStatus;
+	[HideInInspector]
+	public RoleUnit currentActUnitStatus;
 	// 当前行动单元目标
 	private GameObject currentActTargetUnit;
 	private RoleUnit currentActTargetUnitStatus;
@@ -99,6 +104,11 @@ public class BattleSystem : MonoBehaviour {
 	void Awake()
 	{
 		// 面板1信息
+		basicPanel = canvas.transform.Find("BasicPanel").gameObject;
+		magicPanel = canvas.transform.Find("MagicPanel").gameObject;
+		tacticsPanel = canvas.transform.Find("SkillPanel").gameObject;
+		comboPanel = canvas.transform.Find("ComboPanel").gameObject;
+		itemPanel = canvas.transform.Find("ItemPanel").gameObject;
 		resultPanel = canvas.transform.Find("ResultPanel").gameObject;
 		roleNameText_1 = canvas.transform.Find("ResultPanel/Panel/Role_1").gameObject;
 		roleNameText_2 = canvas.transform.Find("ResultPanel/Panel/Role_2").gameObject;
@@ -124,7 +134,8 @@ public class BattleSystem : MonoBehaviour {
 	{
 		if (isWaitForPlayerToChooseSkill)
 		{
-			if (!basicPanel.activeSelf && !attackAdditionPanel.activeSelf)
+			if (!basicPanel.activeSelf && !attackAdditionPanel.activeSelf && !magicPanel.activeSelf &&
+				!tacticsPanel.activeSelf && !comboPanel.activeSelf && !itemPanel.activeSelf)
 			{
 				basicPanel.SetActive(true);
 			}
@@ -132,7 +143,8 @@ public class BattleSystem : MonoBehaviour {
 
 		if (isWaitForPlayerToChooseTarget)
 		{
-			if (basicPanel.activeSelf || attackAdditionPanel.activeSelf)
+			if (basicPanel.activeSelf || attackAdditionPanel.activeSelf || magicPanel.activeSelf ||
+				tacticsPanel.activeSelf || comboPanel.activeSelf || itemPanel.activeSelf)
 			{
 				basicPanel.SetActive(false);
 				attackAdditionPanel.SetActive(false);

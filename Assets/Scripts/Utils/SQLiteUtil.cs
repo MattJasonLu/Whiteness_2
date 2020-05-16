@@ -303,7 +303,7 @@ public class SQLiteUtil : MonoBehaviour
     }
 
     /// <summary>
-    /// 通过角色编号获取装备内容
+    /// 获取所有技能
     /// </summary>
     /// <param name="roleId"></param>
     /// <returns></returns>
@@ -321,6 +321,78 @@ public class SQLiteUtil : MonoBehaviour
             skillItem.desp = reader.GetString(reader.GetOrdinal("DESP"));
             string roleId = reader.GetString(reader.GetOrdinal("ROLEID"));
             RoleUnitDAO roleUnit = GetRoleUnitById(roleId);
+            skillItem.roleUnit = roleUnit;
+            skillItem.consume = reader.GetInt32(reader.GetOrdinal("CONSUME"));
+            skillItem.hp = reader.GetInt32(reader.GetOrdinal("HP"));
+            skillItem.ep = reader.GetInt32(reader.GetOrdinal("EP"));
+            skillItem.cp = reader.GetInt32(reader.GetOrdinal("CP"));
+            skillItem.str = reader.GetInt32(reader.GetOrdinal("STR"));
+            skillItem.def = reader.GetInt32(reader.GetOrdinal("DEF"));
+            skillItem.ats = reader.GetInt32(reader.GetOrdinal("ATS"));
+            skillItem.adf = reader.GetInt32(reader.GetOrdinal("ADF"));
+            skillItem.spd = reader.GetInt32(reader.GetOrdinal("SPD"));
+            skillItem.dex = reader.GetInt32(reader.GetOrdinal("DEX"));
+            skillItem.rng = reader.GetInt32(reader.GetOrdinal("RNG"));
+            skillItem.crt = reader.GetInt32(reader.GetOrdinal("CRT"));
+            skillItem.hit = reader.GetInt32(reader.GetOrdinal("HIT"));
+            skillItem.dot = reader.GetInt32(reader.GetOrdinal("DOT"));
+            skillItem.multi = reader.GetInt32(reader.GetOrdinal("MULTI"));
+            skillItem.target = reader.GetInt32(reader.GetOrdinal("TARGET"));
+            skills.Add(skillItem);
+        }
+        return skills;
+    }
+
+    public List<SkillDAO> GetMagicsByRoleId(string roleId)
+    {
+        List<SkillDAO> skills = new List<SkillDAO>();
+        // 自定义SQL
+        SqliteDataReader reader = sql.ExecuteQuery("select * from SKILLDEF where roleid = '" + roleId + "' and skilltype = 0;");
+        while (reader.Read())
+        {
+            SkillDAO skillItem = new SkillDAO();
+            skillItem.id = reader.GetString(reader.GetOrdinal("ID"));
+            skillItem.name = reader.GetString(reader.GetOrdinal("NAME"));
+            skillItem.skillType = reader.GetInt32(reader.GetOrdinal("SKILLTYPE"));
+            skillItem.desp = reader.GetString(reader.GetOrdinal("DESP"));
+            string tempRoleId = reader.GetString(reader.GetOrdinal("ROLEID"));
+            RoleUnitDAO roleUnit = GetRoleUnitById(tempRoleId);
+            skillItem.roleUnit = roleUnit;
+            skillItem.consume = reader.GetInt32(reader.GetOrdinal("CONSUME"));
+            skillItem.hp = reader.GetInt32(reader.GetOrdinal("HP"));
+            skillItem.ep = reader.GetInt32(reader.GetOrdinal("EP"));
+            skillItem.cp = reader.GetInt32(reader.GetOrdinal("CP"));
+            skillItem.str = reader.GetInt32(reader.GetOrdinal("STR"));
+            skillItem.def = reader.GetInt32(reader.GetOrdinal("DEF"));
+            skillItem.ats = reader.GetInt32(reader.GetOrdinal("ATS"));
+            skillItem.adf = reader.GetInt32(reader.GetOrdinal("ADF"));
+            skillItem.spd = reader.GetInt32(reader.GetOrdinal("SPD"));
+            skillItem.dex = reader.GetInt32(reader.GetOrdinal("DEX"));
+            skillItem.rng = reader.GetInt32(reader.GetOrdinal("RNG"));
+            skillItem.crt = reader.GetInt32(reader.GetOrdinal("CRT"));
+            skillItem.hit = reader.GetInt32(reader.GetOrdinal("HIT"));
+            skillItem.dot = reader.GetInt32(reader.GetOrdinal("DOT"));
+            skillItem.multi = reader.GetInt32(reader.GetOrdinal("MULTI"));
+            skillItem.target = reader.GetInt32(reader.GetOrdinal("TARGET"));
+            skills.Add(skillItem);
+        }
+        return skills;
+    }
+
+    public List<SkillDAO> GetTacticsByRoleId(string roleId)
+    {
+        List<SkillDAO> skills = new List<SkillDAO>();
+        // 自定义SQL
+        SqliteDataReader reader = sql.ExecuteQuery("select * from SKILLDEF where roleid = '" + roleId + "' and skilltype = 1;");
+        while (reader.Read())
+        {
+            SkillDAO skillItem = new SkillDAO();
+            skillItem.id = reader.GetString(reader.GetOrdinal("ID"));
+            skillItem.name = reader.GetString(reader.GetOrdinal("NAME"));
+            skillItem.skillType = reader.GetInt32(reader.GetOrdinal("SKILLTYPE"));
+            skillItem.desp = reader.GetString(reader.GetOrdinal("DESP"));
+            string tempRoleId = reader.GetString(reader.GetOrdinal("ROLEID"));
+            RoleUnitDAO roleUnit = GetRoleUnitById(tempRoleId);
             skillItem.roleUnit = roleUnit;
             skillItem.consume = reader.GetInt32(reader.GetOrdinal("CONSUME"));
             skillItem.hp = reader.GetInt32(reader.GetOrdinal("HP"));

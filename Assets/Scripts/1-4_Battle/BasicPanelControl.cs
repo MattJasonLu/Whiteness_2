@@ -6,14 +6,22 @@ using UnityEngine.SceneManagement;
 public class BasicPanelControl : MonoBehaviour {
 
 	// 各类面板
-	public GameObject magicPanel;
-	public GameObject skillPanel;
-	public GameObject comboPanel;
-	public GameObject itemPanel;
-	public GameObject attackAdditionPanel;
+	public GameObject canvas;
+	private GameObject basicPanel;
+	private GameObject magicPanel;
+	private GameObject skillPanel;
+	private GameObject comboPanel;
+	private GameObject itemPanel;
+	private GameObject attackAdditionPanel;
 
 	void Awake()
 	{
+		basicPanel = canvas.transform.Find("BasicPanel").gameObject;
+		magicPanel = canvas.transform.Find("MagicPanel").gameObject;
+		skillPanel = canvas.transform.Find("SkillPanel").gameObject;
+		comboPanel = canvas.transform.Find("ComboPanel").gameObject;
+		itemPanel = canvas.transform.Find("ItemPanel").gameObject;
+		attackAdditionPanel = canvas.transform.Find("AttackAdditionPanel").gameObject;
 		// 启动时禁用面板
 		magicPanel.SetActive(false);
 		skillPanel.SetActive(false);
@@ -26,41 +34,41 @@ public class BasicPanelControl : MonoBehaviour {
 	public void CommonAttack()
 	{
 		attackAdditionPanel.SetActive(true);
-		gameObject.SetActive(false);
-		//BattleSystem._instance.OnAttack();
+		basicPanel.SetActive(false);
 	}
 
 	// 显示魔法面板
 	public void ShowMagicPanel()
 	{
 		magicPanel.SetActive(true);
-		gameObject.SetActive(false);
+		basicPanel.SetActive(false);
 	}
 
 	// 显示战技面板
 	public void ShowSkillPanel()
 	{
 		skillPanel.SetActive(true);
-		gameObject.SetActive(false);
+		basicPanel.SetActive(false);
 	}
 
 	// 显示连击面板
 	public void ShowComboPanel()
 	{
 		comboPanel.SetActive(true);
-		gameObject.SetActive(false);
+		basicPanel.SetActive(false);
 	}
 
 	// 显示物品面板
 	public void ShowItemPanel()
 	{
 		itemPanel.SetActive(true);
-		gameObject.SetActive(false);
+		basicPanel.SetActive(false);
 	}
 
 	// 撤退
 	public void Retreat()
 	{
+		basicPanel.SetActive(false);
 		LevelLoader._instance.LoadPreviousLevel();
 	}
 
