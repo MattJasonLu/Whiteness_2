@@ -20,9 +20,6 @@ public class MagicPanelControl : MonoBehaviour {
 	void Start()
 	{
 		SetMagic();
-		//basicPanel.SetActive(false);
-		//gameObject.SetActive(true);
-		Debug.Log("active:" + basicPanel.activeSelf);
 	}
 
 	public void Back()
