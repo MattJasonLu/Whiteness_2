@@ -5,6 +5,7 @@ using Mono.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class SQLiteUtil : MonoBehaviour
 {
@@ -449,6 +450,34 @@ public class SQLiteUtil : MonoBehaviour
             skills.Add(skillItem);
         }
         return skills;
+    }
+
+    /// <summary>
+    /// 获取所有任务
+    /// </summary>
+    /// <returns></returns>
+    public List<TaskUnitDAO> GetTasks()
+    {
+        List<TaskUnitDAO> tasks = new List<TaskUnitDAO>();
+        // 自定义SQL
+        SqliteDataReader reader = sql.ExecuteQuery("select * from taskdef;");
+        while (reader.Read())
+        {
+            TaskUnitDAO taskItem = new TaskUnitDAO();
+            taskItem.id = reader.GetString(reader.GetOrdinal("ID"));
+            taskItem.title = reader.GetString(reader.GetOrdinal("TITLE"));
+            taskItem.desp = reader.GetString(reader.GetOrdinal("DESP"));
+            taskItem.initRoleId = reader.GetString(reader.GetOrdinal("INITROLEID"));
+            taskItem.destRoleId = reader.GetString(reader.GetOrdinal("DESTROLEID"));
+            taskItem.destItemId = reader.GetString(reader.GetOrdinal("DESTITEMID"));
+            taskItem.targetCount = reader.GetInt32(reader.GetOrdinal("TARGETCOUNT"));
+            taskItem.completedCount = reader.GetInt32(reader.GetOrdinal("COMPLETEDCOUNT"));
+            taskItem.mainType = reader.GetInt32(reader.GetOrdinal("MAINTYPE"));
+            taskItem.subType = reader.GetInt32(reader.GetOrdinal("SUBTYPE"));
+            taskItem.state = reader.GetInt32(reader.GetOrdinal("STATE"));
+            tasks.Add(taskItem);
+        }
+        return tasks;
     }
 
     public void Close()

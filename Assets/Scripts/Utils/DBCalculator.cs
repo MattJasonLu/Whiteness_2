@@ -209,4 +209,12 @@ public class DBCalculator : MonoBehaviour {
 		return sqliteUtil.GetTacticsByRoleId(roleId);
 	}
 
+	/// <summary>
+	/// 获取所有的任务
+	/// </summary>
+	/// <returns></returns>
+	public List<TaskUnitDAO> GetTasks()
+	{
+		return sqliteUtil.GetTasks();
+	}
 }
