@@ -151,6 +151,16 @@ public class DBCalculator : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// 通过主类型找到对应背包条目
+	/// </summary>
+	/// <param name="mainType"></param>
+	/// <returns></returns>
+	public List<ItemUnit> GetItemUnitsByMainType(int mainType)
+	{
+		return sqliteUtil.GetItemUnitsByMainType(mainType);
+	}
+
+	/// <summary>
 	/// 获取装备内容
 	/// </summary>
 	/// <returns></returns>
