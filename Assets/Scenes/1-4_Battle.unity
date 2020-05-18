@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3715,6 +3715,8 @@ MonoBehaviour:
   rolePanel_3: {fileID: 781289882}
   attackAdditionPanel: {fileID: 1306085726}
   hint: {fileID: 1703358529247684, guid: eaf4568135ec3a04c862a6453cd3b209, type: 3}
+  enemyBtn: {fileID: 8265696590309190026, guid: 86e3e2cec29cf8f40aa7789348d34ee2,
+    type: 3}
   canvas: {fileID: 49941149}
   UICamera: {fileID: 757406662}
   enemyPrefabs:

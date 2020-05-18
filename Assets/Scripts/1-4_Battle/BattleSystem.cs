@@ -42,6 +42,7 @@ public class BattleSystem : MonoBehaviour {
 	public GameObject attackAdditionPanel;
 	// 伤害信息
 	public GameObject hint;
+	public GameObject enemyBtn;
 	// UI部分
 	public Canvas canvas;
 	public Camera UICamera;
@@ -83,6 +84,8 @@ public class BattleSystem : MonoBehaviour {
 	private bool isWaitForPlayerToChooseSkill;
 	// 是否等待玩家选择目标
 	private bool isWaitForPlayerToChooseTarget;
+	// 是否点击了敌人
+	private bool isClickedEnemy;
 	// 是否出战
 	private bool isUnitRunningToBattle;
 	// 是否单元跑向目标
@@ -149,6 +152,8 @@ public class BattleSystem : MonoBehaviour {
 				basicPanel.SetActive(false);
 				attackAdditionPanel.SetActive(false);
 			}
+			// 修改为不可见按钮
+			/*
 			targetChooseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if (Physics.Raycast(targetChooseRay, out targetHit))
 			{
@@ -168,6 +173,24 @@ public class BattleSystem : MonoBehaviour {
 					}
 				}
 			}
+			*/
+			// 等待点击
+			if (isClickedEnemy)
+			{
+				isClickedEnemy = false;
+				isWaitForPlayerToChooseTarget = false;
+				currentActTargetUnitStatus = currentActTargetUnit.GetComponent<RoleUnit>();
+				//如果是远程单位直接在这里LaunchAttack，就不需要RunToTarget
+				if (currentActUnit.GetComponent<RoleUnit>().RNG == 1)
+				{
+					LaunchAttack();
+				}
+				else
+				{
+					RunToTarget();
+				}
+			}
+
 		}
 
 		// 跑向出战位置
@@ -380,6 +403,8 @@ public class BattleSystem : MonoBehaviour {
 			// TEST 需要删除
 			//role.GetComponent<RoleUnit>().HP = 1;
 			totalExp += role.GetComponent<RoleUnit>().EXP;
+			// 设置不可见按钮
+			SetEnemyBtn(role, i);
 		}
 	}
 
@@ -625,6 +650,29 @@ public class BattleSystem : MonoBehaviour {
 		hintGO.transform.position = unitPos + new Vector3(0, 50f, 0);
 		// 销毁
 		Destroy(hintGO, 0.5f);
+	}
+
+	/// <summary>
+	/// 设置敌人的不可见按钮，用于玩家选择
+	/// </summary>
+	void SetEnemyBtn(GameObject enemy, int index)
+	{
+		// 世界坐标转屏幕坐标
+		Vector3 unitPos = Camera.main.WorldToScreenPoint(enemy.transform.position);
+		GameObject enemyBtnGO = Instantiate(enemyBtn);
+		// 设置敌人的索引值
+		enemyBtnGO.GetComponentInChildren<Text>().text = index.ToString();
+		enemyBtnGO.transform.SetParent(canvas.transform, false);
+		enemyBtnGO.transform.position = unitPos;
+		enemyBtnGO.GetComponent<Button>().onClick.AddListener(delegate ()
+		{
+			Debug.Log("选择敌人：" + index);
+			if (isWaitForPlayerToChooseTarget)
+			{
+				currentActTargetUnit = enemy;
+				isClickedEnemy = true;
+			}
+		});
 	}
 
 	/// <summary>
