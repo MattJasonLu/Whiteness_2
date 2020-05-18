@@ -8,10 +8,11 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Ocean_material DEMO 1
-  m_Shader: {fileID: 4800000, guid: 3fef2c61a6f6b0349bd00c0cace9449e, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 806911e833021f643baad42cf36eacf0,
+    type: 3}
   m_ShaderKeywords: _INVERSEDIRECTION_ON _INVERSEWAVES_ON _RADIALWAVES_ON _USEDISPWAVES_ON
     _USEFAKEREFLECTION_ON _USEMASK_ON _USERADIALMASK_ON _USEREFLECTION_ON
-  m_LightmapFlags: 0
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -77,9 +78,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 2800000, guid: c8b867a657471694eae2acc00ea55976, type: 3}
+        m_Scale: {x: 1.11, y: 1}
+        m_Offset: {x: -0.17, y: 0}
     - _MaskWavesDisplacement:
         m_Texture: {fileID: 2800000, guid: 306f7b8087773cb42a665b9c5eeff8f1, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -102,6 +103,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ReflectionTex:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_FDA700D6_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 06191683f2552a344899f24156ba9fe7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _WaveA:
@@ -206,7 +211,7 @@ Material:
     - _Fresnel: 0
     - _FresnelSaturation: 1
     - _Gloss: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0.6
     - _HeightCut: -22
     - _InverseDirection: 1
     - _InverseWaves: 1

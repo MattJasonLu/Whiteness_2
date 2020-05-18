@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     {
         LoadGame();
         if (GameManager._instance.roleUnits.Count > 0)
-        Debug.Log("玩家经验值：" + GameManager._instance.roleUnits[0].unitId + "," + GameManager._instance.roleUnits[0].EXP);
+        //Debug.Log("玩家经验值：" + GameManager._instance.roleUnits[0].unitId + "," + GameManager._instance.roleUnits[0].EXP);
         if (roleUnits.Count == 0)
         {
             Debug.Log("存储文件为空");
