@@ -151,6 +151,8 @@ public class BattleSystem : MonoBehaviour {
 			{
 				basicPanel.SetActive(false);
 				attackAdditionPanel.SetActive(false);
+				magicPanel.SetActive(false);
+				tacticsPanel.SetActive(false);
 			}
 			// 修改为不可见按钮
 			/*
@@ -602,11 +604,25 @@ public class BattleSystem : MonoBehaviour {
 	/// <returns></returns>
 	IEnumerator WaitForAttack()
 	{
-		// 获取行动角色的攻击值
+		// 显示攻击名字，TODO: 替换成播放动画
 		ShowHint(currentActUnit, currentActUnitStatus.GetAttackName());
-		yield return new WaitForSeconds(1);
+		string animId = "";
+		SkillDAO skillDAO = currentActUnitStatus.GetSkill();
+		AttackAddition attackAddition = currentActUnitStatus.GetAttackAddition();
+		if (skillDAO != null)
+		{
+			animId = skillDAO.id;
+		}
+		else if (attackAddition != null)
+		{
+			animId = "AA" + (int)attackAddition.additionType;
+		}
+		// 播放属性攻击或者技能的动画
+		currentActUnit.GetComponentInChildren<Animator>().SetTrigger(animId);
+		yield return new WaitForSeconds(1);		// 获取行动角色的攻击结果
 		List<string> result = currentActTargetUnit.GetComponent<RoleUnit>().GetRealDamage(currentActUnitStatus);
 		ShowHint(currentActTargetUnit, result[1]);
+		currentActUnit.GetComponentInChildren<Animator>().SetTrigger("Idle");
 		yield return new WaitForSeconds(1f);
 		if (result.Count > 2)
 		{
@@ -625,11 +641,20 @@ public class BattleSystem : MonoBehaviour {
 
 	}
 
-	// 按钮事件触发
+	// 普攻事件触发
 	public void OnAttack(AttackAddition attackAddition)
 	{
 		// 设置当前回合的附加属性
 		currentActUnitStatus.SetAttackAddition(attackAddition);
+		isWaitForPlayerToChooseSkill = false;
+		isWaitForPlayerToChooseTarget = true;
+	}
+
+	// 技能事件触发
+	public void OnAttack(SkillDAO skill)
+	{
+		// 设置当前回合的附加属性
+		currentActUnitStatus.SetSkill(skill);
 		isWaitForPlayerToChooseSkill = false;
 		isWaitForPlayerToChooseTarget = true;
 	}

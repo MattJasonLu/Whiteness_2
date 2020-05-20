@@ -56,6 +56,7 @@ public class RoleUnit : MonoBehaviour {
 	private Slider epSlider;
 	private Slider cpSlider;
 	private AttackAddition attackAddition;
+	private SkillDAO skill;
 
 
 	void Update()
@@ -128,6 +129,16 @@ public class RoleUnit : MonoBehaviour {
 	public AttackAddition GetAttackAddition()
 	{
 		return this.attackAddition;
+	}
+
+	public void SetSkill(SkillDAO skill)
+	{
+		this.skill = skill;
+	}
+
+	public SkillDAO GetSkill()
+	{
+		return this.skill;
 	}
 
 	/// <summary>
@@ -220,7 +231,11 @@ public class RoleUnit : MonoBehaviour {
 	public string GetAttackName()
 	{
 		string name = "";
-		if (this.attackAddition == null || this.attackAddition.additionType == AdditionType.Common)
+		if (this.skill != null)
+		{
+			name = skill.name;
+		}
+		else if (this.attackAddition == null || this.attackAddition.additionType == AdditionType.Common)
 		{
 			name = "普通攻击";
 		}

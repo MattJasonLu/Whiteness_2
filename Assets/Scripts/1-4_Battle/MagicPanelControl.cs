@@ -36,13 +36,37 @@ public class MagicPanelControl : MonoBehaviour {
 		string unitId = BattleSystem._instance.currentActUnitStatus.unitId;
 		List<SkillDAO> magics = dBCalculator.GetMagicsByRoleId(unitId);
 		magics.ForEach(p => {
-			GameObject skillItem = Instantiate(buttonPrefab, content.transform, false);
-			skillItem.transform.Find("Text").GetComponent<Text>().text = p.name;
+			GameObject skillBtn = Instantiate(buttonPrefab, content.transform, false);
+			skillBtn.transform.Find("Text").GetComponent<Text>().text = p.name;
+			skillBtn.GetComponent<Button>().onClick.AddListener(delegate ()
+			{
+				// 发动对应技能
+				LaunchMagic(p);
+			});
 		});
 		GameObject backBtn = Instantiate(buttonPrefab, content.transform, false);
 		backBtn.transform.Find("Text").GetComponent<Text>().text = "返回";
 		backBtn.GetComponent<Button>().onClick.AddListener(delegate () {
 			this.Back();
 		});
+	}
+
+	// 发动魔法攻击
+	void LaunchMagic(SkillDAO skill)
+	{
+		//StartCoroutine("Magic_" + magicId);
+		BattleSystem._instance.OnAttack(skill);
+	}
+
+	IEnumerator Magic_SM001()
+	{
+		yield return new WaitForSeconds(1f);
+		Debug.Log("发动烈火斩击");
+	}
+
+	IEnumerator Magic_SM002()
+	{
+		yield return new WaitForSeconds(1f);
+		Debug.Log("火羽");
 	}
 }
