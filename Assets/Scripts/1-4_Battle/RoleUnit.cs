@@ -90,7 +90,7 @@ public class RoleUnit : MonoBehaviour {
 		initEP = roleUnit.initEP;
 		EP = roleUnit.initEP;
 		initCP = roleUnit.initCP;
-		CP = roleUnit.initCP;
+		CP = 0;
 		STR = roleUnit.STR;
 		DEF = roleUnit.DEF;
 		ATS = roleUnit.ATS;
@@ -151,9 +151,11 @@ public class RoleUnit : MonoBehaviour {
 		int realDamage = 0;
 		List<string> realResult = new List<string>();
 		int total = 100;
-		int unHIT = 100 - attacker.HIT;
-		int CRT = attacker.CRT;
+		int unHIT = 100 - attacker.HIT;	// 获取未命中率
+		int CRT = attacker.CRT;	// 获取暴击率
+		int STR = attacker.STR;	// 获取攻击力
 		int roll = Random.Range(1, total + 1);
+		// 1:受到攻击的状态，2:伤害提示文字，3:命中对象，4:附加效果提示文字
 		if (roll <= unHIT)
 		{
 			realDamage = 0;
@@ -175,9 +177,59 @@ public class RoleUnit : MonoBehaviour {
 			realResult.Add("HIT");
 			realResult.Add("-" + realDamage);
 		}
+		// 计算技能增益
+		if (attacker.skill != null)
+		{
+			// 减去EP
+			attacker.EP -= attacker.skill.consume;
+			if (realResult[0] != "MISS")
+			{
+				// 增加CP
+				attacker.CP += 10;
+				// 受体为单体
+				if (attacker.skill.multi == 0)
+				{
+					// 受体为敌人
+					if (attacker.skill.target == 0)
+					{
+						// 增幅攻击力
+						STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
+
+						if (realResult[0] == "CRT")
+						{
+							realDamage = 2 * STR - this.DEF;
+							this.HP = this.HP - realDamage < 0 ? 0 : this.HP - realDamage;
+							realResult[1] = "-暴击" + realDamage;
+						}
+						else if (realResult[0] == "HIT")
+						{
+							realDamage = STR - this.DEF;
+							this.HP = this.HP - realDamage < 0 ? 0 : this.HP - realDamage;
+							realResult[1] = "-" + realDamage;
+						}
+					}
+					// 受体为友方
+					else
+					{
+						// 增益为永久或几回合
+
+					}
+				}
+				// TODO:如果为多人？
+				else
+				{
+					// I dont know!
+				}
+				
+			}
+			// 清空技能
+			attacker.skill = null;
+		}
 		// 计算增幅
 		if (attacker.attackAddition != null && realResult[0] != "MISS")
 		{
+			// 增加CP
+			attacker.CP += 5;
 			switch (attacker.attackAddition.additionType)
 			{
 				case AdditionType.Venus:
@@ -220,6 +272,8 @@ public class RoleUnit : MonoBehaviour {
 					realResult.Add("命中DOWN");
 					break;
 			}
+			// 清空属性加成
+			attacker.attackAddition = null;
 		}
 		return realResult;
 	}
