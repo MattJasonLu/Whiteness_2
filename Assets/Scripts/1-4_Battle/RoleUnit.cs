@@ -148,7 +148,6 @@ public class RoleUnit : MonoBehaviour {
 	/// <returns>受到的伤害值</returns>
 	public List<string> GetRealDamage(RoleUnit attacker)
 	{
-		Debug.Log("this:" + this.unitName + ", attacker:" + attacker.unitName);
 		int realDamage = 0;
 		List<string> realResult = new List<string>();
 		int total = 100;
@@ -166,12 +165,12 @@ public class RoleUnit : MonoBehaviour {
 		else if (roll > unHIT && roll <= unHIT + CRT)
 		{
 			realResult.Add("CRT");
-			realResult.Add("---");
+			realResult.Add("");
 		}
 		else
 		{
 			realResult.Add("HIT");
-			realResult.Add("---");
+			realResult.Add("");
 		}
 		// 计算技能增益
 		if (attacker.skill != null)
@@ -193,7 +192,6 @@ public class RoleUnit : MonoBehaviour {
 						{
 							// 增幅攻击力
 							STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
-							Debug.Log("减血对象：" + this.unitName);
 							if (realResult[0] == "CRT")
 							{
 								realDamage = 2 * STR - this.DEF;
@@ -218,10 +216,37 @@ public class RoleUnit : MonoBehaviour {
 
 						}
 					}
-					// TODO:如果为多人？
+					// 如果为多人
 					else
 					{
-						// I dont know!
+						// 受体为敌人
+						if (attacker.skill.target == 0)
+						{
+							// 增幅攻击力
+							STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
+							BattleSystem._instance.enemyUnits.ForEach(p =>
+							{
+								if (p.tag == "Enemy")
+								{
+									if (realResult[0] == "CRT")
+									{
+										realDamage = 2 * STR - p.GetComponent<RoleUnit>().DEF;
+										p.GetComponent<RoleUnit>().HP = p.GetComponent<RoleUnit>().HP - realDamage;
+										// 被攻击者增加CP
+										p.GetComponent<RoleUnit>().CP = p.GetComponent<RoleUnit>().CP + 15;
+										realResult[1] = realResult[1] + "-暴击" + realDamage + ",";
+									}
+									else if (realResult[0] == "HIT")
+									{
+										realDamage = STR - p.GetComponent<RoleUnit>().DEF;
+										p.GetComponent<RoleUnit>().HP = p.GetComponent<RoleUnit>().HP - realDamage;
+										// 被攻击者增加CP
+										p.GetComponent<RoleUnit>().CP = p.GetComponent<RoleUnit>().CP + 10;
+										realResult[1] = realResult[1] + "-" + realDamage + ",";
+									}
+								}
+							});
+						}
 					}
 
 				}

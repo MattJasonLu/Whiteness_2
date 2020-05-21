@@ -66,9 +66,11 @@ public class BattleSystem : MonoBehaviour {
 	// 所有参战单元
 	private List<GameObject> battleUnits;
 	// 所有玩家单元
-	private List<GameObject> playerUnits;
+	[HideInInspector]
+	public List<GameObject> playerUnits;
 	// 所有敌人单元
-	private List<GameObject> enemyUnits;
+	[HideInInspector]
+	public List<GameObject> enemyUnits;
 	// 剩余玩家单元
 	private List<GameObject> remainPlayerUnits;
 	// 剩余敌人单元
@@ -379,7 +381,7 @@ public class BattleSystem : MonoBehaviour {
 		//List<string> prefabNameList = GetPrefabNameListFromPath(prefix + path);
 		totalExp = 0;
 		int enemyCount = Random.Range(1, 4);
-		enemyCount = 1;
+		enemyCount = 3;
 		for (int i = 0; i < enemyCount; i++)
 		{
 			// 加载每一个对象
@@ -620,9 +622,25 @@ public class BattleSystem : MonoBehaviour {
 		}
 		// 播放属性攻击或者技能的动画
 		currentActUnit.GetComponentInChildren<Animator>().SetTrigger(animId);
-		yield return new WaitForSeconds(1);		// 获取行动角色的攻击结果
+		yield return new WaitForSeconds(1);     // 获取行动角色的攻击结果
 		List<string> result = currentActTargetUnit.GetComponent<RoleUnit>().GetRealDamage(currentActUnitStatus);
-		ShowHint(currentActTargetUnit, result[1]);
+		if (!result[1].Contains(","))
+		{
+			ShowHint(currentActTargetUnit, result[1]);
+		}
+		else
+		{
+			// 攻击方为玩家，则受体为敌人
+			if (currentActUnit.tag == "Player")
+			{
+				ShowMultiHint(enemyUnits, result[1]);
+			}
+			// 攻击方为敌人，则受体为玩家
+			else
+			{
+				ShowMultiHint(playerUnits, result[1]);
+			}
+		}
 		currentActUnit.GetComponentInChildren<Animator>().SetTrigger("Idle");
 		yield return new WaitForSeconds(1f);
 		if (result.Count > 2)
@@ -668,14 +686,31 @@ public class BattleSystem : MonoBehaviour {
 	{
 		// 世界坐标转屏幕坐标
 		Vector3 unitPos = Camera.main.WorldToScreenPoint(target.transform.position);
-		//Vector3 guiPos;
-		//RectTransformUtility.ScreenPointToWorldPointInRectangle(canvas.GetComponent<RectTransform>(), unitPos, UICamera, out guiPos);
 		GameObject hintGO = Instantiate(hint);
 		hintGO.GetComponent<Text>().text = str;
 		hintGO.transform.SetParent(canvas.transform, false);
-		hintGO.transform.position = unitPos + new Vector3(0, 50f, 0);
+		hintGO.transform.position = unitPos + new Vector3(0, 100f, 0);
 		// 销毁
 		Destroy(hintGO, 0.5f);
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="targets"></param>
+	/// <param name="strs"></param>
+	void ShowMultiHint(List<GameObject> targets, string strs)
+	{
+		string[] strArr = strs.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+		int index = 0;
+		for (int i = 0; i < targets.Count; i++)
+		{
+			if (targets[i].tag != "DeadUnit")
+			{
+				ShowHint(targets[i], strArr[index]);
+				index++;
+			}
+		}
 	}
 
 	/// <summary>
