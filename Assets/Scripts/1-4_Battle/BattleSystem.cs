@@ -338,7 +338,7 @@ public class BattleSystem : MonoBehaviour {
 	void GeneratePlayerList()
 	{
 		List<RoleUnitDAO> roleUnits = GameManager._instance.roleUnits;
-		roleUnits.ForEach(p => Debug.Log("角色：" + p.unitName));
+		//roleUnits.ForEach(p => Debug.Log("角色：" + p.unitName));
 		for (int i = 0; i < roleUnits.Count; i++)
 		{
 			// 加载每一个对象
@@ -379,6 +379,7 @@ public class BattleSystem : MonoBehaviour {
 		//List<string> prefabNameList = GetPrefabNameListFromPath(prefix + path);
 		totalExp = 0;
 		int enemyCount = Random.Range(1, 4);
+		enemyCount = 1;
 		for (int i = 0; i < enemyCount; i++)
 		{
 			// 加载每一个对象
@@ -691,7 +692,7 @@ public class BattleSystem : MonoBehaviour {
 		enemyBtnGO.transform.position = unitPos;
 		enemyBtnGO.GetComponent<Button>().onClick.AddListener(delegate ()
 		{
-			Debug.Log("选择敌人：" + index);
+			//Debug.Log("选择敌人：" + index);
 			if (isWaitForPlayerToChooseTarget)
 			{
 				currentActTargetUnit = enemy;

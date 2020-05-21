@@ -34,6 +34,7 @@ public class MagicPanelControl : MonoBehaviour {
 	public void SetMagic()
 	{
 		string unitId = BattleSystem._instance.currentActUnitStatus.unitId;
+		int currentEP = BattleSystem._instance.currentActUnitStatus.EP;
 		List<SkillDAO> magics = dBCalculator.GetMagicsByRoleId(unitId);
 		magics.ForEach(p => {
 			GameObject skillBtn = Instantiate(buttonPrefab, content.transform, false);
@@ -43,6 +44,11 @@ public class MagicPanelControl : MonoBehaviour {
 				// 发动对应技能
 				LaunchMagic(p);
 			});
+			// 如果ep值不够则该战技不可用
+			if (p.consume > currentEP)
+			{
+				skillBtn.GetComponent<Button>().interactable = false;
+			}
 		});
 		GameObject backBtn = Instantiate(buttonPrefab, content.transform, false);
 		backBtn.transform.Find("Text").GetComponent<Text>().text = "返回";

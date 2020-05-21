@@ -148,6 +148,7 @@ public class RoleUnit : MonoBehaviour {
 	/// <returns>受到的伤害值</returns>
 	public List<string> GetRealDamage(RoleUnit attacker)
 	{
+		Debug.Log("this:" + this.unitName + ", attacker:" + attacker.unitName);
 		int realDamage = 0;
 		List<string> realResult = new List<string>();
 		int total = 100;
@@ -164,74 +165,141 @@ public class RoleUnit : MonoBehaviour {
 		}
 		else if (roll > unHIT && roll <= unHIT + CRT)
 		{
-			realDamage = 2 * attacker.STR - this.DEF;
-			this.HP = this.HP - realDamage;
 			realResult.Add("CRT");
-			realResult.Add("-暴击" + realDamage);
+			realResult.Add("---");
 		}
 		else
 		{
-			realDamage = attacker.STR - this.DEF;
-			int remainHp = this.HP - realDamage < 0 ? 0 : this.HP - realDamage;
-			this.HP = remainHp;
 			realResult.Add("HIT");
-			realResult.Add("-" + realDamage);
+			realResult.Add("---");
 		}
 		// 计算技能增益
 		if (attacker.skill != null)
 		{
-			// 减去EP
-			attacker.EP -= attacker.skill.consume;
-			if (realResult[0] != "MISS")
+			// 如果为魔法
+			if (attacker.skill.skillType == 0)
 			{
-				// 增加CP
-				attacker.CP += 10;
-				// 受体为单体
-				if (attacker.skill.multi == 0)
+				// 减去EP
+				attacker.EP -= attacker.skill.consume;
+				if (realResult[0] != "MISS")
 				{
-					// 受体为敌人
-					if (attacker.skill.target == 0)
+					// 增加CP
+					attacker.CP += 10;
+					// 受体为单体
+					if (attacker.skill.multi == 0)
 					{
-						// 增幅攻击力
-						STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
-
-						if (realResult[0] == "CRT")
+						// 受体为敌人
+						if (attacker.skill.target == 0)
 						{
-							realDamage = 2 * STR - this.DEF;
-							this.HP = this.HP - realDamage < 0 ? 0 : this.HP - realDamage;
-							realResult[1] = "-暴击" + realDamage;
+							// 增幅攻击力
+							STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
+							Debug.Log("减血对象：" + this.unitName);
+							if (realResult[0] == "CRT")
+							{
+								realDamage = 2 * STR - this.DEF;
+								this.HP = this.HP - realDamage;
+								// 被攻击者增加CP
+								this.CP = this.CP + 15;
+								realResult[1] = "-暴击" + realDamage;
+							}
+							else if (realResult[0] == "HIT")
+							{
+								realDamage = STR - this.DEF;
+								this.HP = this.HP - realDamage;
+								// 被攻击者增加CP
+								this.CP = this.CP + 10;
+								realResult[1] = "-" + realDamage;
+							}
 						}
-						else if (realResult[0] == "HIT")
+						// 受体为友方
+						else
 						{
-							realDamage = STR - this.DEF;
-							this.HP = this.HP - realDamage < 0 ? 0 : this.HP - realDamage;
-							realResult[1] = "-" + realDamage;
+							// 增益为永久或几回合
+
 						}
 					}
-					// 受体为友方
+					// TODO:如果为多人？
 					else
 					{
-						// 增益为永久或几回合
-
+						// I dont know!
 					}
+
 				}
-				// TODO:如果为多人？
-				else
-				{
-					// I dont know!
-				}
-				
 			}
+			// 如果为战技
+			else
+			{
+				// 减去EP
+				attacker.CP -= attacker.skill.consume;
+				if (realResult[0] != "MISS")
+				{
+					// 受体为单体
+					if (attacker.skill.multi == 0)
+					{
+						// 受体为敌人
+						if (attacker.skill.target == 0)
+						{
+							// 增幅攻击力
+							STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
+
+							if (realResult[0] == "CRT")
+							{
+								realDamage = 2 * STR - this.DEF;
+								this.HP = this.HP - realDamage;
+								realResult[1] = "-暴击" + realDamage;
+							}
+							else if (realResult[0] == "HIT")
+							{
+								realDamage = STR - this.DEF;
+								this.HP = this.HP - realDamage;
+								realResult[1] = "-" + realDamage;
+							}
+						}
+						// 受体为友方
+						else
+						{
+							// 增益为永久或几回合
+
+						}
+					}
+					// TODO:如果为多人？
+					else
+					{
+						// I dont know!
+					}
+
+				}
+			}
+			
 			// 清空技能
 			attacker.skill = null;
+		} 
+		// 普通攻击
+		else
+		{
+			// 增加CP
+			attacker.CP += 5;
+			if (realResult[0] == "CRT")
+			{
+				realDamage = 2 * STR - this.DEF;
+				this.HP = this.HP - realDamage;
+				realResult[1] = "-暴击" + realDamage;
+			}
+			else if (realResult[0] == "HIT")
+			{
+				realDamage = STR - this.DEF;
+				this.HP = this.HP - realDamage;
+				realResult[1] = "-" + realDamage;
+			}
 		}
 		// 计算增幅
 		if (attacker.attackAddition != null && realResult[0] != "MISS")
 		{
-			// 增加CP
-			attacker.CP += 5;
+			
 			switch (attacker.attackAddition.additionType)
 			{
+				case AdditionType.Common:
+					break;
 				case AdditionType.Venus:
 					attacker.STR = (int)((float)attacker.STR * (1 + attacker.attackAddition.STROffsetRatio));
 					realResult.Add("Player");
@@ -275,6 +343,19 @@ public class RoleUnit : MonoBehaviour {
 			// 清空属性加成
 			attacker.attackAddition = null;
 		}
+		// 设置上下界
+		if (attacker.HP <= 0) attacker.HP = 0;
+		if (attacker.HP >= attacker.initHP) attacker.HP = attacker.initHP;
+		if (attacker.EP <= 0) attacker.EP = 0;
+		if (attacker.EP >= attacker.initEP) attacker.EP = attacker.initEP;
+		if (attacker.CP <= 0) attacker.CP = 0;
+		if (attacker.CP >= attacker.initCP) attacker.CP = attacker.initCP;
+		if (this.HP <= 0) this.HP = 0;
+		if (this.HP >= this.initHP) this.HP = this.initHP;
+		if (this.EP <= 0) this.EP = 0;
+		if (this.EP >= this.initEP) this.EP = this.initEP;
+		if (this.CP <= 0) this.CP = 0;
+		if (this.CP >= this.initCP) this.CP = this.initCP;
 		return realResult;
 	}
 
