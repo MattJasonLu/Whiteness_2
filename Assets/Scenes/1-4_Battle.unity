@@ -3700,8 +3700,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitMoveSpeed: 5
-  minEnemyLevel: 1
-  maxEnemyLevel: 3
+  minEnemyLevel: 5
+  maxEnemyLevel: 7
   currentActPlayerUnitPos: {fileID: 1390769041}
   playerUnitPos_1: {fileID: 1392881318}
   playerUnitPos_2: {fileID: 1740318600}
@@ -3723,6 +3723,8 @@ MonoBehaviour:
   - {fileID: 1556143306277054, guid: f5251539cf0993b4db84a1940f396ad8, type: 3}
   notice: {fileID: 53195884}
   dbCalculator: {fileID: 1197259291}
+  playerUnits: []
+  enemyUnits: []
   currentActUnitStatus: {fileID: 0}
 --- !u!4 &745000910
 Transform:

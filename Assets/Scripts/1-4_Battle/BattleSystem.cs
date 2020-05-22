@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -80,7 +81,7 @@ public class BattleSystem : MonoBehaviour {
 	[HideInInspector]
 	public RoleUnit currentActUnitStatus;
 	// 当前行动单元目标
-	private GameObject currentActTargetUnit;
+	private List<GameObject> currentActTargetUnit;
 	private RoleUnit currentActTargetUnitStatus;
 	// 是否等待玩家选择技能
 	private bool isWaitForPlayerToChooseSkill;
@@ -178,12 +179,44 @@ public class BattleSystem : MonoBehaviour {
 				}
 			}
 			*/
+			// 判断是否为群攻技能
+			if (currentActUnit.GetComponent<RoleUnit>().GetSkill() != null && 
+				currentActUnit.GetComponent<RoleUnit>().GetSkill().multi == 1)
+			{
+				// 筛选出其中没有死亡的单元，加入目标集合
+				currentActTargetUnit.AddRange(enemyUnits.Where(p => p.tag != "DeadUnit"));
+				isWaitForPlayerToChooseTarget = false;
+				//currentActTargetUnitStatus = currentActTargetUnit[0].GetComponent<RoleUnit>();
+				//如果是远程单位直接在这里LaunchAttack，就不需要RunToTarget
+				if (currentActUnit.GetComponent<RoleUnit>().RNG == 1)
+				{
+					LaunchAttack();
+				}
+				else
+				{
+					RunToTarget();
+				}
+			}
+			// 判断是否友方增益技能
+			else if (currentActUnit.GetComponent<RoleUnit>().GetSkill() != null &&
+				currentActUnit.GetComponent<RoleUnit>().GetSkill().target == 1)
+			{
+				// 友方增益不需要添加敌人
+				isWaitForPlayerToChooseTarget = false;
+				//停止移动
+				currentActUnit.GetComponentInChildren<Animator>().SetInteger("Horizontal", 0);
+				//关闭移动状态
+				isUnitRunningToTarget = false;
+				//记录停下的位置
+				currentactUnitStopPosition = currentActUnit.transform.position;
+				LaunchAttack();
+			}
 			// 等待点击
-			if (isClickedEnemy)
+			else if (isClickedEnemy)
 			{
 				isClickedEnemy = false;
 				isWaitForPlayerToChooseTarget = false;
-				currentActTargetUnitStatus = currentActTargetUnit.GetComponent<RoleUnit>();
+				//currentActTargetUnitStatus = currentActTargetUnit[0].GetComponent<RoleUnit>();
 				//如果是远程单位直接在这里LaunchAttack，就不需要RunToTarget
 				if (currentActUnit.GetComponent<RoleUnit>().RNG == 1)
 				{
@@ -314,6 +347,7 @@ public class BattleSystem : MonoBehaviour {
 		enemyUnits = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
 		playerUnits.ForEach(p => battleUnits.Add(p));
 		enemyUnits.ForEach(p => battleUnits.Add(p));
+		currentActTargetUnit = new List<GameObject>();
 	}
 
 	void InitAfter()
@@ -435,6 +469,8 @@ public class BattleSystem : MonoBehaviour {
 
 	void ToBattle()
 	{
+		// 清空被攻击者列表
+		currentActTargetUnit.Clear();
 		remainPlayerUnits = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
 		remainEnemyUnits = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
 		if (averageExp == 0) averageExp = totalExp / remainPlayerUnits.Count;
@@ -565,7 +601,7 @@ public class BattleSystem : MonoBehaviour {
 		{
 			//如果行动单位是怪物则从存活玩家对象中随机一个目标
 			int targetIndex = Random.Range(0, remainPlayerUnits.Count);
-			currentActTargetUnit = remainPlayerUnits[targetIndex];
+			currentActTargetUnit.Add(remainPlayerUnits[targetIndex]);
 
 			//如果是远程单位直接在这里LaunchAttack，就不需要RunToTarget
 			if (currentActUnit.GetComponent<RoleUnit>().RNG == 1)
@@ -587,7 +623,7 @@ public class BattleSystem : MonoBehaviour {
 	{
 		
 		// 目标的位置
-		currentActUnitTargetPosition = currentActTargetUnit.transform.position;
+		currentActUnitTargetPosition = currentActTargetUnit[0].transform.position;
 		// 开启移动状态，移动的控制放到Update里，因为要每一帧判断离目标的距离
 		isUnitRunningToTarget = true;
         
@@ -622,42 +658,62 @@ public class BattleSystem : MonoBehaviour {
 		}
 		// 播放属性攻击或者技能的动画
 		currentActUnit.GetComponentInChildren<Animator>().SetTrigger(animId);
-		yield return new WaitForSeconds(1);     // 获取行动角色的攻击结果
-		List<string> result = currentActTargetUnit.GetComponent<RoleUnit>().GetRealDamage(currentActUnitStatus);
-		if (!result[1].Contains(","))
+		yield return new WaitForSeconds(1);
+		// 获取行动角色的攻击结果
+		Dictionary<int, List<string>> resultDict = new Dictionary<int, List<string>>();
+		if (currentActTargetUnit.Count > 0)
 		{
-			ShowHint(currentActTargetUnit, result[1]);
+			int i = 0;
+			currentActTargetUnit.ForEach(p =>
+			{
+				List<string> result = p.GetComponent<RoleUnit>().GetRealDamage(currentActUnitStatus);
+				resultDict.Add(i, result);
+				ShowHint(p, result[1]);
+				i++;
+			});
+			currentActUnit.GetComponentInChildren<Animator>().SetTrigger("Idle");
+			yield return new WaitForSeconds(1f);
+			for (int j = 0; j < resultDict.Count; j++)
+			{
+				if (resultDict[j].Count > 2)
+				{
+					if (resultDict[j][2] == "Player")
+					{
+						ShowHint(currentActUnit, resultDict[j][3]);
+					}
+					else if (resultDict[j][2] == "Enemy")
+					{
+						ShowHint(currentActTargetUnit[j], resultDict[j][3]);
+					}
+				}
+			}
+			yield return new WaitForSeconds(0.5f);
 		}
 		else
 		{
-			// 攻击方为玩家，则受体为敌人
-			if (currentActUnit.tag == "Player")
+			List<string> result = currentActUnit.GetComponent<RoleUnit>().GetRealDamage(currentActUnitStatus);
+			resultDict.Add(0, result);
+			currentActUnit.GetComponentInChildren<Animator>().SetTrigger("Idle");
+			yield return new WaitForSeconds(1f);
+			for (int j = 0; j < resultDict.Count; j++)
 			{
-				ShowMultiHint(enemyUnits, result[1]);
-			}
-			// 攻击方为敌人，则受体为玩家
-			else
-			{
-				ShowMultiHint(playerUnits, result[1]);
-			}
-		}
-		currentActUnit.GetComponentInChildren<Animator>().SetTrigger("Idle");
-		yield return new WaitForSeconds(1f);
-		if (result.Count > 2)
-		{
-			if (result[2] == "Player")
-			{
-				ShowHint(currentActUnit, result[3]);
-			}
-			else if (result[2] == "Enemy")
-			{
-				ShowHint(currentActTargetUnit, result[3]);
+				if (resultDict[j].Count > 2)
+				{
+					if (resultDict[j][2] == "Player")
+					{
+						Debug.Log(resultDict[j][3]);
+						ShowHint(currentActUnit, resultDict[j][3]);
+					}
+					else if (resultDict[j][2] == "Enemy")
+					{
+						ShowHint(currentActTargetUnit[j], resultDict[j][3]);
+					}
+				}
 			}
 			yield return new WaitForSeconds(0.5f);
 		}
 		// 使角色返回
 		isUnitRunningBack = true;
-
 	}
 
 	// 普攻事件触发
@@ -689,7 +745,7 @@ public class BattleSystem : MonoBehaviour {
 		GameObject hintGO = Instantiate(hint);
 		hintGO.GetComponent<Text>().text = str;
 		hintGO.transform.SetParent(canvas.transform, false);
-		hintGO.transform.position = unitPos + new Vector3(0, 100f, 0);
+		hintGO.transform.position = unitPos + new Vector3(0, 80f, 0);
 		// 销毁
 		Destroy(hintGO, 0.5f);
 	}
@@ -730,7 +786,7 @@ public class BattleSystem : MonoBehaviour {
 			//Debug.Log("选择敌人：" + index);
 			if (isWaitForPlayerToChooseTarget)
 			{
-				currentActTargetUnit = enemy;
+				currentActTargetUnit.Add(enemy);
 				isClickedEnemy = true;
 			}
 		});

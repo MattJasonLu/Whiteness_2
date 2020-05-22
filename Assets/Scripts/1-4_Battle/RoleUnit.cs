@@ -153,9 +153,10 @@ public class RoleUnit : MonoBehaviour {
 		int total = 100;
 		int unHIT = 100 - attacker.HIT;	// 获取未命中率
 		int CRT = attacker.CRT;	// 获取暴击率
-		int STR = attacker.STR;	// 获取攻击力
+		int STR = attacker.STR; // 获取攻击力
+		int SPD = attacker.SPD; // 获取速度
 		int roll = Random.Range(1, total + 1);
-		// 1:受到攻击的状态，2:伤害提示文字，3:命中对象，4:附加效果提示文字
+		// 1:受到攻击的状态，2:伤害提示文字，3:附加状态命中对象，4:附加效果提示文字
 		if (roll <= unHIT)
 		{
 			realDamage = 0;
@@ -184,71 +185,44 @@ public class RoleUnit : MonoBehaviour {
 				{
 					// 增加CP
 					attacker.CP += 10;
-					// 受体为单体
-					if (attacker.skill.multi == 0)
+					// 受体为敌人
+					if (attacker.skill.target == 0)
 					{
-						// 受体为敌人
-						if (attacker.skill.target == 0)
+						// 增幅攻击力
+						STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
+						if (realResult[0] == "CRT")
 						{
-							// 增幅攻击力
-							STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
-							if (realResult[0] == "CRT")
-							{
-								realDamage = 2 * STR - this.DEF;
-								this.HP = this.HP - realDamage;
-								// 被攻击者增加CP
-								this.CP = this.CP + 15;
-								realResult[1] = "-暴击" + realDamage;
-							}
-							else if (realResult[0] == "HIT")
-							{
-								realDamage = STR - this.DEF;
-								this.HP = this.HP - realDamage;
-								// 被攻击者增加CP
-								this.CP = this.CP + 10;
-								realResult[1] = "-" + realDamage;
-							}
+							realDamage = 2 * STR - this.DEF;
+							this.HP = this.HP - realDamage;
+							// 被攻击者增加CP
+							this.CP = this.CP + 15;
+							realResult[1] = "-暴击" + realDamage;
 						}
-						// 受体为友方
-						else
+						else if (realResult[0] == "HIT")
 						{
-							// 增益为永久或几回合
-
+							realDamage = STR - this.DEF;
+							this.HP = this.HP - realDamage;
+							// 被攻击者增加CP
+							this.CP = this.CP + 10;
+							realResult[1] = "-" + realDamage;
 						}
 					}
-					// 如果为多人
+					// 受体为友方
 					else
 					{
-						// 受体为敌人
-						if (attacker.skill.target == 0)
+						realResult.Add("Player");
+						// 增益为永久或几回合
+						if (attacker.skill.str != 0)
 						{
-							// 增幅攻击力
-							STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
-							BattleSystem._instance.enemyUnits.ForEach(p =>
-							{
-								if (p.tag == "Enemy")
-								{
-									if (realResult[0] == "CRT")
-									{
-										realDamage = 2 * STR - p.GetComponent<RoleUnit>().DEF;
-										p.GetComponent<RoleUnit>().HP = p.GetComponent<RoleUnit>().HP - realDamage;
-										// 被攻击者增加CP
-										p.GetComponent<RoleUnit>().CP = p.GetComponent<RoleUnit>().CP + 15;
-										realResult[1] = realResult[1] + "-暴击" + realDamage + ",";
-									}
-									else if (realResult[0] == "HIT")
-									{
-										realDamage = STR - p.GetComponent<RoleUnit>().DEF;
-										p.GetComponent<RoleUnit>().HP = p.GetComponent<RoleUnit>().HP - realDamage;
-										// 被攻击者增加CP
-										p.GetComponent<RoleUnit>().CP = p.GetComponent<RoleUnit>().CP + 10;
-										realResult[1] = realResult[1] + "-" + realDamage + ",";
-									}
-								}
-							});
+							attacker.STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
+							realResult.Add("攻击UP");
+						}
+						else if (attacker.skill.spd != 0)
+						{
+							attacker.SPD = (int)(SPD + SPD * ((float)attacker.skill.spd / 100));
+							realResult.Add("速度UP");
 						}
 					}
-
 				}
 			}
 			// 如果为战技
@@ -258,41 +232,41 @@ public class RoleUnit : MonoBehaviour {
 				attacker.CP -= attacker.skill.consume;
 				if (realResult[0] != "MISS")
 				{
-					// 受体为单体
-					if (attacker.skill.multi == 0)
+					// 受体为敌人
+					if (attacker.skill.target == 0)
 					{
-						// 受体为敌人
-						if (attacker.skill.target == 0)
-						{
-							// 增幅攻击力
-							STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
+						// 增幅攻击力
+						STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
 
-							if (realResult[0] == "CRT")
-							{
-								realDamage = 2 * STR - this.DEF;
-								this.HP = this.HP - realDamage;
-								realResult[1] = "-暴击" + realDamage;
-							}
-							else if (realResult[0] == "HIT")
-							{
-								realDamage = STR - this.DEF;
-								this.HP = this.HP - realDamage;
-								realResult[1] = "-" + realDamage;
-							}
+						if (realResult[0] == "CRT")
+						{
+							realDamage = 2 * STR - this.DEF;
+							this.HP = this.HP - realDamage;
+							realResult[1] = "-暴击" + realDamage;
 						}
-						// 受体为友方
-						else
+						else if (realResult[0] == "HIT")
 						{
-							// 增益为永久或几回合
-
+							realDamage = STR - this.DEF;
+							this.HP = this.HP - realDamage;
+							realResult[1] = "-" + realDamage;
 						}
 					}
-					// TODO:如果为多人？
+					// 受体为友方
 					else
 					{
-						// I dont know!
+						realResult.Add("Player");
+						// 增益为永久或几回合
+						if (attacker.skill.str != 0)
+						{
+							attacker.STR = (int)(STR + STR * ((float)attacker.skill.str / 100));
+							realResult.Add("攻击UP");
+						}
+						else if (attacker.skill.spd != 0)
+						{
+							attacker.SPD = (int)(SPD + SPD * ((float)attacker.skill.spd / 100));
+							realResult.Add("速度UP");
+						}
 					}
-
 				}
 			}
 			
@@ -321,7 +295,7 @@ public class RoleUnit : MonoBehaviour {
 				realResult[1] = "-" + realDamage;
 			}
 		}
-		// 计算增幅
+		// 属性攻击
 		if (attacker.attackAddition != null && realResult[0] != "MISS")
 		{
 			
