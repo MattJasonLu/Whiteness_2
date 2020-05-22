@@ -308,12 +308,16 @@ public class RoleUnit : MonoBehaviour {
 			{
 				realDamage = 2 * STR - this.DEF;
 				this.HP = this.HP - realDamage;
+				// 被攻击者增加CP
+				this.CP = this.CP + 15;
 				realResult[1] = "-暴击" + realDamage;
 			}
 			else if (realResult[0] == "HIT")
 			{
 				realDamage = STR - this.DEF;
 				this.HP = this.HP - realDamage;
+				// 被攻击者增加CP
+				this.CP = this.CP + 10;
 				realResult[1] = "-" + realDamage;
 			}
 		}
