@@ -55,8 +55,12 @@ public class RoleUnit : MonoBehaviour {
 	private Slider hpSlider;
 	private Slider epSlider;
 	private Slider cpSlider;
+	// 属性攻击
 	private AttackAddition attackAddition;
+	// 技能实现
 	private SkillDAO skill;
+	// 使用道具
+	private ItemUnit item;
 
 
 	void Update()
@@ -139,6 +143,16 @@ public class RoleUnit : MonoBehaviour {
 	public SkillDAO GetSkill()
 	{
 		return this.skill;
+	}
+
+	public void SetItem(ItemUnit item)
+	{
+		this.item = item;
+	}
+
+	public ItemUnit GetItem()
+	{
+		return this.item;
 	}
 
 	/// <summary>
@@ -362,6 +376,50 @@ public class RoleUnit : MonoBehaviour {
 		return realResult;
 	}
 
+	public List<string> GetBenefit()
+	{
+		int value;
+		List<string> realResult = new List<string>();
+		if (this.GetItem() != null)
+		{
+			if (this.GetItem().hp != 0)
+			{
+				int oldHp = this.HP;
+				this.HP += this.GetItem().hp;
+				if (this.HP <= 0) this.HP = 0;
+				if (this.HP >= this.initHP) this.HP = this.initHP;
+				value = this.HP - oldHp;
+				realResult.Add("HP");
+				realResult.Add("+" + value);
+
+			}
+			else if (this.GetItem().ep != 0)
+			{
+				int oldEp = this.EP;
+				this.EP += this.GetItem().ep;
+				if (this.EP <= 0) this.EP = 0;
+				if (this.EP >= this.initEP) this.EP = this.initEP;
+				value = this.EP - oldEp;
+				realResult.Add("EP");
+				realResult.Add("+" + value);
+
+			}
+			else if (this.GetItem().cp != 0)
+			{
+				int oldCp = this.CP;
+				this.CP += this.GetItem().cp;
+				if (this.CP <= 0) this.CP = 0;
+				if (this.CP >= this.initCP) this.CP = this.initCP;
+				value = this.CP - oldCp;
+				realResult.Add("CP");
+				realResult.Add("+" + value);
+			}
+		}
+		// 清空物品
+		this.item = null;
+		return realResult;
+	}
+
 	/// <summary>
 	/// 获取攻击的名称
 	/// </summary>
@@ -369,7 +427,11 @@ public class RoleUnit : MonoBehaviour {
 	public string GetAttackName()
 	{
 		string name = "";
-		if (this.skill != null)
+		if (this.item != null)
+		{
+			name = this.item.itemName;
+		}
+		else if (this.skill != null)
 		{
 			name = skill.name;
 		}

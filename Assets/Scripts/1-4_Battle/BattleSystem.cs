@@ -156,6 +156,7 @@ public class BattleSystem : MonoBehaviour {
 				attackAdditionPanel.SetActive(false);
 				magicPanel.SetActive(false);
 				tacticsPanel.SetActive(false);
+				itemPanel.SetActive(false);
 			}
 			// 修改为不可见按钮
 			/*
@@ -200,6 +201,19 @@ public class BattleSystem : MonoBehaviour {
 			// 判断是否友方增益技能
 			else if (currentActUnit.GetComponent<RoleUnit>().GetSkill() != null &&
 				currentActUnit.GetComponent<RoleUnit>().GetSkill().target == 1)
+			{
+				// 友方增益不需要添加敌人
+				isWaitForPlayerToChooseTarget = false;
+				//停止移动
+				currentActUnit.GetComponentInChildren<Animator>().SetInteger("Horizontal", 0);
+				//关闭移动状态
+				isUnitRunningToTarget = false;
+				//记录停下的位置
+				currentactUnitStopPosition = currentActUnit.transform.position;
+				LaunchAttack();
+			}
+			// 判断是否为道具使用
+			else if (currentActUnit.GetComponent<RoleUnit>().GetItem() != null)
 			{
 				// 友方增益不需要添加敌人
 				isWaitForPlayerToChooseTarget = false;
@@ -691,22 +705,32 @@ public class BattleSystem : MonoBehaviour {
 		}
 		else
 		{
-			List<string> result = currentActUnit.GetComponent<RoleUnit>().GetRealDamage(currentActUnitStatus);
-			resultDict.Add(0, result);
-			currentActUnit.GetComponentInChildren<Animator>().SetTrigger("Idle");
-			yield return new WaitForSeconds(1f);
-			for (int j = 0; j < resultDict.Count; j++)
+			if (currentActUnit.GetComponent<RoleUnit>().GetItem() != null)
 			{
-				if (resultDict[j].Count > 2)
+				List<string> result = currentActUnit.GetComponent<RoleUnit>().GetBenefit();
+				currentActUnit.GetComponentInChildren<Animator>().SetTrigger("Idle");
+				yield return new WaitForSeconds(1f);
+				ShowHint(currentActUnit, result[0] + result[1]);
+			}
+			else
+			{
+				List<string> result = currentActUnit.GetComponent<RoleUnit>().GetRealDamage(currentActUnitStatus);
+				resultDict.Add(0, result);
+				currentActUnit.GetComponentInChildren<Animator>().SetTrigger("Idle");
+				yield return new WaitForSeconds(1f);
+				for (int j = 0; j < resultDict.Count; j++)
 				{
-					if (resultDict[j][2] == "Player")
+					if (resultDict[j].Count > 2)
 					{
-						Debug.Log(resultDict[j][3]);
-						ShowHint(currentActUnit, resultDict[j][3]);
-					}
-					else if (resultDict[j][2] == "Enemy")
-					{
-						ShowHint(currentActTargetUnit[j], resultDict[j][3]);
+						if (resultDict[j][2] == "Player")
+						{
+							Debug.Log(resultDict[j][3]);
+							ShowHint(currentActUnit, resultDict[j][3]);
+						}
+						else if (resultDict[j][2] == "Enemy")
+						{
+							ShowHint(currentActTargetUnit[j], resultDict[j][3]);
+						}
 					}
 				}
 			}
@@ -730,6 +754,14 @@ public class BattleSystem : MonoBehaviour {
 	{
 		// 设置当前回合的附加属性
 		currentActUnitStatus.SetSkill(skill);
+		isWaitForPlayerToChooseSkill = false;
+		isWaitForPlayerToChooseTarget = true;
+	}
+
+	// 道具触发
+	public void OnLaunch(ItemUnit item)
+	{
+		currentActUnitStatus.SetItem(item);
 		isWaitForPlayerToChooseSkill = false;
 		isWaitForPlayerToChooseTarget = true;
 	}

@@ -71,6 +71,4 @@ public class BasicPanelControl : MonoBehaviour {
 		basicPanel.SetActive(false);
 		LevelLoader._instance.LoadPreviousLevel();
 	}
-
-
 }
