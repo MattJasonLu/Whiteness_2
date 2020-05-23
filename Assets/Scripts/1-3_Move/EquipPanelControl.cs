@@ -156,6 +156,7 @@ public class EquipPanelControl : MonoBehaviour
             {
                 equipGoList_1[i].transform.Find("Name").GetComponent<Text>().text = "无";
                 equipGoList_1[i].transform.Find("Image").GetComponent<Image>().sprite = null;
+                equipGoList_1[i].transform.Find("Image").gameObject.SetActive(false);
             }
         }
         for (int i = 0; i < equipGoList_2.Count; i++)
@@ -170,6 +171,7 @@ public class EquipPanelControl : MonoBehaviour
             {
                 equipGoList_2[i].transform.Find("Name").GetComponent<Text>().text = "无";
                 equipGoList_2[i].transform.Find("Image").GetComponent<Image>().sprite = null;
+                equipGoList_2[i].transform.Find("Image").gameObject.SetActive(false);
             }
         }
         for (int i = 0; i < equipGoList_3.Count; i++)
@@ -184,6 +186,7 @@ public class EquipPanelControl : MonoBehaviour
             {
                 equipGoList_3[i].transform.Find("Name").GetComponent<Text>().text = "无";
                 equipGoList_3[i].transform.Find("Image").GetComponent<Image>().sprite = null;
+                equipGoList_3[i].transform.Find("Image").gameObject.SetActive(false);
             }
         }
 

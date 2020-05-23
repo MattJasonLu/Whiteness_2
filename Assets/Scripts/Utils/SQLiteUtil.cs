@@ -317,10 +317,10 @@ public class SQLiteUtil : MonoBehaviour
                 provideUnits = itemUnits.Where(p => p.mainType == 1 && p.subType == wearType).ToList();
                 break;
             case 1:
-                provideUnits = itemUnits.Where(p => p.mainType == 1 && p.subType == 6).ToList();
+                provideUnits = itemUnits.Where(p => p.mainType == 3).ToList();
                 break;
             case 2:
-                provideUnits = itemUnits.Where(p => p.mainType == 1 && p.subType == 6).ToList();
+                provideUnits = itemUnits.Where(p => p.mainType == 3).ToList();
                 break;
             case 3:
                 provideUnits = itemUnits.Where(p => p.mainType == 0 && p.subType == 0).ToList();
@@ -332,7 +332,7 @@ public class SQLiteUtil : MonoBehaviour
                 provideUnits = itemUnits.Where(p => p.mainType == 0 && p.subType == 2).ToList();
                 break;
             case 6:
-                provideUnits = itemUnits.Where(p => p.mainType == 0 && p.subType == 3).ToList();
+                provideUnits = itemUnits.Where(p => p.mainType == 0 && p.subType == 2).ToList();
                 break;
 
         }
