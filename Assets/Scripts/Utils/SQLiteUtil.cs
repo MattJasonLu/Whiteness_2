@@ -391,6 +391,8 @@ public class SQLiteUtil : MonoBehaviour
             skillItem.id = reader.GetString(reader.GetOrdinal("ID"));
             skillItem.name = reader.GetString(reader.GetOrdinal("NAME"));
             skillItem.skillType = reader.GetInt32(reader.GetOrdinal("SKILLTYPE"));
+            int additionType = reader.GetInt32(reader.GetOrdinal("ADDITIONTYPE"));
+            skillItem.additionType = (AdditionType)Enum.GetValues(typeof(AdditionType)).GetValue(additionType);
             skillItem.desp = reader.GetString(reader.GetOrdinal("DESP"));
             string tempRoleId = reader.GetString(reader.GetOrdinal("ROLEID"));
             RoleUnitDAO roleUnit = GetRoleUnitById(tempRoleId);

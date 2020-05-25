@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,8 @@ public class MagicPanelControl : MonoBehaviour {
 	public Text typeName;
 	private List<string> additionTypeNames;
 	private int currentAdditionTypeIndex = 0;
+
+	private List<SkillDAO> magics;
 
 	void Awake()
 	{
@@ -46,10 +49,15 @@ public class MagicPanelControl : MonoBehaviour {
 	/// </summary>
 	public void SetMagic()
 	{
+		for (int i = 0; i < content.transform.childCount; i++)
+		{
+			Destroy(content.transform.GetChild(i).gameObject);
+		}
 		string unitId = BattleSystem._instance.currentActUnitStatus.unitId;
 		int currentEP = BattleSystem._instance.currentActUnitStatus.EP;
-		List<SkillDAO> magics = dBCalculator.GetMagicsByRoleId(unitId);
-		magics.ForEach(p => {
+		magics = dBCalculator.GetMagicsByRoleId(unitId);
+		List<SkillDAO> subMagics = magics.Where(p => p.additionType == (AdditionType)Enum.GetValues(typeof(AdditionType)).GetValue(currentAdditionTypeIndex)).ToList();
+		subMagics.ForEach(p => {
 			GameObject skillBtn = Instantiate(buttonPrefab, content.transform, false);
 			skillBtn.transform.Find("Text").GetComponent<Text>().text = p.name;
 			skillBtn.GetComponent<Button>().onClick.AddListener(delegate ()
@@ -134,5 +142,6 @@ public class MagicPanelControl : MonoBehaviour {
 	void ChangeCurrentAdditionType()
 	{
 		typeName.text = additionTypeNames[currentAdditionTypeIndex];
+		SetMagic();
 	}
 }
