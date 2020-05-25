@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,10 +13,21 @@ public class MagicPanelControl : MonoBehaviour {
 	private GameObject basicPanel;
 	private GameObject content;
 
+	public Text typeName;
+	private List<string> additionTypeNames;
+	private int currentAdditionTypeIndex = 0;
+
 	void Awake()
 	{
 		basicPanel = canvas.transform.Find("BasicPanel").gameObject;
 		content = canvas.transform.Find("MagicPanel/ItemTab/Viewport/Content").gameObject;
+		typeName = canvas.transform.Find("MagicPanel/PropTitle/Text").GetComponent<Text>();
+		if (additionTypeNames == null)
+		{
+			additionTypeNames = GetAdditionTypeNames();
+		}
+		currentAdditionTypeIndex = 0;
+		ChangeCurrentAdditionType();
 	}
 
 	void Start()
@@ -74,5 +87,52 @@ public class MagicPanelControl : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(1f);
 		Debug.Log("火羽");
+	}
+
+	/// <summary>
+	/// 左移
+	/// </summary>
+	public void LeftBtn()
+	{
+		currentAdditionTypeIndex -= 1;
+		if (currentAdditionTypeIndex == -1)
+		{
+			currentAdditionTypeIndex = additionTypeNames.Count - 1;
+		}
+		ChangeCurrentAdditionType();
+	}
+
+	/// <summary>
+	/// 右移
+	/// </summary>
+	public void RightBtn()
+	{
+		currentAdditionTypeIndex += 1;
+		if (currentAdditionTypeIndex == additionTypeNames.Count)
+		{
+			currentAdditionTypeIndex = 0;
+		}
+		ChangeCurrentAdditionType();
+	}
+
+	/// <summary>
+	/// 获取所有枚举名字
+	/// </summary>
+	/// <returns></returns>
+	List<string> GetAdditionTypeNames()
+	{
+		List<string> nameList = new List<string>();
+		foreach (var e in Enum.GetValues(typeof(AdditionType)))
+		{
+			// 转换成Description后添加至List
+			object objArr = e.GetType().GetField(e.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), true)[0];
+			nameList.Add((objArr as DescriptionAttribute).Description);
+		}
+		return nameList;
+	}
+
+	void ChangeCurrentAdditionType()
+	{
+		typeName.text = additionTypeNames[currentAdditionTypeIndex];
 	}
 }
