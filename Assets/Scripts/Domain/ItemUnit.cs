@@ -6,6 +6,7 @@ public class ItemUnit
 {
     public string itemId;
     public string itemName;
+    public string desp;
     public int mainType;
     public int subType;
     public int hp;

@@ -143,6 +143,7 @@ public class SQLiteUtil : MonoBehaviour
             ItemUnit item = new ItemUnit();
             item.itemId = reader.GetString(reader.GetOrdinal("ID"));
             item.itemName = reader.GetString(reader.GetOrdinal("NAME"));
+            item.desp = reader.GetString(reader.GetOrdinal("DESP"));
             item.mainType = reader.GetInt32(reader.GetOrdinal("MAINTYPE"));
             item.subType = reader.GetInt32(reader.GetOrdinal("SUBTYPE"));
             item.hp = reader.GetInt32(reader.GetOrdinal("HP"));
@@ -179,6 +180,7 @@ public class SQLiteUtil : MonoBehaviour
             ItemUnit item = new ItemUnit();
             item.itemId = reader.GetString(reader.GetOrdinal("ID"));
             item.itemName = reader.GetString(reader.GetOrdinal("NAME"));
+            item.desp = reader.GetString(reader.GetOrdinal("DESP"));
             item.mainType = reader.GetInt32(reader.GetOrdinal("MAINTYPE"));
             item.subType = reader.GetInt32(reader.GetOrdinal("SUBTYPE"));
             item.hp = reader.GetInt32(reader.GetOrdinal("HP"));
@@ -214,6 +216,7 @@ public class SQLiteUtil : MonoBehaviour
             ItemUnit item = new ItemUnit();
             item.itemId = reader.GetString(reader.GetOrdinal("ID"));
             item.itemName = reader.GetString(reader.GetOrdinal("NAME"));
+            item.desp = reader.GetString(reader.GetOrdinal("DESP"));
             item.mainType = reader.GetInt32(reader.GetOrdinal("MAINTYPE"));
             item.subType = reader.GetInt32(reader.GetOrdinal("SUBTYPE"));
             item.hp = reader.GetInt32(reader.GetOrdinal("HP"));

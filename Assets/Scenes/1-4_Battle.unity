@@ -3931,8 +3931,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitMoveSpeed: 5
-  minEnemyLevel: 5
-  maxEnemyLevel: 7
+  minEnemyLevel: 1
+  maxEnemyLevel: 3
   currentActPlayerUnitPos: {fileID: 1390769041}
   playerUnitPos_1: {fileID: 1392881318}
   playerUnitPos_2: {fileID: 1740318600}

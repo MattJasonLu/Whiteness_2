@@ -146,42 +146,49 @@ public class BagPanelControl : MonoBehaviour
             bagItem.transform.Find("Name").GetComponent<Text>().text = p.itemName;
             bagItem.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + p.itemId, typeof(Sprite)) as Sprite;
             bagItem.transform.Find("Count").GetComponent<Text>().text = p.count.ToString();
+            bagItem.transform.Find("Desp").GetComponentInChildren<Text>().text = p.desp;
         });
         list1.ForEach(p => {
             GameObject bagItem = GameObject.Instantiate(bagItemPrefab, content_2.transform, false);
             bagItem.transform.Find("Name").GetComponent<Text>().text = p.itemName;
             bagItem.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + p.itemId, typeof(Sprite)) as Sprite;
             bagItem.transform.Find("Count").GetComponent<Text>().text = p.count.ToString();
+            bagItem.transform.Find("Desp").GetComponentInChildren<Text>().text = p.desp;
         });
         list2.ForEach(p => {
             GameObject bagItem = GameObject.Instantiate(bagItemPrefab, content_3.transform, false);
             bagItem.transform.Find("Name").GetComponent<Text>().text = p.itemName;
             bagItem.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + p.itemId, typeof(Sprite)) as Sprite;
             bagItem.transform.Find("Count").GetComponent<Text>().text = p.count.ToString();
+            bagItem.transform.Find("Desp").GetComponentInChildren<Text>().text = p.desp;
         });
         list3.ForEach(p => {
             GameObject bagItem = GameObject.Instantiate(bagItemPrefab, content_4.transform, false);
             bagItem.transform.Find("Name").GetComponent<Text>().text = p.itemName;
             bagItem.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + p.itemId, typeof(Sprite)) as Sprite;
             bagItem.transform.Find("Count").GetComponent<Text>().text = p.count.ToString();
+            bagItem.transform.Find("Desp").GetComponentInChildren<Text>().text = p.desp;
         });
         list4.ForEach(p => {
             GameObject bagItem = GameObject.Instantiate(bagItemPrefab, content_5.transform, false);
             bagItem.transform.Find("Name").GetComponent<Text>().text = p.itemName;
             bagItem.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + p.itemId, typeof(Sprite)) as Sprite;
             bagItem.transform.Find("Count").GetComponent<Text>().text = p.count.ToString();
+            bagItem.transform.Find("Desp").GetComponentInChildren<Text>().text = p.desp;
         });
         list5.ForEach(p => {
             GameObject bagItem = GameObject.Instantiate(bagItemPrefab, content_6.transform, false);
             bagItem.transform.Find("Name").GetComponent<Text>().text = p.itemName;
             bagItem.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + p.itemId, typeof(Sprite)) as Sprite;
             bagItem.transform.Find("Count").GetComponent<Text>().text = p.count.ToString();
+            bagItem.transform.Find("Desp").GetComponentInChildren<Text>().text = p.desp;
         });
         list5.ForEach(p => {
             GameObject bagItem = GameObject.Instantiate(bagItemPrefab, content_7.transform, false);
             bagItem.transform.Find("Name").GetComponent<Text>().text = p.itemName;
             bagItem.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load("ItemImg/" + p.itemId, typeof(Sprite)) as Sprite;
             bagItem.transform.Find("Count").GetComponent<Text>().text = p.count.ToString();
+            bagItem.transform.Find("Desp").GetComponentInChildren<Text>().text = p.desp;
         });
     }
 }
