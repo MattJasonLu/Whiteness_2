@@ -55,6 +55,8 @@ public class BattleSystem : MonoBehaviour {
 	public DBCalculator dbCalculator;
 	// 结算面板
 	private GameObject resultPanel;
+	// 成功界面
+	private GameObject successPanel;
 	private GameObject roleNameText_1;
 	private GameObject roleNameText_2;
 	private GameObject roleNameText_3;
@@ -64,6 +66,8 @@ public class BattleSystem : MonoBehaviour {
 	private GameObject lv_1;
 	private GameObject lv_2;
 	private GameObject lv_3;
+	// 失败界面
+	private GameObject failPanel;
 	// 所有参战单元
 	private List<GameObject> battleUnits;
 	// 所有玩家单元
@@ -115,16 +119,19 @@ public class BattleSystem : MonoBehaviour {
 		tacticsPanel = canvas.transform.Find("SkillPanel").gameObject;
 		comboPanel = canvas.transform.Find("ComboPanel").gameObject;
 		itemPanel = canvas.transform.Find("ItemPanel").gameObject;
+		// 结算面板
 		resultPanel = canvas.transform.Find("ResultPanel").gameObject;
-		roleNameText_1 = canvas.transform.Find("ResultPanel/Panel/Role_1").gameObject;
-		roleNameText_2 = canvas.transform.Find("ResultPanel/Panel/Role_2").gameObject;
-		roleNameText_3 = canvas.transform.Find("ResultPanel/Panel/Role_3").gameObject;
-		roleExpText_1 = canvas.transform.Find("ResultPanel/Panel/Exp_1").gameObject;
-		roleExpText_2 = canvas.transform.Find("ResultPanel/Panel/Exp_2").gameObject;
-		roleExpText_3 = canvas.transform.Find("ResultPanel/Panel/Exp_3").gameObject;
-		lv_1 = canvas.transform.Find("ResultPanel/Panel/Lv_1").gameObject;
-		lv_2 = canvas.transform.Find("ResultPanel/Panel/Lv_2").gameObject;
-		lv_3 = canvas.transform.Find("ResultPanel/Panel/Lv_3").gameObject;
+		successPanel = canvas.transform.Find("ResultPanel/SuccessPanel").gameObject;
+		roleNameText_1 = canvas.transform.Find("ResultPanel/SuccessPanel/Role_1").gameObject;
+		roleNameText_2 = canvas.transform.Find("ResultPanel/SuccessPanel/Role_2").gameObject;
+		roleNameText_3 = canvas.transform.Find("ResultPanel/SuccessPanel/Role_3").gameObject;
+		roleExpText_1 = canvas.transform.Find("ResultPanel/SuccessPanel/Exp_1").gameObject;
+		roleExpText_2 = canvas.transform.Find("ResultPanel/SuccessPanel/Exp_2").gameObject;
+		roleExpText_3 = canvas.transform.Find("ResultPanel/SuccessPanel/Exp_3").gameObject;
+		lv_1 = canvas.transform.Find("ResultPanel/SuccessPanel/Lv_1").gameObject;
+		lv_2 = canvas.transform.Find("ResultPanel/SuccessPanel/Lv_2").gameObject;
+		lv_3 = canvas.transform.Find("ResultPanel/SuccessPanel/Lv_3").gameObject;
+		failPanel = canvas.transform.Find("ResultPanel/FailPanel").gameObject;
 		basicPanel.SetActive(false);
 		notice.SetActive(false);
 		resultPanel.SetActive(false);
@@ -384,7 +391,9 @@ public class BattleSystem : MonoBehaviour {
 		notice.SetActive(false);
 	}
 
-	// 生成玩家列表
+	/// <summary>
+	/// 生成玩家列表
+	/// </summary>
 	void GeneratePlayerList()
 	{
 		List<RoleUnitDAO> roleUnits = GameManager._instance.roleUnits;
@@ -419,7 +428,9 @@ public class BattleSystem : MonoBehaviour {
 		}
 	}
 
-	// 生成敌人列表
+	/// <summary>
+	/// 生成敌人列表
+	/// </summary>
 	void GenerateEnemyList()
 	{
 		//string prefix = "Assets/Resources/";
@@ -429,7 +440,7 @@ public class BattleSystem : MonoBehaviour {
 		//List<string> prefabNameList = GetPrefabNameListFromPath(prefix + path);
 		totalExp = 0;
 		int enemyCount = Random.Range(1, 4);
-		enemyCount = 3;
+		//enemyCount = 3;
 		for (int i = 0; i < enemyCount; i++)
 		{
 			// 加载每一个对象
@@ -492,7 +503,7 @@ public class BattleSystem : MonoBehaviour {
 		{
 			// 失败
 			StartCoroutine(ShowNotice("战斗失败"));
-			SetResultPanel();
+			SetFailPanel();
 		}
 		else if (remainEnemyUnits.Count == 0)
 		{
@@ -525,6 +536,7 @@ public class BattleSystem : MonoBehaviour {
 	/// </summary>
 	private void SetResultPanel()
 	{
+
 		roleNameText_1.SetActive(false);
 		roleExpText_1.SetActive(false);
 		roleNameText_2.SetActive(false);
@@ -580,9 +592,19 @@ public class BattleSystem : MonoBehaviour {
 				}
 			}
 		}
+		successPanel.SetActive(true);
 		resultPanel.SetActive(true);
-		Debug.Log("玩家经验值：" + GameManager._instance.roleUnits[0].unitId + "," + GameManager._instance.roleUnits[0].EXP);
+		//Debug.Log("玩家经验值：" + GameManager._instance.roleUnits[0].unitId + "," + GameManager._instance.roleUnits[0].EXP);
 		GameManager._instance.SaveGame();
+	}
+
+	/// <summary>
+	/// 设置失败界面
+	/// </summary>
+	private void SetFailPanel()
+	{
+		failPanel.SetActive(true);
+		resultPanel.SetActive(true);
 	}
 
 	public void OnResultPanelClose()
