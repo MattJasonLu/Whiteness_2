@@ -23,7 +23,7 @@ Material:
   m_Name: guangchang2
   m_Shader: {fileID: -6465566751694194690, guid: a7d8049c234826f4ba20f96b25a68ff9,
     type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
