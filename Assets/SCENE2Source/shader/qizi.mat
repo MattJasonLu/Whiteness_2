@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: qizi
+  m_Shader: {fileID: -6465566751694194690, guid: 9de8ecff380e7854daff5ce28be26ab7,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _SampleTexture2D_1AAEF2C8_Texture_1:
+        m_Texture: {fileID: 2800000, guid: e5654fa87057ad544ae52db5e5cfeaae, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_36741B1E_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 927fe0b84a450b042af12dbe6ca6951a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_39F917CD_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 0b47a1c665900cf4eb2732f2127b27d0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_57D9D958_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 0d123e74f070afc4aa7128dbe63fe49a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_73491601_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 5f3d765fa7502794f9ca8279a307833c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_A47A666A_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 50e12321159fda646a8c7d81ac1b4096, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors: []

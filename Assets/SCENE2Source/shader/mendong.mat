@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: mendong
+  m_Shader: {fileID: -6465566751694194690, guid: cb057af9afd6e71449e21c99f0bb030d,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _SampleTexture2D_1AAEF2C8_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 248f763484419fd478531d2d68adcb20, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_39F917CD_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 4e93935365a835b4cac9ba8071d7c16c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_57D9D958_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 5ce4481ad0a6f204a82c6663e1a4e127, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_73491601_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 0695040920c58734181109aa5101f480, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_A47A666A_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 3069ebcd154f4094d8ae214d5a344a25, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors: []

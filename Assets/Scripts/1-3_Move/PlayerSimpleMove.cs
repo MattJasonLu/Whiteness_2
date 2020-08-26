@@ -30,6 +30,7 @@ public class PlayerSimpleMove : MonoBehaviour {
 	void SetPlayerPos()
 	{
 		// 设置玩家的位置
+		PlayerPrefs.DeleteAll();
 		string playerPos = PlayerPrefs.GetString("PlayerPos");
 		if (playerPos != null && playerPos != "")
 		{
