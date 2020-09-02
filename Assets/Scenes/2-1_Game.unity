@@ -193,7 +193,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\u8FDB\u5165\u6218\u6597"
 --- !u!222 &45075230
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -439,7 +439,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\u6D4B\u8BD5\u6280\u80FD2"
 --- !u!222 &717630569
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -713,6 +713,7 @@ GameObject:
   - component: {fileID: 1224908569}
   - component: {fileID: 1224908571}
   - component: {fileID: 1224908570}
+  - component: {fileID: 1224908572}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -778,6 +779,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224908568}
   m_CullTransparentMesh: 0
+--- !u!114 &1224908572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224908568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 187e0887e42b6dc45b5ad4a88d1402d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Player: {fileID: 213662653}
+  m_Effect_1: {fileID: 7053518189101720096, guid: 9df70675a740ffd40b24a932f81b745c,
+    type: 3}
+  m_Effect_2: {fileID: 2494202246960975677, guid: f7f140a85af8c054db38efec4e80f70d,
+    type: 3}
 --- !u!1 &1228139614
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +877,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1228139617}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1224908572}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: OnClickSkill_2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1228139617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -979,7 +1009,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1580160182}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1224908572}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: OnClickSkill_1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1580160182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1088,7 +1130,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\u6D4B\u8BD5\u6280\u80FD1"
 --- !u!222 &1605511290
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1262,10 +1304,10 @@ RectTransform:
   m_Father: {fileID: 1224908569}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.3, y: 0.00000095367}
-  m_SizeDelta: {x: 94.24072, y: 124.05359}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 206.3, y: -105.8}
+  m_SizeDelta: {x: 92.40082, y: 104.73465}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1931000857
 MonoBehaviour:
@@ -1386,7 +1428,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1939754685}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1224908572}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: OnClickIntoBattle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1939754685
 MonoBehaviour:
   m_ObjectHideFlags: 0

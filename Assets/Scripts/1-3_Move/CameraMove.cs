@@ -47,7 +47,7 @@ public class CameraMove : MonoBehaviour {
 				m_EnemyOriginPos = m_Enemy.transform.position;
 				m_State = GameState.Battle;
 			}
-		} 
+		}
 		else if (m_State == GameState.Battle)
 		{
 			ChangeBattleView();
