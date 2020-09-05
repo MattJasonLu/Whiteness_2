@@ -1218,7 +1218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661159276}
   m_LocalRotation: {x: 0.002403617, y: -0.9547688, z: 0.29723898, w: 0.007738916}
-  m_LocalPosition: {x: -0.17, y: 4.59, z: -11.88}
+  m_LocalPosition: {x: -0.18, y: 4.33, z: -12.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1429,8 +1429,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1224908572}
-        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+      - m_Target: {fileID: 1661159281}
+        m_TargetAssemblyTypeName: CameraMove, Assembly-CSharp
         m_MethodName: OnClickIntoBattle
         m_Mode: 1
         m_Arguments:
