@@ -61,7 +61,10 @@ public class RoleUnit : MonoBehaviour {
 	private SkillDAO skill;
 	// 使用道具
 	private ItemUnit item;
-
+	/// <summary>
+	/// 人物是否被点击过
+	/// </summary>
+	public bool isClicked = false;
 
 	void Update()
 	{
@@ -447,6 +450,16 @@ public class RoleUnit : MonoBehaviour {
 		return name;
 	}
 
-	
+	/// <summary>
+	/// 鼠标点击模型
+	/// </summary>
+	private void OnMouseDown() 
+	{
+		if (!isClicked)
+		{
+			Debug.Log("模型被点击了");
+			isClicked = true;
+		}
+	}	
 
 }

@@ -791,6 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 187e0887e42b6dc45b5ad4a88d1402d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Camera: {fileID: 1661159276}
   m_Player: {fileID: 213662653}
   m_Effect_1: {fileID: 7053518189101720096, guid: 9df70675a740ffd40b24a932f81b745c,
     type: 3}

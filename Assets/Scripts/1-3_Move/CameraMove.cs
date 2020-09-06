@@ -16,11 +16,22 @@ public class CameraMove : MonoBehaviour {
 	Vector3 offset;
 	GameObject player;
 	GameState m_State;
+	/// <summary>
+	/// 原始视角位置
+	/// </summary>
 	Vector3 m_OriginPos;
 	Vector3 m_OriginRot;
 	Vector3 m_RoleOriginPos;
 	Vector3 m_RoleOriginRot;
 	Vector3 m_EnemyOriginPos;
+	/// <summary>
+	/// 战斗用视角位置
+	/// </summary>
+	Vector3 m_BattlePos;
+	Vector3 m_BatlleRot;
+
+	Vector3 m_FocusPos;
+	Quaternion m_FocusRot;
 	/// <summary>
 	/// 标识是否移动到位
 	/// </summary>
@@ -36,9 +47,8 @@ public class CameraMove : MonoBehaviour {
 		offset = transform.position - player.transform.position;
 		m_State = GameState.Move;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	void FixedUpdate() {
 		if (m_State == GameState.Move)
 		{
 			transform.position = player.transform.position + offset;
@@ -114,6 +124,11 @@ public class CameraMove : MonoBehaviour {
 			}
 			yield return new WaitForSeconds(1f);
 			m_isOver = true;
+			// 记录战斗时摄像机的位置和旋转角度
+			m_BattlePos = transform.position;
+			m_BatlleRot = transform.localEulerAngles;
+			m_FocusPos = new Vector3(m_BattlePos.x + 0.2f, m_BattlePos.y, m_BattlePos.z - 0.3f);
+			m_FocusRot = Quaternion.Euler(m_BatlleRot.x + 5f, m_BatlleRot.y, m_BatlleRot.z);
 		}
 	}
 
@@ -129,6 +144,22 @@ public class CameraMove : MonoBehaviour {
 		m_Enemy.transform.position = m_EnemyOriginPos;
 		m_Role.transform.Find("Anim").GetComponentInChildren<Animator>().ResetTrigger("Battle");
 		m_Role.transform.Find("Anim").GetComponentInChildren<Animator>().SetTrigger("Idle");
+	}
+
+	/// <summary>
+	/// 聚焦镜头到人物
+	/// </summary>
+	public void FocusRole()
+	{
+		// 镜头向前移动
+		transform.position = Vector3.Lerp(transform.position, m_FocusPos, Time.deltaTime * 1);
+		// 镜头旋转
+		transform.rotation = Quaternion.Lerp(transform.rotation, m_FocusRot, Time.deltaTime * 5);
+		Debug.Log(Quaternion.Angle(m_FocusRot, transform.rotation));
+		if (Quaternion.Angle(m_FocusRot, transform.rotation) < 1)
+        {
+            transform.rotation = m_FocusRot;                  
+        }
 	}
 	
 }

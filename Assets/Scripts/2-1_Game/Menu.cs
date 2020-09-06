@@ -5,17 +5,17 @@ using UnityEngine;
 public class Menu : MonoBehaviour
 {
     [SerializeField]
+    private GameObject m_Camera;
+    [SerializeField]
     private GameObject m_Player;
     [SerializeField]
     private GameObject m_Effect_1;
     [SerializeField]
     private GameObject m_Effect_2;
 
-    private bool isMove = false;
-
     void Update() 
     {
-        MoveTowards();
+        ChooseRole();
     }
 
     /// <summary>
@@ -32,18 +32,30 @@ public class Menu : MonoBehaviour
     }
 
     /// <summary>
+    /// 选中角色的放大处理
+    /// </summary>
+    public void ChooseRole()
+    {
+        // 判断是否选中了角色
+        if (m_Player.GetComponent<RoleUnit>().isClicked)
+        {
+            // 人物往前移动，同时镜头放大
+            MoveTowards();
+            // 放大，移动摄像机到合适的位置
+            m_Camera.GetComponent<CameraMove>().FocusRole();
+        }
+    }
+
+    /// <summary>
     /// 人物向前移动
     /// </summary>
     public void MoveTowards()
     {
-        if (isMove)
+        // 主角人物向前移动
+        if (m_Player.transform.position.x < -1f)
         {
-            // 主角人物向前移动
-            if (m_Player.transform.position.x < -1f)
-            {
-                Vector3 newPos = new Vector3(m_Player.transform.position.x + 1.5f, m_Player.transform.position.y, m_Player.transform.position.z);
-                m_Player.transform.position = Vector3.Lerp(m_Player.transform.position, newPos, Time.deltaTime * 2);
-            }
+            Vector3 newPos = new Vector3(m_Player.transform.position.x + 1.5f, m_Player.transform.position.y, m_Player.transform.position.z);
+            m_Player.transform.position = Vector3.Lerp(m_Player.transform.position, newPos, Time.deltaTime * 2);
         }
     }
 
@@ -53,9 +65,6 @@ public class Menu : MonoBehaviour
     /// <returns></returns>
     IEnumerator PlaySkill1()
     {
-        isMove = true;
-        yield return new WaitForSeconds(0.3f);
-        isMove = false;
         // 播放人物攻击动画
         m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Battle");
         m_Player.transform.Find("Anim").GetComponent<Animator>().SetTrigger("Skill1");
@@ -78,9 +87,6 @@ public class Menu : MonoBehaviour
     /// <returns></returns>
     IEnumerator PlaySkill2()
     {
-        isMove = true;
-        yield return new WaitForSeconds(0.3f);
-        isMove = false;
         // 播放人物攻击动画
         m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Battle");
         m_Player.transform.Find("Anim").GetComponent<Animator>().SetTrigger("Skill1");
