@@ -1270,6 +1270,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Role: {fileID: 213662653}
   m_Enemy: {fileID: 1796348287803158210}
+  m_OriginCamTrans: {fileID: 1976852009057453295, guid: 7a23e0a8178a87d4fa487ce817e8f080,
+    type: 3}
+  m_ReadyCamTrans: {fileID: 3864364044103977109, guid: 34ca50dabd04edf4f92c5191d463c58d,
+    type: 3}
+  m_BattleCamTrans: {fileID: 2573543649757980133, guid: 0871b1bdf72a8634dac5d136514113fa,
+    type: 3}
 --- !u!1 &1931000855
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,7 +1313,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 206.3, y: -105.8}
+  m_AnchoredPosition: {x: 915, y: -104}
   m_SizeDelta: {x: 92.40082, y: 104.73465}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1931000857
@@ -1840,6 +1846,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: E001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8704376948282051818, guid: d43d6f8c85cda2e4f9dc134be0057a69,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8754224885115591056, guid: d43d6f8c85cda2e4f9dc134be0057a69,
         type: 3}

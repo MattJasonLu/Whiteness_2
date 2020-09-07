@@ -37,6 +37,22 @@ public class CameraMove : MonoBehaviour {
 	/// </summary>
 	private bool m_isOver;
 
+	/// <summary>
+	/// 摄像机起始位置
+	/// </summary>
+	[SerializeField]
+	private Transform m_OriginCamTrans;
+	/// <summary>
+	/// 摄像机准备位置
+	/// </summary>
+	[SerializeField]
+	private Transform m_ReadyCamTrans;
+	/// <summary>
+	/// 摄像机战斗位置
+	/// </summary>
+	[SerializeField]
+	private Transform m_BattleCamTrans;
+
 	void Awake()
 	{
 		player = GameObject.FindGameObjectWithTag("Player");
@@ -70,8 +86,8 @@ public class CameraMove : MonoBehaviour {
     /// </summary>
     public void OnClickIntoBattle()
     {
-		m_OriginPos = transform.position;
-		m_OriginRot = transform.localEulerAngles;
+		m_OriginPos = m_OriginCamTrans.position;
+		m_OriginRot = m_OriginCamTrans.localEulerAngles;
 		m_RoleOriginPos = m_Role.transform.position;
 		m_RoleOriginRot = m_Role.transform.Find("Anim").localEulerAngles;
 		m_EnemyOriginPos = m_Enemy.transform.position;
@@ -107,9 +123,9 @@ public class CameraMove : MonoBehaviour {
 				m_Role.transform.position = Vector3.Lerp(m_Role.transform.position, newPos, Time.deltaTime * 2);
 			}
 			// 敌人入场
-			if (Mathf.Abs(m_Enemy.transform.position.y - m_EnemyOriginPos.y) < 3)
+			if (Mathf.Abs(m_Enemy.transform.position.y - m_EnemyOriginPos.y) < 2.9f)
 			{
-				Vector3 newPos = new Vector3(m_Enemy.transform.position.x, m_Enemy.transform.position.y - 3, m_Enemy.transform.position.z);
+				Vector3 newPos = new Vector3(m_Enemy.transform.position.x, m_Enemy.transform.position.y - 2.9f, m_Enemy.transform.position.z);
 				m_Enemy.transform.position = Vector3.Lerp(m_Enemy.transform.position, newPos, Time.deltaTime * 2);
 			}
 			
@@ -124,11 +140,6 @@ public class CameraMove : MonoBehaviour {
 			}
 			yield return new WaitForSeconds(1f);
 			m_isOver = true;
-			// 记录战斗时摄像机的位置和旋转角度
-			m_BattlePos = transform.position;
-			m_BatlleRot = transform.localEulerAngles;
-			m_FocusPos = new Vector3(m_BattlePos.x + 0.2f, m_BattlePos.y, m_BattlePos.z - 0.3f);
-			m_FocusRot = Quaternion.Euler(m_BatlleRot.x + 5f, m_BatlleRot.y, m_BatlleRot.z);
 		}
 	}
 
@@ -137,8 +148,8 @@ public class CameraMove : MonoBehaviour {
 	/// </summary>
 	public void ChangeOriginView()
 	{
-		transform.position = m_OriginPos;
-		transform.localEulerAngles = m_OriginRot;
+		transform.position = m_OriginCamTrans.position;
+		transform.localEulerAngles = m_OriginCamTrans.localEulerAngles;
 		m_Role.transform.position = m_RoleOriginPos;
 		m_Role.transform.Find("Anim").localEulerAngles = m_RoleOriginRot;
 		m_Enemy.transform.position = m_EnemyOriginPos;
@@ -152,16 +163,12 @@ public class CameraMove : MonoBehaviour {
 	public void FocusRole()
 	{
 		// 镜头向前移动
-		transform.position = Vector3.Lerp(transform.position, m_FocusPos, Time.deltaTime * 1);
-		// 镜头旋转
-		transform.rotation = Quaternion.Lerp(transform.rotation, m_FocusRot, Time.deltaTime * 5);
-		Debug.Log(Quaternion.Angle(m_FocusRot, transform.rotation));
-		if (Quaternion.Angle(m_FocusRot, transform.rotation) < 1)
-        {
-            transform.rotation = m_FocusRot;                  
-        }
+		transform.position = Vector3.Lerp(transform.position, m_BattleCamTrans.position, Time.deltaTime * 3);
+		transform.rotation = Quaternion.Slerp(transform.rotation, m_BattleCamTrans.rotation, Time.deltaTime * 3);
+		// 人物和敌人角度跟随
+		m_Role.transform.Find("Anim").localEulerAngles = m_BattleCamTrans.localEulerAngles;
+		m_Enemy.transform.Find("Anim").localEulerAngles = m_BattleCamTrans.localEulerAngles;
 	}
-	
 }
 
 public enum GameState
