@@ -457,7 +457,6 @@ public class RoleUnit : MonoBehaviour {
 	{
 		if (!isClicked)
 		{
-			Debug.Log("模型被点击了");
 			isClicked = true;
 		}
 	}	

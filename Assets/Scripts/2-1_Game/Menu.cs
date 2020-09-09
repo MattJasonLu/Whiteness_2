@@ -69,12 +69,12 @@ public class Menu : MonoBehaviour
         m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Battle");
         m_Player.transform.Find("Anim").GetComponent<Animator>().SetTrigger("Skill1");
         // 延时
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.6f);
         // 播放效果
         GameObject effect = Instantiate(m_Effect_1);
         effect.transform.SetParent(m_Player.transform, false);
         effect.transform.position = new Vector3(
-            effect.transform.position.x + 0.3f, effect.transform.position.y + 0.2f, effect.transform.position.z);
+            effect.transform.position.x + 0.8f, effect.transform.position.y + 0.2f, effect.transform.position.z);
         effect.GetComponent<ParticleSystem>().Play();
         Destroy(effect, 2f);
         m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Skill1");
