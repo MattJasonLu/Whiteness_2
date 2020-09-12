@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class CameraMove : MonoBehaviour {
 	/// <summary>
@@ -52,6 +53,12 @@ public class CameraMove : MonoBehaviour {
 	/// </summary>
 	[SerializeField]
 	private Transform m_BattleCamTrans;
+	/// <summary>
+    /// PostProcess for adjusting lens
+    /// </summary>
+    [SerializeField]
+    private GameObject m_Volmue;
+
 
 	void Awake()
 	{
