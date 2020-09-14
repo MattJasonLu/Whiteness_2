@@ -141,13 +141,22 @@ public class Menu : MonoBehaviour
         GameObject effect = Instantiate(m_Effect_1);
         effect.transform.SetParent(m_Player.transform, false);
         effect.transform.position = new Vector3(
-            effect.transform.position.x + 0.8f, effect.transform.position.y + 0.2f, effect.transform.position.z);
+            effect.transform.position.x + 0.5f, effect.transform.position.y + 0.2f, effect.transform.position.z);
         effect.GetComponent<ParticleSystem>().Play();
         Destroy(effect, 2f);
         m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Skill1");
         m_Player.transform.Find("Anim").GetComponent<Animator>().SetTrigger("Battle");
+        yield return new WaitForSeconds(0.5f);
         m_IsEnemyBack = true;
         m_EnemyBackDir = true;
+        // 播放敌人受到的刀击效果
+        GameObject effect2 = Instantiate(m_Effect_1);
+        effect2.transform.SetParent(m_Enemy.transform, false);
+        effect2.transform.localScale = new Vector3(effect2.transform.localScale.x * 2, effect2.transform.localScale.y * 2, effect2.transform.localScale.z * 2);
+        effect2.transform.position = new Vector3(
+            effect2.transform.position.x, effect2.transform.position.y, effect2.transform.position.z);
+        effect2.GetComponent<ParticleSystem>().Play();
+        Destroy(effect2, 2f);
     }
 
     /// <summary>
