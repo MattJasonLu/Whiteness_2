@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 public class Menu : MonoBehaviour
@@ -41,6 +42,13 @@ public class Menu : MonoBehaviour
     /// </summary>
     private bool m_IsEnemyBack = false;
     private bool m_EnemyBackDir = false;
+    /// <summary>
+    /// Post processing
+    /// </summary>
+    [SerializeField]
+    private Volume m_Volume;
+
+    private float m_TimeTracker = 0.0f;
 
     void Start()
     {
@@ -91,6 +99,8 @@ public class Menu : MonoBehaviour
         {
             Vector3 newPos = new Vector3(m_Player.transform.position.x + 1.5f, m_Player.transform.position.y, m_Player.transform.position.z);
             m_Player.transform.position = Vector3.Lerp(m_Player.transform.position, newPos, Time.deltaTime * 2);
+            // 镜头对人物聚焦
+            m_Volume.profile.components[0].parameters[2].SetValue(new FloatParameter(Mathf.Lerp(0.3f, 0.4f, Time.deltaTime * (m_TimeTracker += 0.1f) * 50)));
         }
     }
 
@@ -129,9 +139,12 @@ public class Menu : MonoBehaviour
     /// <returns></returns>
     IEnumerator PlaySkill1()
     {
+        m_TimeTracker = 0f;
         m_EnemyOriginPos = new Vector3(m_Enemy.transform.position.x, m_Enemy.transform.position.y, m_Enemy.transform.position.z);
         // 确定敌人撤退的位置坐标
         m_EnemyBackPos = new Vector3(m_Enemy.transform.position.x + 0.5f, m_Enemy.transform.position.y, m_Enemy.transform.position.z);
+        
+
         // 播放人物攻击动画
         m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Battle");
         m_Player.transform.Find("Anim").GetComponent<Animator>().SetTrigger("Skill1");
@@ -157,6 +170,8 @@ public class Menu : MonoBehaviour
             effect2.transform.position.x, effect2.transform.position.y, effect2.transform.position.z);
         effect2.GetComponent<ParticleSystem>().Play();
         Destroy(effect2, 2f);
+
+        // TODO 技能释放完后人物要后退，镜头要扩大
     }
 
     /// <summary>
