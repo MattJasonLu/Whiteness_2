@@ -153,6 +153,7 @@ public class Menu : MonoBehaviour
         effect.transform.SetParent(m_Player.transform, false);
         effect.transform.position = new Vector3(
             effect.transform.position.x + 0.5f, effect.transform.position.y + 0.2f, effect.transform.position.z);
+        // TODO 2020-9-18 15:32:03 Need to emit light before attack
         effect.GetComponent<ParticleSystem>().Play();
         Destroy(effect, 2f);
         m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Skill1");
@@ -160,13 +161,14 @@ public class Menu : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         m_IsEnemyBack = true;
         m_EnemyBackDir = true;
-        // Plays the effect of a knife attack on an enemy
+        // Plays the effect of a attack on an enemy
         GameObject effect2 = Instantiate(m_Effect_1);
         effect2.transform.SetParent(m_Enemy.transform, false);
         effect2.transform.localScale = new Vector3(effect2.transform.localScale.x * 2, effect2.transform.localScale.y * 2, effect2.transform.localScale.z * 2);
         effect2.transform.position = new Vector3(
             effect2.transform.position.x, effect2.transform.position.y, effect2.transform.position.z);
         effect2.GetComponent<ParticleSystem>().Play();
+        // TODO 2020-9-18 15:31:03 Need to emit light under attack
         Destroy(effect2, 2f);
         // Update: 2020-9-18 15:23:50
         // After the skill is released, the character has to step back and the lens has to expand
@@ -180,19 +182,6 @@ public class Menu : MonoBehaviour
     /// <returns></returns>
     IEnumerator PlaySkill2()
     {
-        // Play character attack animation
-        m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Battle");
-        m_Player.transform.Find("Anim").GetComponent<Animator>().SetTrigger("Skill1");
-        // Time delay
-        yield return new WaitForSeconds(0.3f);
-        // Play effect
-        GameObject effect = Instantiate(m_Effect_2);
-        effect.transform.SetParent(m_Player.transform, false);
-        effect.transform.position = new Vector3(
-            effect.transform.position.x + 0.3f, effect.transform.position.y + 0.2f, effect.transform.position.z);
-        effect.GetComponent<ParticleSystem>().Play();
-        Destroy(effect, 2f);
-        m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Skill1");
-        m_Player.transform.Find("Anim").GetComponent<Animator>().SetTrigger("Battle");
+        // TODO 2020-9-18 15:32:45 Add more skill
     }
 }
