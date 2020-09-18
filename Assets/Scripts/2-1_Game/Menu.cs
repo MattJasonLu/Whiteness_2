@@ -141,16 +141,14 @@ public class Menu : MonoBehaviour
     {
         m_TimeTracker = 0f;
         m_EnemyOriginPos = new Vector3(m_Enemy.transform.position.x, m_Enemy.transform.position.y, m_Enemy.transform.position.z);
-        // 确定敌人撤退的位置坐标
+        // Coordinate the enemy's retreat position
         m_EnemyBackPos = new Vector3(m_Enemy.transform.position.x + 0.5f, m_Enemy.transform.position.y, m_Enemy.transform.position.z);
-        
-
-        // 播放人物攻击动画
+        // Play character attack animation
         m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Battle");
         m_Player.transform.Find("Anim").GetComponent<Animator>().SetTrigger("Skill1");
-        // 延时
+        // Time delay
         yield return new WaitForSeconds(0.6f);
-        // 播放效果
+        // Play effect
         GameObject effect = Instantiate(m_Effect_1);
         effect.transform.SetParent(m_Player.transform, false);
         effect.transform.position = new Vector3(
@@ -162,7 +160,7 @@ public class Menu : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         m_IsEnemyBack = true;
         m_EnemyBackDir = true;
-        // 播放敌人受到的刀击效果
+        // Plays the effect of a knife attack on an enemy
         GameObject effect2 = Instantiate(m_Effect_1);
         effect2.transform.SetParent(m_Enemy.transform, false);
         effect2.transform.localScale = new Vector3(effect2.transform.localScale.x * 2, effect2.transform.localScale.y * 2, effect2.transform.localScale.z * 2);
@@ -170,8 +168,10 @@ public class Menu : MonoBehaviour
             effect2.transform.position.x, effect2.transform.position.y, effect2.transform.position.z);
         effect2.GetComponent<ParticleSystem>().Play();
         Destroy(effect2, 2f);
-
-        // TODO 技能释放完后人物要后退，镜头要扩大
+        // Update: 2020-9-18 15:23:50
+        // After the skill is released, the character has to step back and the lens has to expand
+        yield return new WaitForSeconds(0.5f);
+        m_Camera.GetComponent<CameraMove>().FocusRole();
     }
 
     /// <summary>
@@ -180,12 +180,12 @@ public class Menu : MonoBehaviour
     /// <returns></returns>
     IEnumerator PlaySkill2()
     {
-        // 播放人物攻击动画
+        // Play character attack animation
         m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Battle");
         m_Player.transform.Find("Anim").GetComponent<Animator>().SetTrigger("Skill1");
-        // 延时
+        // Time delay
         yield return new WaitForSeconds(0.3f);
-        // 播放效果
+        // Play effect
         GameObject effect = Instantiate(m_Effect_2);
         effect.transform.SetParent(m_Player.transform, false);
         effect.transform.position = new Vector3(

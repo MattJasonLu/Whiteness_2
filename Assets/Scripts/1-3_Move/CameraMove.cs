@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System.Numerics;
+using System.Transactions;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
@@ -114,29 +116,29 @@ public class CameraMove : MonoBehaviour {
 	{
 		if (!m_isOver)
 		{
-			// 人物变更战斗状态
+			// Character changes combat status
 			m_Role.transform.Find("Anim").GetComponentInChildren<Animator>().SetTrigger("Battle");
 
-			// 镜头向前移动
+			// The lens moves forward
 			if (Mathf.Abs(transform.position.z - m_OriginPos.z) < 0.5f)
 			{
 				Vector3 newPos = new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.5f);
 				transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * 2);
 			}
-			// 人物后退
+			// The role moves backward
 			if (Mathf.Abs(m_Role.transform.position.x - m_RoleOriginPos.x) < 1.5f)
 			{
 				Vector3 newPos = new Vector3(m_Role.transform.position.x - 1.5f, m_Role.transform.position.y, m_Role.transform.position.z);
 				m_Role.transform.position = Vector3.Lerp(m_Role.transform.position, newPos, Time.deltaTime * 2);
 			}
-			// 敌人入场
+			// The enemy into the field
 			if (Mathf.Abs(m_Enemy.transform.position.y - m_EnemyOriginPos.y) < 2.9f)
 			{
 				Vector3 newPos = new Vector3(m_Enemy.transform.position.x, m_Enemy.transform.position.y - 2.9f, m_Enemy.transform.position.z);
 				m_Enemy.transform.position = Vector3.Lerp(m_Enemy.transform.position, newPos, Time.deltaTime * 2);
 			}
 			
-			// 镜头和人物绕着X轴旋转
+			// The camera and the characters revolve around the X-axis
 			if (Mathf.Abs(transform.localEulerAngles.x - m_OriginRot.x) < 20)
 			{
 				transform.Rotate(Vector3.left * Time.deltaTime * 40);
@@ -147,11 +149,11 @@ public class CameraMove : MonoBehaviour {
 			}
 			yield return new WaitForSeconds(1f);
 			m_isOver = true;
-		}
+		} 
 	}
 
 	/// <summary>
-	/// 更改原始视角
+	/// Changing the original perspective
 	/// </summary>
 	public void ChangeOriginView()
 	{
@@ -165,16 +167,31 @@ public class CameraMove : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// 聚焦镜头到人物
+	/// Focus the camera on the character
 	/// </summary>
 	public void FocusRole()
 	{
-		// 镜头向前移动
+		// The lens moves forward before attack
 		transform.position = Vector3.Lerp(transform.position, m_BattleCamTrans.position, Time.deltaTime * 3);
 		transform.rotation = Quaternion.Slerp(transform.rotation, m_BattleCamTrans.rotation, Time.deltaTime * 3);
-		// 人物和敌人角度跟随
+		// Character and enemy angles follow
 		m_Role.transform.Find("Anim").localEulerAngles = m_BattleCamTrans.localEulerAngles;
 		m_Enemy.transform.Find("Anim").localEulerAngles = m_BattleCamTrans.localEulerAngles;
+	}
+
+	/// <summary>
+	/// Unfocus the camera on the character after attack
+	/// </summary>
+	public void UnfocusRole()
+	{
+		// The lens move backward
+		transform.position = Vector3.Lerp(transform.position, m_OriginCamTrans.position, Time.deltaTime * 3);
+		transform.rotation = Quaternion.Slerp(transform.rotation, m_OriginCamTrans.rotation, Time.deltaTime * 3);
+		// Role moves backward
+		m_Role.transform.position = Vector3.Lerp(m_Role.transform.position, m_RoleOriginPos, Time.deltaTime * 3);
+		// Character and enemy angles follow
+		m_Role.transform.Find("Anim").localEulerAngles = m_RoleOriginRot;
+		m_Enemy.transform.Find("Anim").localEulerAngles = m_EnemyOriginPos;
 	}
 }
 
