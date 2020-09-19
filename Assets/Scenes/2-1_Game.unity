@@ -803,7 +803,6 @@ MonoBehaviour:
     type: 3}
   m_Effect_2: {fileID: 2494202246960975677, guid: f7f140a85af8c054db38efec4e80f70d,
     type: 3}
-  m_Volume: {fileID: 1874385485}
 --- !u!1 &1228139614
 GameObject:
   m_ObjectHideFlags: 0
@@ -1275,6 +1274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd56efc763d55004ba8b5b617ffdf293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Volume: {fileID: 1874385485}
   m_Role: {fileID: 213662653}
   m_Enemy: {fileID: 1796348287803158210}
   m_OriginCamTrans: {fileID: 1976852009057453295, guid: 7a23e0a8178a87d4fa487ce817e8f080,
@@ -1283,20 +1283,31 @@ MonoBehaviour:
     type: 3}
   m_BattleCamTrans: {fileID: 2573543649757980133, guid: 0871b1bdf72a8634dac5d136514113fa,
     type: 3}
-  m_Volmue: {fileID: 1874385484}
---- !u!1 &1874385484 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8106050954331681676, guid: 874bcd8acc2adf14b9be0a51840f6eec,
+  m_OriginRoleTrans: {fileID: 0}
+  m_ReadyRoleTrans: {fileID: 2573543649757980133, guid: c67ba54db9a0faf44a65a2a511dc89d6,
     type: 3}
-  m_PrefabInstance: {fileID: 980549379}
-  m_PrefabAsset: {fileID: 0}
+  m_ReadyRoleAnimTrans: {fileID: 2573543649757980133, guid: db1e16dd1ca69f84ab97708515f3f43b,
+    type: 3}
+  m_BattleRoleTrans: {fileID: 2573543649757980133, guid: 2fd8b3c8fbf87f44690c451d902394c2,
+    type: 3}
+  m_BattleRoleAnimTrans: {fileID: 2573543649757980133, guid: 77f8557366a332147a10cab84dcd8f2a,
+    type: 3}
+  m_OriginEnemyTrans: {fileID: 0}
+  m_ReadyEnemyTrans: {fileID: 2573543649757980133, guid: c0c3af5e99d69004e8e49906ee303bb2,
+    type: 3}
+  m_ReadyEnemyAnimTrans: {fileID: 2573543649757980133, guid: 256db9e13cf24644587af8eac99c42b0,
+    type: 3}
+  m_BattleEnemyTrans: {fileID: 2573543649757980133, guid: ab3745aa6ca1d274c9a1086e6dcbbfc4,
+    type: 3}
+  m_BattleEnemyAnimTrans: {fileID: 2573543649757980133, guid: 545ca0eaf239fc34387d2be93c0e3619,
+    type: 3}
 --- !u!114 &1874385485 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106050954331681679, guid: 874bcd8acc2adf14b9be0a51840f6eec,
     type: 3}
   m_PrefabInstance: {fileID: 980549379}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1874385484}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
@@ -1464,7 +1475,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1661159281}
         m_TargetAssemblyTypeName: CameraMove, Assembly-CSharp
-        m_MethodName: OnClickIntoBattle
+        m_MethodName: OnClickIntoReady
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
