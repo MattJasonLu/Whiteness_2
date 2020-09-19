@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using System.Transactions;
+﻿using System.Transactions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -120,11 +119,7 @@ public class CameraMove : MonoBehaviour {
 			m_Role.transform.Find("Anim").GetComponentInChildren<Animator>().SetTrigger("Battle");
 
 			// The lens moves forward
-			if (Mathf.Abs(transform.position.z - m_OriginPos.z) < 0.5f)
-			{
-				Vector3 newPos = new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.5f);
-				transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * 2);
-			}
+			transform.position = Vector3.Lerp(transform.position, m_ReadyCamTrans.position, Time.deltaTime * 2);
 			// The role moves backward
 			if (Mathf.Abs(m_Role.transform.position.x - m_RoleOriginPos.x) < 1.5f)
 			{
@@ -139,10 +134,7 @@ public class CameraMove : MonoBehaviour {
 			}
 			
 			// The camera and the characters revolve around the X-axis
-			if (Mathf.Abs(transform.localEulerAngles.x - m_OriginRot.x) < 20)
-			{
-				transform.Rotate(Vector3.left * Time.deltaTime * 40);
-			}
+			transform.rotation = Quaternion.Slerp(transform.rotation, m_ReadyCamTrans.rotation, Time.deltaTime * 3);
 			if (Mathf.Abs(m_Role.transform.Find("Anim").localEulerAngles.x - m_RoleOriginRot.x) < 20)
 			{
 				m_Role.transform.Find("Anim").Rotate(Vector3.left * Time.deltaTime * 40);

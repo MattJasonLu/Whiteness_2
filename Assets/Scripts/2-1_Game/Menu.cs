@@ -183,5 +183,6 @@ public class Menu : MonoBehaviour
     IEnumerator PlaySkill2()
     {
         // TODO 2020-9-18 15:32:45 Add more skill
+        yield return new WaitForSeconds(0.5f);
     }
 }
