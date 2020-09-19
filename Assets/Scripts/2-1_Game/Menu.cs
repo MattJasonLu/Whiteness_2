@@ -42,13 +42,6 @@ public class Menu : MonoBehaviour
     /// </summary>
     private bool m_IsEnemyBack = false;
     private bool m_EnemyBackDir = false;
-    /// <summary>
-    /// Post processing
-    /// </summary>
-    [SerializeField]
-    private Volume m_Volume;
-
-    private float m_TimeTracker = 0.0f;
 
     void Start()
     {
@@ -82,25 +75,9 @@ public class Menu : MonoBehaviour
         // 判断是否选中了角色
         if (m_Player.GetComponent<RoleUnit>().isClicked)
         {
-            // 人物往前移动，同时镜头放大
-            MoveTowards();
-            // 放大，移动摄像机到合适的位置
-            m_Camera.GetComponent<CameraMove>().FocusRole();
-        }
-    }
-
-    /// <summary>
-    /// Character moves forward
-    /// </summary>
-    public void MoveTowards()
-    {
-        // 主角人物向前移动
-        if (m_Player.transform.position.x < -1f)
-        {
-            Vector3 newPos = new Vector3(m_Player.transform.position.x + 1.5f, m_Player.transform.position.y, m_Player.transform.position.z);
-            m_Player.transform.position = Vector3.Lerp(m_Player.transform.position, newPos, Time.deltaTime * 2);
-            // 镜头对人物聚焦
-            m_Volume.profile.components[0].parameters[2].SetValue(new FloatParameter(Mathf.Lerp(0.3f, 0.4f, Time.deltaTime * (m_TimeTracker += 0.1f) * 50)));
+            m_Player.GetComponent<RoleUnit>().isClicked = false;
+            // 人物往前移动，同时镜头放大，移动摄像机到合适的位置
+            m_Camera.GetComponent<CameraMove>().OnClickRole();
         }
     }
 
@@ -139,7 +116,6 @@ public class Menu : MonoBehaviour
     /// <returns></returns>
     IEnumerator PlaySkill1()
     {
-        m_TimeTracker = 0f;
         m_EnemyOriginPos = new Vector3(m_Enemy.transform.position.x, m_Enemy.transform.position.y, m_Enemy.transform.position.z);
         // Coordinate the enemy's retreat position
         m_EnemyBackPos = new Vector3(m_Enemy.transform.position.x + 0.5f, m_Enemy.transform.position.y, m_Enemy.transform.position.z);
@@ -173,7 +149,7 @@ public class Menu : MonoBehaviour
         // Update: 2020-9-18 15:23:50
         // After the skill is released, the character has to step back and the lens has to expand
         yield return new WaitForSeconds(0.5f);
-        m_Camera.GetComponent<CameraMove>().FocusRole();
+        m_Camera.GetComponent<CameraMove>().OnAttackOver();
     }
 
     /// <summary>
