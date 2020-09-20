@@ -80,6 +80,7 @@ public class CameraMove : MonoBehaviour {
 	private Transform m_BattleEnemyTrans;
 	[SerializeField]
 	private Transform m_BattleEnemyAnimTrans;
+	private bool m_IsSlowMotion = false;
 
 	void Awake()
 	{
@@ -111,6 +112,16 @@ public class CameraMove : MonoBehaviour {
 		else if (m_State == GameState.Over)
 		{
 			UnfocusRole();
+		}
+		
+		if (m_IsSlowMotion)
+		{
+			Debug.Log("Slow");
+			Time.timeScale = 0.5f;
+		}
+		else
+		{
+			Time.timeScale = 1f;
 		}
 	}
 
@@ -194,6 +205,22 @@ public class CameraMove : MonoBehaviour {
 		m_Enemy.transform.Find("Anim").localEulerAngles = m_ReadyEnemyAnimTrans.localEulerAngles;
 		// 镜头回退
 		m_Volume.profile.components[0].parameters[2].SetValue(new FloatParameter(Mathf.Lerp(m_Volume.profile.components[0].parameters[2].GetValue<float>(), 0.35f, Time.deltaTime * (m_TimeTracker += 0.1f) * 50)));
+	}
+
+	/// <summary>
+	/// 慢镜头
+	/// </summary>
+	public void SlowMotion()
+	{
+		m_IsSlowMotion = true;
+	}
+
+	/// <summary>
+	/// 正常镜头
+	/// </summary>
+	public void NormalMotion()
+	{
+		m_IsSlowMotion = false;
 	}
 }
 

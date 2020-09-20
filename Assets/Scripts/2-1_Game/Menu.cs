@@ -31,6 +31,8 @@ public class Menu : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject m_Effect_2;
+    [SerializeField]
+    private GameObject m_HitEffect;
 
     /// <summary>
     /// Enemy retreat back position
@@ -59,7 +61,9 @@ public class Menu : MonoBehaviour
     /// </summary>
     public void OnClickSkill_1()
     {
+        
         StartCoroutine(PlaySkill1());
+        
     }
 
     public void OnClickSkill_2()
@@ -116,6 +120,7 @@ public class Menu : MonoBehaviour
     /// <returns></returns>
     IEnumerator PlaySkill1()
     {
+        
         m_EnemyOriginPos = new Vector3(m_Enemy.transform.position.x, m_Enemy.transform.position.y, m_Enemy.transform.position.z);
         // Coordinate the enemy's retreat position
         m_EnemyBackPos = new Vector3(m_Enemy.transform.position.x + 0.5f, m_Enemy.transform.position.y, m_Enemy.transform.position.z);
@@ -135,6 +140,7 @@ public class Menu : MonoBehaviour
         m_Player.transform.Find("Anim").GetComponent<Animator>().ResetTrigger("Skill1");
         m_Player.transform.Find("Anim").GetComponent<Animator>().SetTrigger("Battle");
         yield return new WaitForSeconds(0.5f);
+        m_Camera.GetComponent<CameraMove>().SlowMotion();
         m_IsEnemyBack = true;
         m_EnemyBackDir = true;
         // Plays the effect of a attack on an enemy
@@ -146,10 +152,19 @@ public class Menu : MonoBehaviour
         effect2.GetComponent<ParticleSystem>().Play();
         // TODO 2020-9-18 15:31:03 Need to emit light under attack
         Destroy(effect2, 2f);
+        yield return new WaitForSeconds(0.5f);
+        GameObject hitEffect = Instantiate(m_HitEffect);
+        hitEffect.transform.SetParent(m_Enemy.transform, false);
+        hitEffect.transform.localScale = new Vector3(hitEffect.transform.localScale.x * 2, hitEffect.transform.localScale.y * 2, hitEffect.transform.localScale.z * 2);
+        // hitEffect.transform.position = new Vector3(
+        //     hitEffect.transform.position.x, hitEffect.transform.position.y, hitEffect.transform.position.z);
+        hitEffect.GetComponent<ParticleSystem>().Play();
+        Destroy(hitEffect, 2f);
         // Update: 2020-9-18 15:23:50
         // After the skill is released, the character has to step back and the lens has to expand
         yield return new WaitForSeconds(0.5f);
         m_Camera.GetComponent<CameraMove>().OnAttackOver();
+        m_Camera.GetComponent<CameraMove>().NormalMotion();
     }
 
     /// <summary>
