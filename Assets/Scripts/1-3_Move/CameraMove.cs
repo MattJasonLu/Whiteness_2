@@ -81,6 +81,9 @@ public class CameraMove : MonoBehaviour {
 	[SerializeField]
 	private Transform m_BattleEnemyAnimTrans;
 	private bool m_IsSlowMotion = false;
+	private bool m_IsShake = false;
+
+	private Vector3 m_BeforeShakeCamPos;
 
 	void Awake()
 	{
@@ -116,12 +119,16 @@ public class CameraMove : MonoBehaviour {
 		
 		if (m_IsSlowMotion)
 		{
-			Debug.Log("Slow");
 			Time.timeScale = 0.5f;
 		}
 		else
 		{
 			Time.timeScale = 1f;
+		}
+
+		if (m_IsShake)
+		{
+			Camera.main.transform.localPosition = m_BeforeShakeCamPos + Random.insideUnitSphere * 0.04f;
 		}
 	}
 
@@ -221,6 +228,20 @@ public class CameraMove : MonoBehaviour {
 	public void NormalMotion()
 	{
 		m_IsSlowMotion = false;
+	}
+
+	public void ShakeCamera()
+	{
+		m_BeforeShakeCamPos = Camera.main.transform.localPosition;
+		StartCoroutine(ShakeCor());
+	}
+
+	IEnumerator ShakeCor()
+	{
+		m_IsShake = true;
+		yield return new WaitForSeconds(0.5f);
+		m_IsShake = false;
+		Camera.main.transform.localPosition = m_BeforeShakeCamPos;
 	}
 }
 

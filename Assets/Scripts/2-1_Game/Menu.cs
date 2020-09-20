@@ -71,6 +71,11 @@ public class Menu : MonoBehaviour
         StartCoroutine(PlaySkill2());
     }
 
+    public void OnClickShake()
+    {
+        m_Camera.GetComponent<CameraMove>().ShakeCamera();  
+    }
+
     /// <summary>
     /// Enlarge processing of selected roles
     /// </summary>
@@ -165,6 +170,7 @@ public class Menu : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         m_Camera.GetComponent<CameraMove>().OnAttackOver();
         m_Camera.GetComponent<CameraMove>().NormalMotion();
+        
     }
 
     /// <summary>
