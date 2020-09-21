@@ -158,6 +158,7 @@ public class Menu : MonoBehaviour
         // TODO 2020-9-18 15:31:03 Need to emit light under attack
         Destroy(effect2, 2f);
         yield return new WaitForSeconds(0.5f);
+        m_Camera.GetComponent<CameraMove>().NormalMotion();
         GameObject hitEffect = Instantiate(m_HitEffect);
         hitEffect.transform.SetParent(m_Enemy.transform, false);
         hitEffect.transform.localScale = new Vector3(hitEffect.transform.localScale.x * 2, hitEffect.transform.localScale.y * 2, hitEffect.transform.localScale.z * 2);
@@ -169,7 +170,7 @@ public class Menu : MonoBehaviour
         // After the skill is released, the character has to step back and the lens has to expand
         yield return new WaitForSeconds(0.5f);
         m_Camera.GetComponent<CameraMove>().OnAttackOver();
-        m_Camera.GetComponent<CameraMove>().NormalMotion();
+        
         
     }
 

@@ -119,7 +119,7 @@ public class CameraMove : MonoBehaviour {
 		
 		if (m_IsSlowMotion)
 		{
-			Time.timeScale = 0.5f;
+			Time.timeScale = 0.4f;
 		}
 		else
 		{
