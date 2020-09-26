@@ -164,6 +164,7 @@ public class CameraMove : MonoBehaviour {
 		// The camera and the characters revolve around the X-axis
 		transform.rotation = Quaternion.Slerp(transform.rotation, m_ReadyCamTrans.rotation, Time.deltaTime * 3);
 		m_Role.transform.Find("Anim").rotation = Quaternion.Slerp(transform.rotation, m_ReadyRoleAnimTrans.rotation, Time.deltaTime * 3);
+		m_Enemy.transform.Find("Anim").rotation = Quaternion.Slerp(transform.rotation, m_ReadyEnemyAnimTrans.rotation, Time.deltaTime * 3);
 		yield return new WaitForSeconds(1f);
 	}
 
@@ -186,8 +187,8 @@ public class CameraMove : MonoBehaviour {
 		transform.rotation = Quaternion.Slerp(transform.rotation, m_BattleCamTrans.rotation, Time.deltaTime * 3);
 		m_Role.transform.position = Vector3.Lerp(m_Role.transform.position, m_ForwardRolePos, Time.deltaTime * 3);
 		// Character and enemy angles follow
-		m_Role.transform.Find("Anim").localEulerAngles = m_BattleCamTrans.localEulerAngles;
-		m_Enemy.transform.Find("Anim").localEulerAngles = m_BattleCamTrans.localEulerAngles;
+		m_Role.transform.Find("Anim").rotation = Quaternion.Slerp(transform.rotation, m_BattleRoleAnimTrans.rotation, Time.deltaTime * 3);
+		m_Enemy.transform.Find("Anim").rotation = Quaternion.Slerp(transform.rotation, m_BattleEnemyAnimTrans.rotation, Time.deltaTime * 3);
 		// 镜头对人物聚焦
 		m_Volume.profile.components[0].parameters[2].SetValue(new FloatParameter(Mathf.Lerp(m_Volume.profile.components[0].parameters[2].GetValue<float>(), 0.4f, Time.deltaTime * (m_TimeTracker += 0.1f) * 50)));
 	}
@@ -208,8 +209,8 @@ public class CameraMove : MonoBehaviour {
 		transform.rotation = Quaternion.Slerp(transform.rotation, m_ReadyCamTrans.rotation, Time.deltaTime * 3);
 		m_Role.transform.position = Vector3.Lerp(m_Role.transform.position, m_ReadyRoleTrans.position, Time.deltaTime * 3);
 		// Character and enemy angles follow
-		m_Role.transform.Find("Anim").localEulerAngles = m_ReadyRoleAnimTrans.localEulerAngles;
-		m_Enemy.transform.Find("Anim").localEulerAngles = m_ReadyEnemyAnimTrans.localEulerAngles;
+		m_Role.transform.Find("Anim").rotation = Quaternion.Slerp(transform.rotation, m_ReadyRoleAnimTrans.rotation, Time.deltaTime * 3);
+		m_Enemy.transform.Find("Anim").rotation = Quaternion.Slerp(transform.rotation, m_ReadyEnemyAnimTrans.rotation, Time.deltaTime * 3);
 		// 镜头回退
 		m_Volume.profile.components[0].parameters[2].SetValue(new FloatParameter(Mathf.Lerp(m_Volume.profile.components[0].parameters[2].GetValue<float>(), 0.35f, Time.deltaTime * (m_TimeTracker += 0.1f) * 50)));
 	}

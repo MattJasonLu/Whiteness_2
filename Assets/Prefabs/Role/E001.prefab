@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8754224885115591056}
   - component: {fileID: 8704376948282051818}
   - component: {fileID: 8672459222783117274}
-  - component: {fileID: 8722791939018997084}
   m_Layer: 0
   m_Name: E001
   m_TagString: Player
@@ -54,10 +53,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 2.7359962
-  m_Height: 7.3760853
+  m_Radius: 1.6224842
+  m_Height: 6.761428
   m_Direction: 1
-  m_Center: {x: 0.017880797, y: -0.37522972, z: -1.347084}
+  m_Center: {x: 0.036207587, y: -0.067901015, z: -0.25189877}
 --- !u!23 &8704376948282051818
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -115,41 +114,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &8722791939018997084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8690639672146522642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f6f4c085ba723f4d9cdfa977d8adb57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unitId: P001
-  unitName: TEST
-  level: 1
-  HP: 100
-  initHP: 100
-  EP: 100
-  initEP: 100
-  CP: 100
-  initCP: 100
-  STR: 20
-  DEF: 10
-  ATS: 10
-  ADF: 10
-  SPD: 30
-  DEX: 10
-  RNG: 0
-  CRT: 10
-  HIT: 90
-  roleType: 0
-  EXP: 100
-  wearType: 0
-  dead: 0
-  rolePanel: {fileID: 0}
 --- !u!1 &8690660172748055852
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,13 +140,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8690660172748055852}
-  m_LocalRotation: {x: -0.000000014950176, y: 0.9396927, z: -0.34202015, w: -0.00000004107527}
+  m_LocalRotation: {x: 0, y: -0.9849439, z: 0.1728746, w: 0}
   m_LocalPosition: {x: 0, y: -0.02, z: 0.01}
-  m_LocalScale: {x: 7, y: 7, z: 7}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 8689152854800656054}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 19.91, y: -180, z: 0}
 --- !u!212 &8821633016879055114
 SpriteRenderer:
   m_ObjectHideFlags: 0
