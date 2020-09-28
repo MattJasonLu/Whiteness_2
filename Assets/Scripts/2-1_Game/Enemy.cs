@@ -7,6 +7,8 @@ public class Enemy : Role
     public GameObject m_Player;
     [SerializeField]
     private Menu m_Menu;
+    [SerializeField]
+    private GameObject m_Effect_1;
     /// <summary>
     /// Enemy retreat back position
     /// </summary>
@@ -71,5 +73,18 @@ public class Enemy : Role
             this.transform.position = m_EnemyOriginPos;
             m_IsBack = false;
         }
+    }
+
+    public void CommonAttack()
+    {
+        
+        GameObject effect = Instantiate(m_Effect_1);
+        effect.transform.SetParent(this.transform, false);
+        effect.transform.position = new Vector3(
+            effect.transform.position.x - 0.5f, effect.transform.position.y + 0.2f, effect.transform.position.z);
+        effect.transform.localScale = new Vector3(effect.transform.localScale.x * 2, effect.transform.localScale.y * 2, effect.transform.localScale.z * 2);
+        effect.transform.localEulerAngles = new Vector3(90, 180, -90);
+        effect.GetComponent<ParticleSystem>().Play();
+        Destroy(effect, 2f);
     }
 }

@@ -1985,7 +1985,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Player: {fileID: 0}
-  m_Menu: {fileID: 0}
+  m_Menu: {fileID: 1224908572}
+  m_Effect_1: {fileID: 7053518189101720096, guid: 9df70675a740ffd40b24a932f81b745c,
+    type: 3}
 --- !u!1001 &1796388590897843864
 PrefabInstance:
   m_ObjectHideFlags: 0

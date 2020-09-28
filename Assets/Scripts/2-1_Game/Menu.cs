@@ -46,6 +46,15 @@ public class Menu : MonoBehaviour
         m_Player.GetComponent<Player>().PlaySkill_1();
         yield return new WaitForSeconds(1f);
         m_Enemy.GetComponent<Enemy>().Retreat();
+        StartCoroutine(PlayEnemyAttack());
+    }
+
+    IEnumerator PlayEnemyAttack()
+    {
+        yield return new WaitForSeconds(2f);
+        this.ShowText_1();
+        yield return new WaitForSeconds(2f);
+        m_Enemy.GetComponent<Enemy>().CommonAttack();
     }
 
     public void OnClickShake()
@@ -72,22 +81,22 @@ public class Menu : MonoBehaviour
     /// </summary>
     public void ShowText_1()
     {
-        StartCoroutine("黑蔷薇：愚蠢的入侵者");
+        StartCoroutine(ShowTextCor("黑蔷薇：愚蠢的入侵者"));
     }
 
     public void ShowText_2()
     {
-        StartCoroutine("黑蔷薇：让我来审判你们");
+        StartCoroutine(ShowTextCor("黑蔷薇：让我来审判你们"));
     }
 
     public void ShowText_3()
     {
-        StartCoroutine("黑蔷薇：无理之徒");
+        StartCoroutine(ShowTextCor("黑蔷薇：无理之徒"));
     }
 
     public void ShowText_4()
     {
-        StartCoroutine("黑蔷薇：让这场闹剧结束吧");
+        StartCoroutine(ShowTextCor("黑蔷薇：让这场闹剧结束吧"));
     }
 
     IEnumerator ShowTextCor(string text)
