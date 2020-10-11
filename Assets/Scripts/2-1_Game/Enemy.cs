@@ -9,6 +9,10 @@ public class Enemy : Role
     private Menu m_Menu;
     [SerializeField]
     private GameObject m_Effect_1;
+    [SerializeField]
+    private GameObject m_HitEffect;
+    [SerializeField]
+    private GameObject m_BumperEffect;
     /// <summary>
     /// Enemy retreat back position
     /// </summary>
@@ -77,7 +81,11 @@ public class Enemy : Role
 
     public void CommonAttack()
     {
-        
+        StartCoroutine(CommonAttackCor());
+    }
+
+    IEnumerator CommonAttackCor()
+    {
         GameObject effect = Instantiate(m_Effect_1);
         effect.transform.SetParent(this.transform, false);
         effect.transform.position = new Vector3(
@@ -86,5 +94,33 @@ public class Enemy : Role
         effect.transform.localEulerAngles = new Vector3(90, 180, -90);
         effect.GetComponent<ParticleSystem>().Play();
         Destroy(effect, 2f);
+        yield return new WaitForSeconds(1f);
+        GameObject hitEffect = Instantiate(m_HitEffect);
+        hitEffect.transform.SetParent(m_Player.transform, false);
+        hitEffect.transform.localScale = new Vector3(hitEffect.transform.localScale.x * 2, hitEffect.transform.localScale.y * 2, hitEffect.transform.localScale.z * 2);
+        // hitEffect.transform.position = new Vector3(
+        //     hitEffect.transform.position.x, hitEffect.transform.position.y, hitEffect.transform.position.z);
+        hitEffect.GetComponent<ParticleSystem>().Play();
+        Destroy(hitEffect, 2f);
+    }
+
+    /// <summary>
+    /// 蓄力
+    /// </summary>
+    public void BumperAttack()
+    {
+        StartCoroutine(BumperAttackCor());
+    }
+
+    IEnumerator BumperAttackCor()
+    {
+        GameObject effect = Instantiate(m_BumperEffect);
+        effect.transform.SetParent(this.transform, false);
+        effect.transform.localPosition = Vector3.zero;
+        effect.transform.localScale = new Vector3(effect.transform.localScale.x * 2, effect.transform.localScale.y * 2, effect.transform.localScale.z * 2);
+        effect.transform.localEulerAngles = new Vector3(90, 180, -90);
+        effect.GetComponent<ParticleSystem>().Play();
+        Destroy(effect, 2f);
+        yield return new WaitForSeconds(1f);
     }
 }

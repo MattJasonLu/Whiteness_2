@@ -19,6 +19,16 @@ public class CameraMove : MonoBehaviour {
 	[SerializeField]
 	private GameObject m_Role;
 	/// <summary>
+	/// Role2
+	/// </summary>
+	[SerializeField]
+	private GameObject m_Role2;
+	/// <summary>
+	/// Role3
+	/// </summary>
+	[SerializeField]
+	private GameObject m_Role3;
+	/// <summary>
 	/// 敌人
 	/// </summary>
 	[SerializeField]
@@ -48,6 +58,16 @@ public class CameraMove : MonoBehaviour {
 	/// </summary>
 	[SerializeField]
 	private Transform m_ReadyRoleTrans;
+	/// <summary>
+	/// The ready trans of 2th role
+	/// </summary>
+	[SerializeField]
+	private Transform m_ReadyRole2Trans;
+	/// <summary>
+	/// The ready trans of 3th role
+	/// </summary>
+	[SerializeField]
+	private Transform m_ReadyRole3Trans;
 	[SerializeField]
 	private Transform m_ReadyRoleAnimTrans;
 	/// <summary>
@@ -151,6 +171,8 @@ public class CameraMove : MonoBehaviour {
 
 	IEnumerator Change()
 	{
+		m_Role2.SetActive(true);
+		m_Role3.SetActive(true);
 		// Character changes combat status
 		m_Role.transform.Find("Anim").GetComponentInChildren<Animator>().SetTrigger("Battle");
 
@@ -158,12 +180,16 @@ public class CameraMove : MonoBehaviour {
 		transform.position = Vector3.Lerp(transform.position, m_ReadyCamTrans.position, Time.deltaTime * 3);
 		// The role moves backward
 		m_Role.transform.position = Vector3.Lerp(m_Role.transform.position, m_ReadyRoleTrans.position, Time.deltaTime * 3);
+		m_Role2.transform.position = Vector3.Lerp(m_Role2.transform.position, m_ReadyRole2Trans.position, Time.deltaTime * 3);
+		m_Role3.transform.position = Vector3.Lerp(m_Role3.transform.position, m_ReadyRole3Trans.position, Time.deltaTime * 3);
 		// The enemy into the field
 		m_Enemy.transform.position = Vector3.Lerp(m_Enemy.transform.position, m_ReadyEnemyTrans.position, Time.deltaTime * 3);
 		
 		// The camera and the characters revolve around the X-axis
 		transform.rotation = Quaternion.Slerp(transform.rotation, m_ReadyCamTrans.rotation, Time.deltaTime * 3);
 		m_Role.transform.Find("Anim").rotation = Quaternion.Slerp(transform.rotation, m_ReadyRoleAnimTrans.rotation, Time.deltaTime * 3);
+		m_Role2.transform.Find("Anim").rotation = Quaternion.Slerp(transform.rotation, m_ReadyRoleAnimTrans.rotation, Time.deltaTime * 3);
+		m_Role3.transform.Find("Anim").rotation = Quaternion.Slerp(transform.rotation, m_ReadyRoleAnimTrans.rotation, Time.deltaTime * 3);
 		m_Enemy.transform.Find("Anim").rotation = Quaternion.Slerp(transform.rotation, m_ReadyEnemyAnimTrans.rotation, Time.deltaTime * 3);
 		yield return new WaitForSeconds(1f);
 	}
