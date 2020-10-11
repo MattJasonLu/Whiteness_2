@@ -1,0 +1,269 @@
+网络登录地址：http://172.16.0.7/
+
+Jenkins
+https://jenkins.webeyemobi.com/job/Modooplay_Coinsdozer_A618/
+modooplay_user
+密码modooplay2020
+-------------------------------------------------------------------------------------------
+git 地址
+
+山海经：git@bitbucket.org:webeye-dev/mergemountainsandseas.git
+弹球：   git@bitbucket.org:webeye-dev/moneyplinko.git
+推币：   git@bitbucket.org:webeye-dev/luckypusher.git
+
+
+    signingConfigs {
+        release {
+            storeFile file('user.keystore')
+            storePassword 'luckypusher'
+            keyAlias 'lucky'
+            keyPassword '123456'
+        }
+    }
+
+-------------------------------------------------------------------------------------------
+linux
+
+find *.prefab > result.txt 目录下文件名输出
+-------------------------------------------------------------------------------------------
+
+表格对应
+CoinRatio  金币生成的概率
+DollarRatio 美元生成的概率
+LevelLimit  老虎机奖励上限
+LevelRatio 老虎机每个奖励的概率
+LevelWin   老虎机重转中奖的概率与次数
+SlotReward 老虎机奖励
+RedeemReward 网赚概率
+
+git命令：
+配置SSH
+进入对应的目录 ssh-keygen
+sourcetree进入选项，设置SSH客户端为OpenSSH
+进入bitbucket个人设置，添加公钥为id_rsa.pub的内容
+
+更新子模块
+git submoudle init
+git submoudle update
+
+子模块分支选择
+Qarth -> Unity 2018
+sdkadapter -> TaurusX_UIAP
+
+代理：
+
+# socks5协议，1080端口修改成自己的本地代理端口
+git config --global http.proxy socks5://127.0.0.1:1081
+git config --global https.proxy socks5://127.0.0.1:1081
+
+# http协议，1081端口修改成自己的本地代理端口
+git config --global http.proxy http://127.0.0.1:8001
+git config --global https.proxy https://127.0.0.1:8001
+
+rebase -> 右键master，选择“将当前变更基到master”
+-------------------------------------------------------------------------------------------
+
+
+unity 使用opengl打开
+D:\Unity2018423\Editor\Unity.exe -force-gles30
+
+Qarth 配置
+Qarth->Asset->构建AB，生成Assert清单
+
+Assets\Scripts\Game\Gameplay\Data
+修改表结构
+Qarth->Table->Build C#, Build Data(txt)
+随后需要在TableModule的InitPreLoadTableMetaData()中添加引用 
+
+两个根节点：UIRoot，GameplayRoot
+Canvas下分为PanelRoot，HideRoot
+Panel放置在PanelRoot下
+GameplayRoot下放置场景物体等
+
+[SerializeField]  Inspector属性栏显示
+TDCapturemapTable 表结构
+GameData 存档数据
+EInt, EFloat加密数据
+数据存储将List转换成Dict存储
+
+UI间的跳转->UIMgr, Event System
+显示层级->Order In Layer
+
+
+打包：
+AppID  ->  Taurusx ID   ->  Resources\Config\SDKConfig -> App ID Android
+广告ID -> TaurusX Ad Unit id   ->   sdk/ad_config.xlsx  -> UnitIDAndroid
+
+google-services.json 拷贝至根目录
+
+替换 game文件夹
+E:\work\luckypusher\UnityProject\PusherDemo\Assets\StreamingAssets\game
+E:\work\luckypusher\out\ExportProject\Lucky Coins Dozer\src\main\assets\game
+
+AS内点击clean然后点击assemble
+apk导出位置：
+E:\work\luckypusher\out\ExportProject\Lucky Coins Dozer\build\outputs\apk\release
+
+AS内连接模拟器调试
+https://blog.csdn.net/billy_chen_2013/article/details/80882644
+
+-------------------------------------------------------------------------------------------
+框架内笔记：
+
+初始化的一些设置
+GameplayMgr的InitGameplay进行调整
+
+AbstractPanel
+常用 OnUIInit()，OnPanelOpen(params object[] args)，OnClose()
+
+提示信息 FloatMessage.S.ShowMsg
+
+Timer的回调函数 Timer.S.Post2Scale(v => { }, 0.8f, 1);
+
+播放声音 AudioMgr.S.PlaySound(SoundButton.defaultClickSound);
+
+打开面板 UIMgr.S.OpenPanel(UIID.NetWaitingPanel);
+
+获取时间 DateTime serverdt = CreditServerMgr.S.GetRealServerTime();
+
+资源加载器的一些方法
+var foo = ResLoader.Allocate("foo");
+foo.Add2Load();
+foo.LoadSync()
+foo.ReleaseAllRes();
+foo.ReleaseRes("");
+foo.Recycle2Cache();
+
+通过ResLoader加载资源
+ResLoader loader = ResLoader.Allocate("Fruits");    // ("Fruits")是自定义的名字
+GameObject go = loader.LoadSync(fruit.sprite) as GameObject;
+
+
+AbstractPanel面板的初步写法
+    public class TestPanel : AbstractPanel
+    {
+        [SerializeField]
+        private Button m_BtnClose;
+
+
+        protected override void OnUIInit()
+        {
+            base.OnUIInit();
+            m_BtnClose.onClick.AddListener(OnClickClose);
+        }
+
+        protected override void OnClose()
+        {
+            base.OnClose();
+        }
+
+        void OnClickClose()
+        {
+            CloseSelfPanel();
+        }
+    }
+
+在播放广告的回调中，"b"是用来表示是否播放了广告，true表示播放过，false表示未播放   
+CustomExtensions.PlayAd("NoTokens", b =>{  if (!b)  ...}   
+
+GameData存储数据
+InitWithEmptyData() 首次执行
+OnDataLoadFinish()  每次启动都会执行
+
+-------------------------------------------------------------------------------------------
+DOTween
+
+obj.transform.DOShakePosition(1f,new Vector3(3,3,0));
+
+
+
+
+-------------------------------------------------------------------------------------------
+笔记
+物体不受重力影响
+item.GetComponent<Rigidbody>().isKinematic = true;
+
+Mesh collider 添加碰撞 勾选Convex
+涉及物理的运动采用刚体而非动画
+加力 GetComponent<Rigidbody>().AddForce(new Vector3(0, 60, -15), ForceMode.Force);
+旋转 Rotate(Random.Range(-10,10f), Random.Range(-10,10f), Random.Range(-10,10f));	
+绘制实心方块 Gizmos.DrawCube
+
+物体的来回移动（update）
+private void Update()
+{
+    if (!paused)
+    {
+        m_Rigi.MovePosition(Vector3.Lerp(originalPosition, destination.position, Mathf.PingPong(timeTracker * moveSpeed, 1.0f)));
+        timeTracker += 0.01f;
+        if (GetComponent<Rigidbody>().position == originalPosition)
+        {
+            if (timeTracker > timeLimit)
+                timeTracker = 0.0f; 
+        }
+    }
+}
+
+单次移动（update）
+float lerpValue = Mathf.Lerp(m_TargetPos.y, m_OriginPos.y, timeTracker * m_MoveSpeed);
+GetComponent<Rigidbody>().MovePosition(new Vector3(m_OriginPos.x, lerpValue, m_OriginPos.z));
+timeTracker += 0.01f;
+if(GetComponent<Rigidbody>().position == m_OriginPos)
+{
+    isClose = false;
+}
+
+一定要理解清楚Mathf.Lerp(float a, float b, float t)第三个参数t的意义，它是一个百分比，最小值有效值是0，最大有效值是1，如果超出了1，就取1，小于0则取0.
+它表示从a到b之间，按照t这个百分比来取值，例如a是0，b是100，如果t是0.2,则该函数返回的值是20，如果t是1，该函数返回的值为100.
+
+Time.time就是系统运行时间，也就是这个程序开始到现在的时长。
+
+匀速运动的要点是起始值和结束值都是固定好的，不会随着运动而发生变化。
+
+相机随机震动 Camera.main.transform.localPosition = cameraOriginalPosition + Random.insideUnitSphere * shakeAmount;
+
+物体模拟震动
+coin.GetComponent<Rigidbody>().AddForce(new Vector3(0, 60, -15), ForceMode.Force);
+//coin.GetComponent<Rigidbody>().AddExplosionForce(Random.Range(6f, 12f), coin.position + new Vector3(0,1,1), Random.Range(3f, 5f)); ;
+coin.transform.Rotate(Random.Range(-10,10f), Random.Range(-10,10f), Random.Range(-10,10f));			
+
+非空判断
+int? firstX = points?.FirstOrDefault()?.X;
+
+Sorting Layer  用于设置不同层的Sprite渲染顺序
+Order in Layer  用于设置在同一层中的Sprite渲染顺序
+
+
+vignette 后处理镜头焦距处理
+
+
+粒子效果跟随本体
+Simulation Space（模拟空间）：在世界坐标和本地坐标中切换，这个就是制作技能痕迹的重要位置，新建的粒子系统一般都默认为local，所以在粒子本体移动的时候也跟着进行移动，改为world的话，粒子就不会跟随本体移动而是随着发出的方向自己进行移动。
+
+
+UI Mask遮罩
+对父级对象添加Mask组件，并取消其Show Mask Graphic 勾选。对父级对象添加子物体，会仅显示相交部分
+
+ASCII码
+0-9：48-57
++：43
+. ：46
+-------------------------------------------------------------------------------------------
+
+老虎机的算法：
+将三个图片组顺序排列，开始转动时就依次移动图片组的Y轴并循环图片组，则会产生转动；
+即将停止时，逐渐减慢三个图片组的移动速度，如果减至0时则停止并归位
+获奖：停止前通过随机或者直接指定一个图片编号，三个图片组的停止编号相同，得到转动后的产生结果
+不获奖：三个停止编号不同
+
+-------------------------------------------------------------------------------------------
+动画不播放的问题解决：
+添加Animator后动画在模拟器中不播放，随后不挂载Animator直接使用Animation，并且调整动画的Legancy为true，再使用GetComponent<Animation>().CrossFade("CashShake" , 0.1f);
+参考：
+https://blog.csdn.net/alayeshi/article/details/90669634
+https://blog.csdn.net/mxc1239/article/details/78733600
+
+-------------------------------------------------------------------------------------------
+
+屏幕适配
+可以暂时通过预设常见几个宽高比的相机位置， 通过计算设备的宽高比 然后将相机设置到对应的位置
