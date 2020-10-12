@@ -21,6 +21,8 @@ public class Player : Role
     private GameObject m_Effect_2;
     [SerializeField]
     private GameObject m_HitEffect;
+    [SerializeField]
+    private GameObject m_NumEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -105,5 +107,24 @@ public class Player : Role
         // After the skill is released, the character has to step back and the lens has to expand
         yield return new WaitForSeconds(0.5f);
         m_Camera.GetComponent<CameraMove>().OnAttackOver();
+    }
+
+    /// <summary>
+    /// Show num beyond the role
+    /// </summary>
+    public void ShowNum(int num)
+    {
+        StartCoroutine(ShowNumCor(num));
+    }
+
+    IEnumerator ShowNumCor(int num)
+    {
+        GameObject effect = Instantiate(m_NumEffect);
+        effect.transform.SetParent(this.transform, false);
+        effect.transform.localScale = new Vector3(effect.transform.localScale.x * 0.5f, effect.transform.localScale.y * 0.5f, effect.transform.localScale.z * 0.5f);
+        effect.transform.localPosition = new Vector3(0.15f, 1.25f, 0);
+        effect.GetComponent<ParticleSystem>().Play();
+        // Destroy(effect, 2f);
+        yield return new WaitForSeconds(1f);
     }
 }

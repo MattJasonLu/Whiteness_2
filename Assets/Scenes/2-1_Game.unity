@@ -228,6 +228,8 @@ MonoBehaviour:
   m_Effect_2: {fileID: 0}
   m_HitEffect: {fileID: 5341833324780392298, guid: 5f4d5863b7ea35142a4d27f5020640fc,
     type: 3}
+  m_NumEffect: {fileID: 8723057749859932750, guid: 324a7baab72db184493c920684544cba,
+    type: 3}
 --- !u!1 &357349435
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,6 +315,28 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 955457794}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &404249366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404249365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03e0aa5e68a8ec44a8edf2cea641fc45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsClicked: 0
+  m_Enemy: {fileID: 0}
+  m_Camera: {fileID: 1661159276}
+  m_Effect_1: {fileID: 7053518189101720096, guid: 9df70675a740ffd40b24a932f81b745c,
+    type: 3}
+  m_Effect_2: {fileID: 0}
+  m_HitEffect: {fileID: 5341833324780392298, guid: 5f4d5863b7ea35142a4d27f5020640fc,
+    type: 3}
+  m_NumEffect: {fileID: 8723057749859932750, guid: 324a7baab72db184493c920684544cba,
+    type: 3}
 --- !u!1001 &508744731
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -734,7 +758,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7812898191010330533, guid: 9171874ef4c349444bbc1de449f05ca8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9171874ef4c349444bbc1de449f05ca8, type: 3}
 --- !u!1 &884407737
 GameObject:
@@ -1011,7 +1036,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7812898191010330533, guid: 9171874ef4c349444bbc1de449f05ca8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9171874ef4c349444bbc1de449f05ca8, type: 3}
 --- !u!1001 &980549379
 PrefabInstance:
@@ -1194,6 +1220,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Camera: {fileID: 1661159276}
   m_Player: {fileID: 213662653}
+  m_Player2: {fileID: 1901308300}
+  m_Player3: {fileID: 404249365}
   m_Enemy: {fileID: 1796348287803158210}
   m_Title: {fileID: 357349437}
 --- !u!1 &1228139614
@@ -1797,6 +1825,28 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 853422283}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1901308301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901308300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03e0aa5e68a8ec44a8edf2cea641fc45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsClicked: 0
+  m_Enemy: {fileID: 0}
+  m_Camera: {fileID: 1661159276}
+  m_Effect_1: {fileID: 7053518189101720096, guid: 9df70675a740ffd40b24a932f81b745c,
+    type: 3}
+  m_Effect_2: {fileID: 0}
+  m_HitEffect: {fileID: 5341833324780392298, guid: 5f4d5863b7ea35142a4d27f5020640fc,
+    type: 3}
+  m_NumEffect: {fileID: 8723057749859932750, guid: 324a7baab72db184493c920684544cba,
+    type: 3}
 --- !u!1 &1931000855
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,6 +17,10 @@ public class Menu : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject m_Player;
+    [SerializeField]
+    private GameObject m_Player2;
+    [SerializeField]
+    private GameObject m_Player3;
     /// <summary>
     /// Enemy gameobject
     /// </summary>
@@ -76,6 +80,10 @@ public class Menu : MonoBehaviour
         this.ShowText_2();
         yield return new WaitForSeconds(2f);
         m_Enemy.GetComponent<Enemy>().BumperAttack();
+        yield return new WaitForSeconds(2f);
+        m_Player.GetComponent<Player>().ShowNum(1);
+        m_Player2.GetComponent<Player>().ShowNum(2);
+        m_Player3.GetComponent<Player>().ShowNum(3);
     }
 
     public void OnClickShake()
