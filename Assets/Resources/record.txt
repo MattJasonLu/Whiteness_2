@@ -91,8 +91,9 @@ UI间的跳转->UIMgr, Event System
 
 
 打包：
-AppID  ->  Taurusx ID   ->  Resources\Config\SDKConfig -> App ID Android
+AppID  ->  Taurusx ID   ->  Resources\Config\SDKConfig\Ads Config\Taurus X Ad -> App ID Android
 广告ID -> TaurusX Ad Unit id   ->   sdk/ad_config.xlsx  -> UnitIDAndroid
+TD ID -> Resources\Config\SDKConfig\Data Analysis Config\Talking Data Config
 
 google-services.json 拷贝至根目录
 
@@ -267,3 +268,33 @@ https://blog.csdn.net/mxc1239/article/details/78733600
 
 屏幕适配
 可以暂时通过预设常见几个宽高比的相机位置， 通过计算设备的宽高比 然后将相机设置到对应的位置
+
+-------------------------------------------------------------------------------------------
+老虎机的条目问题
+重置为0时的间距过大，调整return zero方法
+192行 while (Mathf.Abs(sprites[id].transform.localPosition.y) > 0.030f) 
+
+-------------------------------------------------------------------------------------------
+去除内购权限
+在AndroidManifest的下面选择Merged Manifest去除两个billing的条目，右键选择remove
+
+-------------------------------------------------------------------------------------------
+推送是用那个NotificationMgr，评价是RateMgr.S.RequestReview
+-------------------------------------------------------------------------------------------
+后台分析记录打点
+DataAnalysisMgr.S.CustomEvent
+
+引导设置
+设置guide_step表格
+添加trigger和command
+Demo：
+首次进入游戏出现提示	UINodeVisibleTrigger:#0;	HighlightUICommand:#0;GuideHandCommand:#0,true;MyGuideWordsCommand:true,luckypusher_guide_1,#0,0|-105;	UINodeFinder:MainPanel;
+首次获得美元奖励	EventTrigger:#1,#2;	MyButtonHackCommand:#0;HighlightUICommand:#0;GuideHandCommand:#0,true;MyGuideWordsCommand:true,luckypusher_guide_2,#0,0|-105;	UINodeFinder:MainPanel,Top/dolloar;GameWish.Game.EventID;OnActiveHint;
+
+EventTrigger可以根据内部Event事件的触发来引发guide触发
+
+-------------------------------------------------------------------------------------------
+
+通过枚举的类名字和枚举名字获取枚举对象
+Type enumType = Type.GetType(m_TypeName);
+m_EventID = (int)Enum.Parse(enumType, m_EnumName);
