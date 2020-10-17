@@ -91,18 +91,22 @@ public class Menu : MonoBehaviour
         m_Player3.GetComponent<Player>().ShowNum(3);
     }
 
+    /// <summary>
+    /// 技能3
+    /// </summary>
+    /// <returns></returns>
     IEnumerator PlaySkill3Cor()
     {
         m_Player.GetComponent<Player>().PlaySkill_1();
         yield return new WaitForSeconds(1f);
-
-        yield return new WaitForSeconds(2f);
+        m_Enemy.GetComponent<Enemy>().Retreat();
+        StartCoroutine(PlayEnemyRound4());
     }
 
     IEnumerator PlayEnemyRound4()
     {
         yield return new WaitForSeconds(2f);
-        // m_Enemy.GetComponent<Enemy>().BumperAttack();
+        m_Enemy.GetComponent<Enemy>().AllAttack();
         yield return new WaitForSeconds(2f);
     }
 

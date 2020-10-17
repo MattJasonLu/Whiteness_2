@@ -5,6 +5,9 @@ using UnityEngine;
 public class Enemy : Role
 {
     public GameObject m_Player;
+    public GameObject m_Player2;
+    public GameObject m_Player3;
+
     [SerializeField]
     private Menu m_Menu;
     [SerializeField]
@@ -102,6 +105,27 @@ public class Enemy : Role
         //     hitEffect.transform.position.x, hitEffect.transform.position.y, hitEffect.transform.position.z);
         hitEffect.GetComponent<ParticleSystem>().Play();
         Destroy(hitEffect, 2f);
+    }
+
+    public void AllAttack()
+    {
+        StartCoroutine(AllAttackCor());
+    }
+
+    IEnumerator AllAttackCor()
+    {
+        GameObject effect = Instantiate(m_Effect_1);
+        effect.transform.SetParent(this.transform, false);
+        effect.transform.position = new Vector3(
+            effect.transform.position.x - 0.5f, effect.transform.position.y + 0.2f, effect.transform.position.z);
+        effect.transform.localScale = new Vector3(effect.transform.localScale.x * 2, effect.transform.localScale.y * 2, effect.transform.localScale.z * 2);
+        effect.transform.localEulerAngles = new Vector3(90, 180, -90);
+        effect.GetComponent<ParticleSystem>().Play();
+        Destroy(effect, 2f);
+        yield return new WaitForSeconds(1f);
+        m_Player.GetComponent<Player>().GetHit();
+        m_Player2.GetComponent<Player>().GetHit();
+        m_Player3.GetComponent<Player>().GetHit();
     }
 
     /// <summary>

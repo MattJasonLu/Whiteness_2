@@ -127,4 +127,18 @@ public class Player : Role
         // Destroy(effect, 2f);
         yield return new WaitForSeconds(1f);
     }
+
+    /// <summary>
+    /// 玩家受到伤害
+    /// </summary>
+    public void GetHit()
+    {
+        GameObject hitEffect = Instantiate(m_HitEffect);
+        hitEffect.transform.SetParent(this.transform, false);
+        hitEffect.transform.localScale = new Vector3(hitEffect.transform.localScale.x * 2, hitEffect.transform.localScale.y * 2, hitEffect.transform.localScale.z * 2);
+        // hitEffect.transform.position = new Vector3(
+        //     hitEffect.transform.position.x, hitEffect.transform.position.y, hitEffect.transform.position.z);
+        hitEffect.GetComponent<ParticleSystem>().Play();
+        Destroy(hitEffect, 2f);
+    }
 }
