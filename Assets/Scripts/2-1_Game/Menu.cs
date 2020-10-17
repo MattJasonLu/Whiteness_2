@@ -50,6 +50,11 @@ public class Menu : MonoBehaviour
         StartCoroutine(PlaySkill2Cor());
     }
 
+    public void OnClickPlayerSkill3()
+    {
+        StartCoroutine(PlaySkill3Cor());
+    }
+
     IEnumerator PlaySkillCor()
     {
         m_Player.GetComponent<Player>().PlaySkill_1();
@@ -84,6 +89,21 @@ public class Menu : MonoBehaviour
         m_Player.GetComponent<Player>().ShowNum(1);
         m_Player2.GetComponent<Player>().ShowNum(2);
         m_Player3.GetComponent<Player>().ShowNum(3);
+    }
+
+    IEnumerator PlaySkill3Cor()
+    {
+        m_Player.GetComponent<Player>().PlaySkill_1();
+        yield return new WaitForSeconds(1f);
+
+        yield return new WaitForSeconds(2f);
+    }
+
+    IEnumerator PlayEnemyRound4()
+    {
+        yield return new WaitForSeconds(2f);
+        // m_Enemy.GetComponent<Enemy>().BumperAttack();
+        yield return new WaitForSeconds(2f);
     }
 
     public void OnClickShake()
