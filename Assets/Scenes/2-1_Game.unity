@@ -3058,7 +3058,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4ee690d5c6b3304193a56b46538b96f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Player: {fileID: 0}
+  m_Player: {fileID: 213662653}
+  m_Player2: {fileID: 1901308300}
+  m_Player3: {fileID: 404249365}
   m_Menu: {fileID: 1224908572}
   m_Effect_1: {fileID: 7053518189101720096, guid: 9df70675a740ffd40b24a932f81b745c,
     type: 3}

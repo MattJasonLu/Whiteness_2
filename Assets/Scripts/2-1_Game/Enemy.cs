@@ -97,14 +97,9 @@ public class Enemy : Role
         effect.transform.localEulerAngles = new Vector3(90, 180, -90);
         effect.GetComponent<ParticleSystem>().Play();
         Destroy(effect, 2f);
-        yield return new WaitForSeconds(1f);
-        GameObject hitEffect = Instantiate(m_HitEffect);
-        hitEffect.transform.SetParent(m_Player.transform, false);
-        hitEffect.transform.localScale = new Vector3(hitEffect.transform.localScale.x * 2, hitEffect.transform.localScale.y * 2, hitEffect.transform.localScale.z * 2);
-        // hitEffect.transform.position = new Vector3(
-        //     hitEffect.transform.position.x, hitEffect.transform.position.y, hitEffect.transform.position.z);
-        hitEffect.GetComponent<ParticleSystem>().Play();
-        Destroy(hitEffect, 2f);
+        // 敌人攻击后玩家受击的延时
+        yield return new WaitForSeconds(0.1f);
+        m_Player.GetComponent<Player>().GetHit();
     }
 
     public void AllAttack()
@@ -122,9 +117,29 @@ public class Enemy : Role
         effect.transform.localEulerAngles = new Vector3(90, 180, -90);
         effect.GetComponent<ParticleSystem>().Play();
         Destroy(effect, 2f);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.1f);
         m_Player.GetComponent<Player>().GetHit();
         m_Player2.GetComponent<Player>().GetHit();
+        m_Player3.GetComponent<Player>().GetHit();
+    }
+
+    public void RollAttack()
+    {
+        StartCoroutine(RollAttackCor());
+    }
+
+    IEnumerator RollAttackCor()
+    {
+        GameObject effect = Instantiate(m_Effect_1);
+        effect.transform.SetParent(this.transform, false);
+        effect.transform.position = new Vector3(
+            effect.transform.position.x - 0.5f, effect.transform.position.y + 0.2f, effect.transform.position.z);
+        effect.transform.localScale = new Vector3(effect.transform.localScale.x * 2, effect.transform.localScale.y * 2, effect.transform.localScale.z * 2);
+        effect.transform.localEulerAngles = new Vector3(90, 180, -90);
+        effect.GetComponent<ParticleSystem>().Play();
+        Destroy(effect, 2f);
+        yield return new WaitForSeconds(0.1f);
+        Destroy(m_Player3.GetComponent<Player>().m_NumGo);
         m_Player3.GetComponent<Player>().GetHit();
     }
 
@@ -146,5 +161,16 @@ public class Enemy : Role
         effect.GetComponent<ParticleSystem>().Play();
         Destroy(effect, 2f);
         yield return new WaitForSeconds(1f);
+    }
+
+    public void GetHit()
+    {
+        GameObject hitEffect = Instantiate(m_HitEffect);
+        hitEffect.transform.SetParent(this.transform, false);
+        hitEffect.transform.localScale = new Vector3(hitEffect.transform.localScale.x * 2, hitEffect.transform.localScale.y * 2, hitEffect.transform.localScale.z * 2);
+        // hitEffect.transform.position = new Vector3(
+        //     hitEffect.transform.position.x, hitEffect.transform.position.y, hitEffect.transform.position.z);
+        hitEffect.GetComponent<ParticleSystem>().Play();
+        Destroy(hitEffect, 2f);
     }
 }

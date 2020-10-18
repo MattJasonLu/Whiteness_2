@@ -23,6 +23,10 @@ public class Player : Role
     private GameObject m_HitEffect;
     [SerializeField]
     private GameObject m_NumEffect;
+    /// <summary>
+    /// 点名的效果
+    /// </summary>
+    public GameObject m_NumGo;
 
     // Start is called before the first frame update
     void Start()
@@ -94,15 +98,10 @@ public class Player : Role
         effect2.GetComponent<ParticleSystem>().Play();
         // TODO 2020-9-18 15:31:03 Need to emit light under attack
         Destroy(effect2, 2f);
-        yield return new WaitForSeconds(0.5f);
+        // 在玩家攻击后显示敌人受击的延时
+        yield return new WaitForSeconds(0.1f);
         m_Camera.GetComponent<CameraMove>().NormalMotion();
-        GameObject hitEffect = Instantiate(m_HitEffect);
-        hitEffect.transform.SetParent(m_Enemy.transform, false);
-        hitEffect.transform.localScale = new Vector3(hitEffect.transform.localScale.x * 2, hitEffect.transform.localScale.y * 2, hitEffect.transform.localScale.z * 2);
-        // hitEffect.transform.position = new Vector3(
-        //     hitEffect.transform.position.x, hitEffect.transform.position.y, hitEffect.transform.position.z);
-        hitEffect.GetComponent<ParticleSystem>().Play();
-        Destroy(hitEffect, 2f);
+        m_Enemy.GetComponent<Enemy>().GetHit();
         // Update: 2020-9-18 15:23:50
         // After the skill is released, the character has to step back and the lens has to expand
         yield return new WaitForSeconds(0.5f);
@@ -119,11 +118,11 @@ public class Player : Role
 
     IEnumerator ShowNumCor(int num)
     {
-        GameObject effect = Instantiate(m_NumEffect);
-        effect.transform.SetParent(this.transform, false);
-        effect.transform.localScale = new Vector3(effect.transform.localScale.x * 0.5f, effect.transform.localScale.y * 0.5f, effect.transform.localScale.z * 0.5f);
-        effect.transform.localPosition = new Vector3(0.15f, 1.25f, 0);
-        effect.GetComponent<ParticleSystem>().Play();
+        m_NumGo = Instantiate(m_NumEffect);
+        m_NumGo.transform.SetParent(this.transform, false);
+        m_NumGo.transform.localScale = new Vector3(m_NumGo.transform.localScale.x * 0.5f, m_NumGo.transform.localScale.y * 0.5f, m_NumGo.transform.localScale.z * 0.5f);
+        m_NumGo.transform.localPosition = new Vector3(0.15f, 1.25f, 0);
+        m_NumGo.GetComponent<ParticleSystem>().Play();
         // Destroy(effect, 2f);
         yield return new WaitForSeconds(1f);
     }
